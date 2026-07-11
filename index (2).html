@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlimeVille 🧪 squish • stretch • repeat</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#7ED321; --lime-dark:#5FA818;
+    --pink:#FF4D88; --pink-soft:#FFE6F1;
+    --purple:#7C3AED; --teal:#27D6D6; --yellow:#FFD23F;
+    --ink:#1E1E2F; --white:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Comfortaa',cursive;background:var(--pink-soft);color:var(--ink);overflow-x:hidden}
+  h1,h2,h3,.fredoka{font-family:'Fredoka One',cursive;font-weight:400}
+
+  /* ---------- HEADER + DRIP ---------- */
+  header{background:var(--lime);position:relative;padding:26px 20px 10px;text-align:center;z-index:5}
+  .drip{display:block;width:100%;height:38px;margin-bottom:-1px}
+  .logo{font-family:'Fredoka One',cursive;font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;letter-spacing:1px;
+    text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),0 4px 0 var(--ink);}
+  .logo .slime{color:#9BEB3E}
+  .logo .ville{color:var(--pink)}
+  .tagline{margin-top:8px;font-family:'Fredoka One',cursive;font-size:clamp(.95rem,3.4vw,1.3rem);color:var(--ink)}
+  .tagline .p{color:var(--pink)} .tagline .g{color:#4C7F12}
+  .splat{position:absolute;font-size:1.4rem;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  /* ---------- HERO ---------- */
+  .hero{text-align:center;padding:34px 22px 10px;position:relative}
+  .hero h1{font-size:clamp(1.5rem,5.5vw,2.4rem);color:var(--ink)}
+  .hero h1 span{color:var(--pink)}
+  .hero p{margin:12px auto 0;max-width:520px;font-size:.95rem;line-height:1.7;font-weight:500}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .badge{background:var(--white);border:3px solid var(--ink);border-radius:999px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:.8rem;box-shadow:3px 3px 0 var(--ink)}
+  .badge.b1{color:var(--pink)} .badge.b2{color:var(--purple)} .badge.b3{color:var(--lime-dark)}
+  .float{position:fixed;font-size:1.5rem;opacity:.18;z-index:0;animation:floaty 9s ease-in-out infinite;pointer-events:none}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(12deg)}}
+
+  /* ---------- PRODUCTS ---------- */
+  .shop{max-width:1050px;margin:0 auto;padding:26px 18px 90px;position:relative;z-index:1}
+  .shop-title{text-align:center;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:6px}
+  .shop-sub{text-align:center;font-weight:700;font-size:.85rem;color:var(--purple);margin-bottom:26px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+  .card{background:var(--white);border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .15s ease;display:flex;flex-direction:column}
+  .card:active{transform:scale(.97)}
+  .swirl{height:150px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.6rem;border-bottom:4px solid var(--ink)}
+  .swirl .sprinkles{position:absolute;inset:0;font-size:1rem;opacity:.85}
+  .swirl .sprinkles i{position:absolute;font-style:normal}
+  .card-body{padding:16px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .card h3{font-size:1.25rem;line-height:1.15}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:.66rem;font-weight:700;padding:4px 10px;border-radius:999px;border:2px solid var(--ink)}
+  .card .desc{font-size:.8rem;line-height:1.55;font-weight:500;flex:1}
+  .row{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+  .price{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--pink)}
+  .price small{font-size:.7rem;color:var(--ink)}
+  .add{font-family:'Fredoka One',cursive;font-size:.85rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:9px 18px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:all .12s}
+  .add:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+  .add.added{background:var(--pink);color:var(--white)}
+
+  /* ---------- CART BUTTON ---------- */
+  .jar-btn{position:fixed;bottom:20px;right:20px;z-index:60;background:var(--pink);border:4px solid var(--ink);border-radius:50%;width:68px;height:68px;font-size:1.8rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center}
+  .jar-btn .count{position:absolute;top:-6px;right:-6px;background:var(--yellow);border:3px solid var(--ink);border-radius:999px;min-width:28px;height:28px;font-family:'Fredoka One',cursive;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .jar-btn.pop{animation:pop .3s ease}
+  @keyframes pop{50%{transform:scale(1.2) rotate(-8deg)}}
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(30,30,47,.55);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--white);z-index:80;transform:translateX(105%);transition:transform .3s ease;display:flex;flex-direction:column;border-left:4px solid var(--ink)}
+  .drawer.open{transform:translateX(0)}
+  .drawer-head{background:var(--lime);padding:18px 20px;border-bottom:4px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+  .drawer-head h2{font-size:1.3rem}
+  .close{background:var(--white);border:3px solid var(--ink);border-radius:50%;width:38px;height:38px;font-size:1.1rem;cursor:pointer;font-weight:700}
+  .drawer-body{flex:1;overflow-y:auto;padding:18px 20px}
+  .cart-item{display:flex;align-items:center;gap:12px;background:var(--pink-soft);border:3px solid var(--ink);border-radius:18px;padding:10px 12px;margin-bottom:12px}
+  .cart-item .emoji{font-size:1.7rem}
+  .cart-item .info{flex:1}
+  .cart-item .info b{font-family:'Fredoka One',cursive;font-size:.85rem;display:block}
+  .cart-item .info span{font-size:.72rem;font-weight:700;color:var(--purple)}
+  .qty{display:flex;align-items:center;gap:8px}
+  .qty button{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);background:var(--white);font-family:'Fredoka One',cursive;cursor:pointer;font-size:.95rem}
+  .qty b{font-family:'Fredoka One',cursive;min-width:16px;text-align:center}
+  .empty{text-align:center;padding:40px 10px;font-weight:700;font-size:.9rem;color:var(--purple)}
+  .empty .big{font-size:2.6rem;display:block;margin-bottom:10px}
+  .total-row{display:flex;justify-content:space-between;font-family:'Fredoka One',cursive;font-size:1.15rem;padding:14px 4px;border-top:3px dashed var(--ink);margin-top:6px}
+  .total-row span{color:var(--pink)}
+
+  /* ---------- CHECKOUT FORM ---------- */
+  .form{display:flex;flex-direction:column;gap:11px;margin-top:8px}
+  .form label{font-family:'Fredoka One',cursive;font-size:.78rem}
+  .form input,.form textarea{border:3px solid var(--ink);border-radius:14px;padding:11px 14px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:var(--pink-soft);width:100%}
+  .form input:focus,.form textarea:focus{outline:3px solid var(--purple)}
+  .checkout{font-family:'Fredoka One',cursive;font-size:1rem;background:var(--pink);color:var(--white);border:4px solid var(--ink);border-radius:999px;padding:14px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);margin-top:4px;transition:all .12s}
+  .checkout:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+  .checkout:disabled{opacity:.6}
+  .success{text-align:center;padding:34px 14px}
+  .success .big{font-size:3.4rem}
+  .success h3{font-size:1.4rem;margin:12px 0 8px;color:var(--pink)}
+  .success p{font-size:.85rem;font-weight:700;line-height:1.7}
+  .err{background:#FFD8D8;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-size:.78rem;font-weight:700;display:none}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:var(--white);text-align:center;padding:34px 20px 40px;position:relative;margin-top:20px}
+  .drip-footer{display:block;width:100%;height:34px;margin-bottom:-6px;transform:rotate(180deg)}
+  footer .flogo{font-family:'Fredoka One',cursive;font-size:1.5rem}
+  footer .flogo .slime{color:var(--lime)} footer .flogo .ville{color:var(--pink)}
+  footer p{font-size:.75rem;font-weight:700;margin-top:10px;opacity:.85}
+  .pin{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:var(--pink);color:var(--white);font-family:'Fredoka One',cursive;font-size:.85rem;padding:10px 20px;border-radius:999px;border:3px solid var(--white);text-decoration:none}
+
+  .confetti{position:fixed;top:-12px;font-size:1.15rem;z-index:200;animation:fall linear forwards;pointer-events:none}
+  @keyframes fall{to{transform:translateY(108vh) rotate(680deg)}}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<span class="float" style="left:6%;top:32%">🧪</span>
+<span class="float" style="left:88%;top:24%;animation-delay:1.5s">💗</span>
+<span class="float" style="left:12%;top:72%;animation-delay:3s">✨</span>
+<span class="float" style="left:84%;top:66%;animation-delay:2s">🌈</span>
+<span class="float" style="left:48%;top:88%;animation-delay:4s">🫧</span>
+
+<header>
+  <span class="splat" style="left:8%;top:16px">💚</span>
+  <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
+  <div class="logo"><span class="slime">Slime</span><span class="ville">Ville</span></div>
+  <div class="tagline"><span class="g">squish</span> <span class="p">•</span> <span class="g">stretch</span> <span class="p">•</span> <span class="g">repeat</span></div>
+</header>
+<svg class="drip" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#7ED321"/></svg>
+
+<section class="hero">
+  <h1>Handmade slimes, made with <span>love</span> in Dubai 🇦🇪</h1>
+  <p>Every jar is hand-mixed, scented, and sprinkled by us. Non-toxic, kid-friendly, and impossibly satisfying. Pick your favourites and fill your jar! 🫙</p>
+  <div class="badges">
+    <span class="badge b1">💗 Made with love</span>
+    <span class="badge b2">🛡️ Safe &amp; non-toxic</span>
+    <span class="badge b3">✨ Sensory fun</span>
+  </div>
+</section>
+
+<main class="shop">
+  <h2 class="shop-title">Our Slime Collection 🧪</h2>
+  <p class="shop-sub">All slimes 20 AED each • fresh batches every week</p>
+  <div class="grid" id="grid"></div>
+</main>
+
+<svg class="drip-footer" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#1E1E2F"/></svg>
+<footer>
+  <div class="flogo"><span class="slime">Slime</span><span class="ville">Ville</span></div>
+  <p>squish • stretch • repeat 💚💖<br>Handmade in Dubai • Orders via our checkout jar 🫙</p>
+  <a class="pin" href="https://pinterest.com/amytheicon" target="_blank" rel="noopener">📌 Follow us on Pinterest</a>
+</footer>
+
+<button class="jar-btn" id="jarBtn" onclick="openCart()" aria-label="Open your jar (cart)">🫙<span class="count" id="count">0</span></button>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer" aria-label="Your jar">
+  <div class="drawer-head">
+    <h2>Your Jar 🫙</h2>
+    <button class="close" onclick="closeCart()" aria-label="Close cart">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script>
+/* ============ CONFIG ============ */
+/* 1. Go to formspree.io → New Form → name it "SlimeVille Orders"
+   2. Copy your form ID (looks like: xabcdefg)
+   3. Paste it below between the quotes 👇 */
+const FORMSPREE_ID = "xeeyjqwn";
+
+/* ============ PRODUCTS ============ */
+const PRODUCTS = [
+  {id:"strawberry-butter", name:"Strawberry Butter", emoji:"🍓", price:20,
+   bg:"linear-gradient(135deg,#FFD3E2,#FF9FC0)",
+   texture:"Butter", scent:"Strawberry Shortcake",
+   tagColor:"#FF4D88",
+   desc:"Buttery-soft pink slime with fake cake sprinkles. Smells exactly like fresh strawberry shortcake 🍰",
+   sprinkles:["⭐","🍓","✨","💗"]},
+  {id:"bubblegum-cloud", name:"Bubblegum Cloud", emoji:"☁️", price:20,
+   bg:"linear-gradient(135deg,#FFC9E5,#BDE6FF)",
+   texture:"Cloud", scent:"Bubblegum",
+   tagColor:"#7C3AED",
+   desc:"Fluffy drizzly cloud slime in cotton-pink and sky-blue. Stretches into snowy strands and smells like bubblegum 🍬",
+   sprinkles:["🫧","☁️","💙","✨"]},
+  {id:"mango-tango", name:"Mango Tango", emoji:"🥭", price:20,
+   bg:"linear-gradient(135deg,#FFE29A,#FFAB4C)",
+   texture:"Jelly", scent:"Fresh Mango",
+   tagColor:"#E8890C",
+   desc:"Wobbly sunshine-orange jelly slime that jiggles like real mango pudding. The juiciest scent in the collection 🌞",
+   sprinkles:["🥭","⭐","🧡","✨"]},
+  {id:"cotton-candy-crunch", name:"Cotton Candy Crunch", emoji:"🍬", price:20,
+   bg:"linear-gradient(135deg,#FFC4F0,#C9F0FF)",
+   texture:"Crunchy", scent:"Cotton Candy",
+   tagColor:"#27B6D6",
+   desc:"Pastel pink + blue slime LOADED with fishbowl beads. The crunchiest, most satisfying ASMR sounds ever 🎧",
+   sprinkles:["🍬","🔵","💗","✨"]},
+  {id:"choco-brownie-butter", name:"Choco Brownie Butter", emoji:"🍫", price:20,
+   bg:"linear-gradient(135deg,#D8A47F,#8B5A3C)",
+   texture:"Butter", scent:"Chocolate Brownie",
+   tagColor:"#7A4A2B",
+   desc:"Rich chocolatey butter slime with brownie-crumb foam bits. Warning: smells so good you'll want to eat it (don't!) 🚫🍴",
+   sprinkles:["🍫","🤎","⭐","✨"]},
+];
+
+/* ============ CART (in-memory) ============ */
+let cart = {};
+
+const grid = document.getElementById("grid");
+PRODUCTS.forEach(p=>{
+  const card = document.createElement("div");
+  card.className = "card";
+  const spr = p.sprinkles.map((s,i)=>`<i style="left:${15+i*22}%;top:${(i%2?18:64)}%">${s}</i>`).join("");
+  card.innerHTML = `
+    <div class="swirl" style="background:${p.bg}"><span class="sprinkles">${spr}</span>${p.emoji}</div>
+    <div class="card-body">
+      <h3>${p.name}</h3>
+      <div class="tags">
+        <span class="tag" style="background:${p.tagColor};color:#fff">${p.texture} slime</span>
+        <span class="tag" style="background:#FFE6F1">${p.scent} scented</span>
+      </div>
+      <p class="desc">${p.desc}</p>
+      <div class="row">
+        <span class="price">${p.price} <small>AED</small></span>
+        <button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>
+      </div>
+    </div>`;
+  grid.appendChild(card);
+});
+
+function addToCart(id, btn){
+  cart[id] = (cart[id]||0)+1;
+  updateCount();
+  if(btn){
+    btn.classList.add("added"); btn.textContent = "In your jar ✓";
+    setTimeout(()=>{btn.classList.remove("added"); btn.textContent="Add to jar +";},1100);
+  }
+  const jar = document.getElementById("jarBtn");
+  jar.classList.remove("pop"); void jar.offsetWidth; jar.classList.add("pop");
+}
+function changeQty(id, d){
+  cart[id] = (cart[id]||0)+d;
+  if(cart[id]<=0) delete cart[id];
+  updateCount(); renderCart();
+}
+function updateCount(){
+  const n = Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById("count").textContent = n;
+}
+function cartTotal(){
+  return Object.entries(cart).reduce((sum,[id,q])=>{
+    const p = PRODUCTS.find(x=>x.id===id); return sum + p.price*q;
+  },0);
+}
+
+function openCart(){ renderCart();
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("open"); }
+function closeCart(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open"); }
+
+function renderCart(){
+  const body = document.getElementById("drawerBody");
+  const items = Object.entries(cart);
+  if(items.length===0){
+    body.innerHTML = `<div class="empty"><span class="big">🫙</span>Your jar is empty!<br>Add some slime to squish 💚</div>`;
+    return;
+  }
+  let html = items.map(([id,q])=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return `<div class="cart-item">
+      <span class="emoji">${p.emoji}</span>
+      <div class="info"><b>${p.name}</b><span>${p.price} AED each</span></div>
+      <div class="qty">
+        <button onclick="changeQty('${id}',-1)" aria-label="Less">−</button><b>${q}</b>
+        <button onclick="changeQty('${id}',1)" aria-label="More">+</button>
+      </div>
+    </div>`;
+  }).join("");
+  html += `<div class="total-row">Total <span>${cartTotal()} AED</span></div>`;
+  html += `
+  <form class="form" id="orderForm" onsubmit="return submitOrder(event)">
+    <div class="err" id="err"></div>
+    <label for="fname">Your name 💗</label>
+    <input id="fname" name="name" required placeholder="e.g. Sara A.">
+    <label for="fphone">WhatsApp number 📱</label>
+    <input id="fphone" name="phone" required placeholder="+971 5X XXX XXXX">
+    <label for="femail">Email ✉️</label>
+    <input id="femail" name="email" type="email" required placeholder="you@email.com">
+    <label for="farea">Area in Dubai 📍</label>
+    <input id="farea" name="area" required placeholder="e.g. JLT, Marina, Mirdif...">
+    <label for="fnotes">Notes (optional) 📝</label>
+    <textarea id="fnotes" name="notes" rows="2" placeholder="Gift wrap? Extra sprinkles?"></textarea>
+    <button class="checkout" id="checkoutBtn" type="submit">Place order • ${cartTotal()} AED 🧪</button>
+  </form>`;
+  body.innerHTML = html;
+}
+
+async function submitOrder(e){
+  e.preventDefault();
+  const btn = document.getElementById("checkoutBtn");
+  const err = document.getElementById("err");
+  err.style.display = "none";
+  btn.disabled = true; btn.textContent = "Mixing your order... 🌀";
+
+  const f = e.target;
+  const orderLines = Object.entries(cart).map(([id,q])=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return `${p.name} x${q} = ${p.price*q} AED`;
+  }).join("\n");
+
+  const payload = {
+    name: f.name.value, phone: f.phone.value, email: f.email.value,
+    area: f.area.value, notes: f.notes.value || "—",
+    order: orderLines, total: cartTotal() + " AED",
+    _subject: "🧪 New SlimeVille order from " + f.name.value
+  };
+
+  try{
+    const res = await fetch("https://formspree.io/f/"+FORMSPREE_ID, {
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error("send failed");
+    cart = {}; updateCount();
+    document.getElementById("drawerBody").innerHTML = `
+      <div class="success">
+        <span class="big">🎉🧪🎉</span>
+        <h3>Order received!</h3>
+        <p>Thanks ${payload.name.split(" ")[0]}! 💚<br>We'll WhatsApp you soon to confirm delivery.<br><br>squish • stretch • repeat ✨</p>
+      </div>`;
+    confetti();
+  }catch(x){
+    err.textContent = FORMSPREE_ID==="YOUR_FORM_ID"
+      ? "⚠️ The shop isn't connected yet — the Formspree ID needs to be added in the code!"
+      : "Hmm, that didn't send. Check your internet and try again!";
+    err.style.display = "block";
+    btn.disabled = false; btn.textContent = "Place order • "+cartTotal()+" AED 🧪";
+  }
+  return false;
+}
+
+function confetti(){
+  const bits = ["💚","💖","✨","🧪","⭐","🫧","💜"];
+  for(let i=0;i<44;i++){
+    const c = document.createElement("span");
+    c.className = "confetti";
+    c.textContent = bits[Math.floor(Math.random()*bits.length)];
+    c.style.left = Math.random()*100+"vw";
+    c.style.animationDuration = (2+Math.random()*2.4)+"s";
+    c.style.animationDelay = (Math.random()*0.7)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5200);
+  }
+}
+</script>
+</body>
+</html>
