@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SlimeVille 🧪 squish • stretch • repeat</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --lime:#7ED321; --lime-dark:#5FA818;
@@ -16,6 +17,18 @@
   body{font-family:'Comfortaa',cursive;background:var(--pink-soft);color:var(--ink);overflow-x:hidden}
   h1,h2,h3,.fredoka{font-family:'Fredoka One',cursive;font-weight:400}
 
+  /* ---------- LOADING SCREEN ---------- */
+  #loader{position:fixed;inset:0;background:var(--lime);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease}
+  #loader.gone{opacity:0;pointer-events:none}
+  #loader .lload{width:min(78%,420px);height:auto;animation:wob 1.2s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(30,30,47,.2))}
+  @keyframes wob{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.06) rotate(2deg)}}
+  #loader .ldrips{display:flex;gap:18px;margin-top:26px}
+  #loader .ldrip{width:16px;height:16px;border-radius:50% 50% 60% 60%;background:var(--pink);animation:dripfall 1.1s ease-in infinite}
+  #loader .ldrip:nth-child(2){background:var(--white);animation-delay:.2s}
+  #loader .ldrip:nth-child(3){background:var(--purple);animation-delay:.4s}
+  @keyframes dripfall{0%{transform:translateY(-10px) scaleY(.8);opacity:0}30%{opacity:1}100%{transform:translateY(46px) scaleY(1.25);opacity:0}}
+  #loader .ltxt{font-family:'Fredoka One',cursive;color:var(--ink);margin-top:22px;font-size:.95rem}
+
   /* ---------- HEADER + DRIP ---------- */
   header{background:var(--lime);position:relative;padding:26px 20px 10px;text-align:center;z-index:5}
   .drip{display:block;width:100%;height:38px;margin-bottom:-1px}
@@ -25,8 +38,12 @@
   .logo .ville{color:var(--pink)}
   .tagline{margin-top:8px;font-family:'Fredoka One',cursive;font-size:clamp(.95rem,3.4vw,1.3rem);color:var(--ink)}
   .tagline .p{color:var(--pink)} .tagline .g{color:#4C7F12}
+  .logo-img{width:min(88%,520px);height:auto;display:block;margin:0 auto;filter:drop-shadow(0 6px 10px rgba(30,30,47,.22));animation:logowob 5s ease-in-out infinite}
+  @keyframes logowob{0%,100%{transform:rotate(-1deg) scale(1)}50%{transform:rotate(1deg) scale(1.02)}}
   .splat{position:absolute;font-size:1.4rem;animation:bob 3s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px;padding-bottom:8px}
+  .nav a{font-family:'Fredoka One',cursive;font-size:.72rem;color:var(--ink);text-decoration:none;background:rgba(255,255,255,.55);border:2.5px solid var(--ink);border-radius:999px;padding:6px 13px}
 
   /* ---------- HERO ---------- */
   .hero{text-align:center;padding:34px 22px 10px;position:relative}
@@ -39,13 +56,20 @@
   .float{position:fixed;font-size:1.5rem;opacity:.18;z-index:0;animation:floaty 9s ease-in-out infinite;pointer-events:none}
   @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(12deg)}}
 
+  /* ---------- SECTION SHELLS ---------- */
+  .section{max-width:1050px;margin:0 auto;padding:40px 18px 10px;position:relative;z-index:1}
+  .sec-title{text-align:center;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:6px}
+  .sec-sub{text-align:center;font-weight:700;font-size:.85rem;color:var(--purple);margin-bottom:26px}
+
   /* ---------- PRODUCTS ---------- */
-  .shop{max-width:1050px;margin:0 auto;padding:26px 18px 90px;position:relative;z-index:1}
-  .shop-title{text-align:center;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:6px}
-  .shop-sub{text-align:center;font-weight:700;font-size:.85rem;color:var(--purple);margin-bottom:26px}
+  .shop{padding-bottom:10px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
-  .card{background:var(--white);border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .15s ease;display:flex;flex-direction:column}
+  .card{background:var(--white);border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .15s ease;display:flex;flex-direction:column;position:relative}
   .card:active{transform:scale(.97)}
+  .card.soldout{filter:grayscale(.85);opacity:.75}
+  .stockbadge{position:absolute;top:12px;left:-6px;z-index:4;font-family:'Fredoka One',cursive;font-size:.66rem;padding:6px 14px;border:3px solid var(--ink);border-radius:0 999px 999px 0;box-shadow:2px 2px 0 var(--ink)}
+  .stockbadge.low{background:var(--yellow);color:var(--ink)}
+  .stockbadge.out{background:var(--ink);color:var(--white)}
   .swirl{height:150px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.6rem;border-bottom:4px solid var(--ink)}
   .swirl .sprinkles{position:absolute;inset:0;font-size:1rem;opacity:.85}
   .swirl .sprinkles i{position:absolute;font-style:normal}
@@ -60,6 +84,40 @@
   .add{font-family:'Fredoka One',cursive;font-size:.85rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:9px 18px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:all .12s}
   .add:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
   .add.added{background:var(--pink);color:var(--white)}
+  .add:disabled{background:#cfcfd6;cursor:not-allowed;box-shadow:3px 3px 0 var(--ink)}
+
+  /* ---------- STORY ---------- */
+  .story-box{background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:28px 26px;box-shadow:6px 6px 0 var(--ink);max-width:760px;margin:0 auto}
+  .story-box p{font-size:.88rem;line-height:1.9;font-weight:500;margin-bottom:14px}
+  .story-box p:last-child{margin-bottom:0}
+  .story-box b{color:var(--pink)}
+  .story-emoji{text-align:center;font-size:2rem;margin-bottom:14px;letter-spacing:10px}
+
+  /* ---------- GALLERY ---------- */
+  .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+  .gal-item{background:var(--white);border:4px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:5px 5px 0 var(--ink)}
+  .gal-art{height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;border-bottom:4px solid var(--ink)}
+  .gal-item img{width:100%;height:160px;object-fit:cover;border-bottom:4px solid var(--ink);display:block}
+  .gal-cap{font-family:'Fredoka One',cursive;font-size:.75rem;text-align:center;padding:12px 10px}
+
+  /* ---------- REVIEWS ---------- */
+  .rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;max-width:900px;margin:0 auto}
+  .rev{background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:22px;box-shadow:5px 5px 0 var(--ink);display:flex;flex-direction:column}
+  .rev .stars{color:var(--yellow);font-size:1.1rem;letter-spacing:3px;text-shadow:1px 1px 0 var(--ink)}
+  .rev .quote{font-size:.85rem;font-weight:700;line-height:1.75;margin:12px 0;flex:1}
+  .rev .who{font-family:'Fredoka One',cursive;font-size:.78rem;color:var(--purple)}
+  .rev.empty-slot{border-style:dashed;background:rgba(255,255,255,.6)}
+  .rev.empty-slot .quote{color:var(--purple);font-style:italic}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:720px;margin:0 auto}
+  details{background:var(--white);border:3.5px solid var(--ink);border-radius:18px;margin-bottom:12px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+  summary{font-family:'Fredoka One',cursive;font-size:.9rem;padding:16px 18px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;font-size:1.3rem;color:var(--pink)}
+  details[open] summary::after{content:"−"}
+  details .ans{padding:0 18px 16px;font-size:.82rem;font-weight:600;line-height:1.8}
+  details .ans b{color:var(--pink)}
 
   /* ---------- CART BUTTON ---------- */
   .jar-btn{position:fixed;bottom:20px;right:20px;z-index:60;background:var(--pink);border:4px solid var(--ink);border-radius:50%;width:68px;height:68px;font-size:1.8rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center}
@@ -86,13 +144,15 @@
   .qty b{font-family:'Fredoka One',cursive;min-width:16px;text-align:center}
   .empty{text-align:center;padding:40px 10px;font-weight:700;font-size:.9rem;color:var(--purple)}
   .empty .big{font-size:2.6rem;display:block;margin-bottom:10px}
-  .total-row{display:flex;justify-content:space-between;font-family:'Fredoka One',cursive;font-size:1.15rem;padding:14px 4px;border-top:3px dashed var(--ink);margin-top:6px}
+  .sum-row{display:flex;justify-content:space-between;font-weight:700;font-size:.82rem;padding:5px 4px}
+  .total-row{display:flex;justify-content:space-between;font-family:'Fredoka One',cursive;font-size:1.15rem;padding:12px 4px 14px;border-top:3px dashed var(--ink);margin-top:6px}
   .total-row span{color:var(--pink)}
+  .paynote{background:var(--pink-soft);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-size:.7rem;font-weight:700;line-height:1.7;margin-bottom:6px}
 
   /* ---------- CHECKOUT FORM ---------- */
   .form{display:flex;flex-direction:column;gap:11px;margin-top:8px}
   .form label{font-family:'Fredoka One',cursive;font-size:.78rem}
-  .form input,.form textarea{border:3px solid var(--ink);border-radius:14px;padding:11px 14px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:var(--pink-soft);width:100%}
+  .form input,.form textarea,.form select{border:3px solid var(--ink);border-radius:14px;padding:11px 14px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:var(--pink-soft);width:100%}
   .form input:focus,.form textarea:focus{outline:3px solid var(--purple)}
   .checkout{font-family:'Fredoka One',cursive;font-size:1rem;background:var(--pink);color:var(--white);border:4px solid var(--ink);border-radius:999px;padding:14px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);margin-top:4px;transition:all .12s}
   .checkout:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
@@ -102,6 +162,37 @@
   .success h3{font-size:1.4rem;margin:12px 0 8px;color:var(--pink)}
   .success p{font-size:.85rem;font-weight:700;line-height:1.7}
   .err{background:#FFD8D8;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-size:.78rem;font-weight:700;display:none}
+
+  /* ---------- COLLAB DROP ---------- */
+  .collab-box{max-width:760px;margin:0 auto;background:linear-gradient(150deg,#F3EBFF,#E4D4FF);border:4px dashed var(--purple);border-radius:28px;padding:30px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center;position:relative}
+  .collab-badge{display:inline-block;background:var(--purple);color:var(--white);font-family:'Fredoka One',cursive;font-size:.72rem;padding:7px 18px;border-radius:999px;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);margin-bottom:14px}
+  .collab-box h2{font-size:clamp(1.25rem,5vw,1.8rem);color:var(--purple)}
+  .collab-box p{font-size:.86rem;line-height:1.85;font-weight:600;margin-top:12px}
+  .collab-box b{color:var(--pink)}
+  .collab-sub{font-family:'Fredoka One',cursive;font-size:.9rem!important;color:var(--ink)!important;margin-top:16px!important}
+  .collab-tease{font-size:.76rem!important;color:var(--purple)!important;font-weight:700!important}
+
+  /* ---------- YOUTUBE ---------- */
+  .yt-box{max-width:640px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:28px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .yt-icon{font-size:2.6rem}
+  .yt-box h2{font-size:clamp(1.1rem,4.4vw,1.5rem);margin-top:8px}
+  .yt-box p{font-size:.85rem;line-height:1.8;font-weight:600;margin-top:12px}
+  .yt-soon{font-family:'Fredoka One',cursive;color:var(--pink);font-size:.88rem!important;margin-top:16px!important}
+
+  /* ---------- SLIME CLUB ---------- */
+  .club{max-width:560px;margin:0 auto;padding:40px 18px 60px;text-align:center;position:relative;z-index:1}
+  .club-box{background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:30px 24px;box-shadow:6px 6px 0 var(--ink)}
+  .club h2{font-size:clamp(1.3rem,5vw,1.8rem);color:var(--pink)}
+  .club p{font-weight:700;font-size:.82rem;line-height:1.7;margin-top:10px;color:var(--ink)}
+  .club-form{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;justify-content:center}
+  .club-form input{flex:1;min-width:200px;border:3px solid var(--ink);border-radius:999px;padding:12px 18px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:var(--pink-soft)}
+  .club-form input:focus{outline:3px solid var(--purple)}
+  .club-form button{font-family:'Fredoka One',cursive;font-size:.9rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:12px 22px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:all .12s}
+  .club-form button:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+  .club-form button:disabled{opacity:.6}
+  .club-msg{margin-top:14px;font-family:'Fredoka One',cursive;font-size:.85rem;display:none}
+  .club-msg.ok{color:var(--lime-dark);display:block}
+  .club-msg.bad{color:var(--pink);display:block}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--ink);color:var(--white);text-align:center;padding:34px 20px 40px;position:relative;margin-top:20px}
@@ -119,6 +210,13 @@
 </head>
 <body>
 
+<!-- ═══ LOADING SCREEN ═══ -->
+<div id="loader">
+  <img src="logo.png" alt="SlimeVille" class="lload">
+  <div class="ldrips"><div class="ldrip"></div><div class="ldrip"></div><div class="ldrip"></div></div>
+  <div class="ltxt">mixing the slime...</div>
+</div>
+
 <span class="float" style="left:6%;top:32%">🧪</span>
 <span class="float" style="left:88%;top:24%;animation-delay:1.5s">💗</span>
 <span class="float" style="left:12%;top:72%;animation-delay:3s">✨</span>
@@ -128,8 +226,10 @@
 <header>
   <span class="splat" style="left:8%;top:16px">💚</span>
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
-  <div class="logo"><span class="slime">Slime</span><span class="ville">Ville</span></div>
-  <div class="tagline"><span class="g">squish</span> <span class="p">•</span> <span class="g">stretch</span> <span class="p">•</span> <span class="g">repeat</span></div>
+  <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
+  <nav class="nav">
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+  </nav>
 </header>
 <svg class="drip" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#7ED321"/></svg>
 
@@ -139,21 +239,142 @@
   <div class="badges">
     <span class="badge b1">💗 Made with love</span>
     <span class="badge b2">🛡️ Safe &amp; non-toxic</span>
-    <span class="badge b3">✨ Sensory fun</span>
+    <span class="badge b3">🚗 Dubai delivery — 5 AED</span>
   </div>
 </section>
 
-<main class="shop">
-  <h2 class="shop-title">Our Slime Collection 🧪</h2>
-  <p class="shop-sub">All slimes 20 AED each • fresh batches every week</p>
+<main class="section shop" id="shop">
+  <h2 class="sec-title">Our Slime Collection 🧪</h2>
+  <p class="sec-sub">All slimes 20 AED each • fresh batches every week</p>
   <div class="grid" id="grid"></div>
 </main>
+
+<!-- ═══ OUR STORY ═══ -->
+<section class="section" id="story">
+  <h2 class="sec-title">Our Story 📖</h2>
+  <p class="sec-sub">how SlimeVille came to be</p>
+  <div class="story-box">
+    <div class="story-emoji">🧪💚🍓</div>
+    <p>SlimeVille started in a <b>Dubai kitchen</b> with one slightly-too-sticky batch of butter slime and a big dream. What began as weekend experiments — testing scents, chasing the perfect stretch, and covering the counter in glitter (sorry, Mum) — slowly turned into something bigger.</p>
+    <p>Batch after batch, we perfected our recipes: the <b>softest butter slimes</b>, the fluffiest clouds, the crunchiest bead-filled jars. Friends tried them. Then friends of friends. Then people we'd never met started asking where they could buy one.</p>
+    <p>So we built SlimeVille — a place where every single jar is still <b>hand-mixed, hand-scented, and hand-sprinkled</b> with the same care as batch number one. No factories, no shortcuts. Just really, really good slime.</p>
+    <p>We're a small team with a simple mission: <b>squish, stretch, repeat</b> — and make Dubai a little more satisfying, one jar at a time. 💚</p>
+    <p style="border-top:3px dashed var(--ink);padding-top:16px;margin-top:18px;">And SlimeVille just got bigger! We're now <b>two co-founders</b> — best friends who decided that making slime together beats making it alone. One of us handles the mixing, the labels and the shop; the other brings the designs, the ideas, and (coming this August 🎬) the videos. Same slime, same love, double the chaos. 💚💜</p>
+  </div>
+</section>
+
+<!-- ═══ COMING SOON: COLLAB DROP ═══ -->
+<section class="section" id="collab">
+  <div class="collab-box">
+    <div class="collab-badge">✨ COMING SOON ✨</div>
+    <h2>The Co-Founder Collab Drop 💜</h2>
+    <p>Our newest co-founder is designing a brand-new slime, completely from scratch — the colour, the texture, the scent, the sprinkles, all of it. Nobody knows what it'll be yet. <b>Not even us.</b> 👀</p>
+    <p class="collab-sub">Dropping alongside her YouTube channel launch — <b>August 2026</b> 🎬</p>
+    <p class="collab-tease">Join the Slime Club below and you'll be first to know 💌</p>
+  </div>
+</section>
+
+<!-- ═══ YOUTUBE ═══ -->
+<section class="section" id="youtube">
+  <div class="yt-box">
+    <div class="yt-icon">🎬</div>
+    <h2>SlimeVille on YouTube — August 2026</h2>
+    <p>Slime-making, ASMR squishes, behind-the-scenes chaos and new flavor reveals. Our co-founder's channel launches this August — and SlimeVille will be all over it. 🍿</p>
+    <p class="yt-soon">📺 Channel link coming soon!</p>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section class="section" id="gallery">
+  <h2 class="sec-title">Slime Gallery 🖼️</h2>
+  <p class="sec-sub">fresh from the mixing bowl</p>
+  <div class="gal-grid">
+    <!-- 📸 TO SWAP IN A REAL PHOTO: replace the whole <div class="gal-art">...</div> line
+         with:  <img src="photo1.jpg" alt="description">
+         (upload the photo file to the same GitHub repo first!) -->
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#FFD3E2,#FF9FC0)">🍓🌀</div><div class="gal-cap">Strawberry Butter swirls</div></div>
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#FFC9E5,#BDE6FF)">☁️🫧</div><div class="gal-cap">Cloud slime drizzle</div></div>
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#FFE29A,#FFAB4C)">🥭✨</div><div class="gal-cap">Mango Tango jiggle</div></div>
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#FFC4F0,#C9F0FF)">🍬🔵</div><div class="gal-cap">Crunchy bead close-up</div></div>
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#D8A47F,#8B5A3C)">🍫🧁</div><div class="gal-cap">Brownie batter vibes</div></div>
+    <div class="gal-item"><div class="gal-art" style="background:linear-gradient(135deg,#E4D4FF,#C9B3F0)">📦💌</div><div class="gal-cap">Orders packed with love</div></div>
+  </div>
+</section>
+
+<!-- ═══ REVIEWS ═══ -->
+<section class="section" id="reviews">
+  <h2 class="sec-title">Slime Club Reviews ⭐</h2>
+  <p class="sec-sub">what our customers say</p>
+  <div class="rev-grid">
+    <div class="rev">
+      <div class="stars">★★★★★</div>
+      <div class="quote">"The owner of this business is a rockstar. I love this slime company!"</div>
+      <div class="who">— Poonam, Dubai 💚</div>
+    </div>
+    <div class="rev empty-slot">
+      <div class="stars">★★★★★</div>
+      <div class="quote">Your review could be here! Order a slime and tell us what you think 💌</div>
+      <div class="who">— You?</div>
+    </div>
+    <div class="rev empty-slot">
+      <div class="stars">★★★★★</div>
+      <div class="quote">Waiting for the next happy squisher... 🫧</div>
+      <div class="who">— You?</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="section" id="faq">
+  <h2 class="sec-title">Questions? Answers! ❓</h2>
+  <p class="sec-sub">everything you're wondering</p>
+  <div class="faq">
+    <details>
+      <summary>🛡️ Is the slime safe?</summary>
+      <div class="ans">Yes! All our slimes are made with <b>non-toxic, kid-friendly ingredients</b>. That said — never eat slime (even the ones that smell like dessert 🍰), always wash hands after playing, and it's <b>not suitable for children under 3</b>.</div>
+    </details>
+    <details>
+      <summary>🚗 Where do you deliver &amp; how much?</summary>
+      <div class="ans">We deliver <b>anywhere in Dubai</b> for a flat <b>5 AED delivery fee</b>. After you order, we'll WhatsApp you within 24 hours to arrange your delivery day!</div>
+    </details>
+    <details>
+      <summary>💳 How do I pay?</summary>
+      <div class="ans">Two easy options: <b>💵 cash on delivery</b> or <b>📱 bank transfer</b> — you pick at checkout, and we'll confirm the details on WhatsApp.</div>
+    </details>
+    <details>
+      <summary>⏳ How long does slime last?</summary>
+      <div class="ans">With good care, <b>2-3 months of squishy freshness</b>! Keep the jar sealed tight, play with clean hands, and store it away from heat and sunlight (yes, especially in Dubai summers 🥵). Every order comes with a free care guide card!</div>
+    </details>
+    <details>
+      <summary>💧 Help — my slime got sticky!</summary>
+      <div class="ans">Totally normal, especially in warm weather! Leave the jar <b>open for 10 minutes</b> and knead — it usually firms right up. Still sticky? Message us and we'll help you fix it 💚</div>
+    </details>
+    <details>
+      <summary>🔄 Do you restock sold-out flavors?</summary>
+      <div class="ans">Yes! We mix <b>fresh batches every week</b>. Join the Slime Club below 💌 and you'll be the first to know when your favourite is back (plus secret new flavor drops 👀).</div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══ SLIME CLUB ═══ -->
+<section class="club">
+  <div class="club-box">
+    <h2>Join the Slime Club 💌</h2>
+    <p>Be the first to hear about new flavors, restocks & secret drops. No spam, just slime 🧪</p>
+    <form class="club-form" onsubmit="return subscribeClub(event)">
+      <input type="email" id="clubEmail" required placeholder="your@email.com">
+      <button type="submit" id="clubBtn">Join! 💚</button>
+    </form>
+    <div class="club-msg" id="clubMsg"></div>
+  </div>
+</section>
 
 <svg class="drip-footer" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#1E1E2F"/></svg>
 <footer>
   <div class="flogo"><span class="slime">Slime</span><span class="ville">Ville</span></div>
-  <p>squish • stretch • repeat 💚💖<br>Handmade in Dubai • Orders via our checkout jar 🫙</p>
-  <a class="pin" href="https://pinterest.com/amytheicon" target="_blank" rel="noopener">📌 Follow us on Pinterest</a>
+  <p>squish • stretch • repeat 💚💖<br>Handmade in Dubai • Dubai delivery 5 AED 🚗</p>
+  <a class="pin" href="https://pinterest.com/slimevilleslimes" target="_blank" rel="noopener">📌 Follow us on Pinterest</a>
+  <div style="margin-top:22px"><a href="dashboard.html" style="color:#3a3a52;font-size:.62rem;text-decoration:none;font-weight:700;opacity:.6" title="Co-founder access">⚙️ owner login</a></div>
 </footer>
 
 <button class="jar-btn" id="jarBtn" onclick="openCart()" aria-label="Open your jar (cart)">🫙<span class="count" id="count">0</span></button>
@@ -169,10 +390,20 @@
 
 <script>
 /* ============ CONFIG ============ */
-/* 1. Go to formspree.io → New Form → name it "SlimeVille Orders"
-   2. Copy your form ID (looks like: xabcdefg)
-   3. Paste it below between the quotes 👇 */
 const FORMSPREE_ID = "xeeyjqwn";
+const DELIVERY_FEE = 5; // AED, flat Dubai delivery
+
+/* ============ STOCK CONTROL ============
+   Change any flavor to: "instock", "low", or "out"
+   low  = shows an orange LOW STOCK badge
+   out  = greys the card + blocks ordering        */
+const STOCK = {
+  "strawberry-butter":    "instock",
+  "bubblegum-cloud":      "instock",
+  "mango-tango":          "instock",
+  "cotton-candy-crunch":  "instock",
+  "choco-brownie-butter": "instock",
+};
 
 /* ============ PRODUCTS ============ */
 const PRODUCTS = [
@@ -208,15 +439,56 @@ const PRODUCTS = [
    sprinkles:["🍫","🤎","⭐","✨"]},
 ];
 
+/* ============ LOADER ============ */
+window.addEventListener("load",()=>{
+  setTimeout(()=>document.getElementById("loader").classList.add("gone"), 1400);
+});
+setTimeout(()=>document.getElementById("loader").classList.add("gone"), 3500); /* safety */
+
+/* ============ SQUISH SOUND ============ */
+let audioCtx = null;
+function squish(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(320, t);
+    o.frequency.exponentialRampToValueAtTime(70, t+0.16);
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t+0.18);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(t); o.stop(t+0.2);
+    /* little bubble pop layer */
+    const o2 = audioCtx.createOscillator();
+    const g2 = audioCtx.createGain();
+    o2.type = "triangle";
+    o2.frequency.setValueAtTime(600, t+0.05);
+    o2.frequency.exponentialRampToValueAtTime(180, t+0.14);
+    g2.gain.setValueAtTime(0.09, t+0.05);
+    g2.gain.exponentialRampToValueAtTime(0.001, t+0.16);
+    o2.connect(g2); g2.connect(audioCtx.destination);
+    o2.start(t+0.05); o2.stop(t+0.18);
+  }catch(e){}
+}
+
 /* ============ CART (in-memory) ============ */
 let cart = {};
 
 const grid = document.getElementById("grid");
 PRODUCTS.forEach(p=>{
+  const stock = STOCK[p.id] || "instock";
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = "card" + (stock==="out" ? " soldout" : "");
   const spr = p.sprinkles.map((s,i)=>`<i style="left:${15+i*22}%;top:${(i%2?18:64)}%">${s}</i>`).join("");
+  const badge = stock==="low" ? `<span class="stockbadge low">🔥 LOW STOCK</span>`
+              : stock==="out" ? `<span class="stockbadge out">😭 SOLD OUT</span>` : "";
+  const btn = stock==="out"
+    ? `<button class="add" disabled>Sold out 💔</button>`
+    : `<button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>`;
   card.innerHTML = `
+    ${badge}
     <div class="swirl" style="background:${p.bg}"><span class="sprinkles">${spr}</span>${p.emoji}</div>
     <div class="card-body">
       <h3>${p.name}</h3>
@@ -227,7 +499,7 @@ PRODUCTS.forEach(p=>{
       <p class="desc">${p.desc}</p>
       <div class="row">
         <span class="price">${p.price} <small>AED</small></span>
-        <button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>
+        ${btn}
       </div>
     </div>`;
   grid.appendChild(card);
@@ -235,7 +507,7 @@ PRODUCTS.forEach(p=>{
 
 function addToCart(id, btn){
   cart[id] = (cart[id]||0)+1;
-  updateCount();
+  updateCount(); squish();
   if(btn){
     btn.classList.add("added"); btn.textContent = "In your jar ✓";
     setTimeout(()=>{btn.classList.remove("added"); btn.textContent="Add to jar +";},1100);
@@ -252,11 +524,12 @@ function updateCount(){
   const n = Object.values(cart).reduce((a,b)=>a+b,0);
   document.getElementById("count").textContent = n;
 }
-function cartTotal(){
+function cartSubtotal(){
   return Object.entries(cart).reduce((sum,[id,q])=>{
     const p = PRODUCTS.find(x=>x.id===id); return sum + p.price*q;
   },0);
 }
+function cartTotal(){ return cartSubtotal() + (cartSubtotal()>0 ? DELIVERY_FEE : 0); }
 
 function openCart(){ renderCart();
   document.getElementById("drawer").classList.add("open");
@@ -283,7 +556,10 @@ function renderCart(){
       </div>
     </div>`;
   }).join("");
+  html += `<div class="sum-row"><span>Slimes</span><span>${cartSubtotal()} AED</span></div>`;
+  html += `<div class="sum-row"><span>🚗 Dubai delivery</span><span>${DELIVERY_FEE} AED</span></div>`;
   html += `<div class="total-row">Total <span>${cartTotal()} AED</span></div>`;
+  html += `<div class="paynote">💳 Pay by <b>cash on delivery</b> or <b>bank transfer</b> — pick below, we'll confirm on WhatsApp!</div>`;
   html += `
   <form class="form" id="orderForm" onsubmit="return submitOrder(event)">
     <div class="err" id="err"></div>
@@ -295,6 +571,11 @@ function renderCart(){
     <input id="femail" name="email" type="email" required placeholder="you@email.com">
     <label for="farea">Area in Dubai 📍</label>
     <input id="farea" name="area" required placeholder="e.g. JLT, Marina, Mirdif...">
+    <label for="fpay">Payment 💳</label>
+    <select id="fpay" name="payment">
+      <option value="Cash on delivery">💵 Cash on delivery</option>
+      <option value="Bank transfer">📱 Bank transfer</option>
+    </select>
     <label for="fnotes">Notes (optional) 📝</label>
     <textarea id="fnotes" name="notes" rows="2" placeholder="Gift wrap? Extra sprinkles?"></textarea>
     <button class="checkout" id="checkoutBtn" type="submit">Place order • ${cartTotal()} AED 🧪</button>
@@ -317,8 +598,10 @@ async function submitOrder(e){
 
   const payload = {
     name: f.name.value, phone: f.phone.value, email: f.email.value,
-    area: f.area.value, notes: f.notes.value || "—",
-    order: orderLines, total: cartTotal() + " AED",
+    area: f.area.value, payment: f.payment.value, notes: f.notes.value || "—",
+    order: orderLines,
+    delivery: DELIVERY_FEE + " AED",
+    total: cartTotal() + " AED (incl. delivery)",
     _subject: "🧪 New SlimeVille order from " + f.name.value
   };
 
@@ -334,19 +617,49 @@ async function submitOrder(e){
       <div class="success">
         <span class="big">🎉🧪🎉</span>
         <h3>Order received!</h3>
-        <p>Thanks ${payload.name.split(" ")[0]}! 💚<br>We'll WhatsApp you soon to confirm delivery.<br><br>squish • stretch • repeat ✨</p>
+        <p>Thanks ${payload.name.split(" ")[0]}! 💚<br>We'll WhatsApp you within 24 hours to confirm your delivery.<br><br>squish • stretch • repeat ✨</p>
       </div>`;
     confetti();
   }catch(x){
-    err.textContent = FORMSPREE_ID==="YOUR_FORM_ID"
-      ? "⚠️ The shop isn't connected yet — the Formspree ID needs to be added in the code!"
-      : "Hmm, that didn't send. Check your internet and try again!";
+    err.textContent = "Hmm, that didn't send. Check your internet and try again!";
     err.style.display = "block";
     btn.disabled = false; btn.textContent = "Place order • "+cartTotal()+" AED 🧪";
   }
   return false;
 }
 
+/* ============ SLIME CLUB ============ */
+async function subscribeClub(e){
+  e.preventDefault();
+  const btn = document.getElementById("clubBtn");
+  const msg = document.getElementById("clubMsg");
+  const email = document.getElementById("clubEmail").value;
+  btn.disabled = true; btn.textContent = "Joining... 🌀";
+  msg.className = "club-msg";
+  try{
+    const res = await fetch("https://formspree.io/f/"+FORMSPREE_ID, {
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({
+        email: email,
+        type: "SLIME CLUB SUBSCRIBER",
+        _subject: "💌 New Slime Club subscriber: " + email
+      })
+    });
+    if(!res.ok) throw new Error("failed");
+    msg.textContent = "You're in the club! 🎉 Watch your inbox 💚";
+    msg.className = "club-msg ok";
+    document.getElementById("clubEmail").value = "";
+    confetti();
+  }catch(x){
+    msg.textContent = "Hmm, that didn't work — try again!";
+    msg.className = "club-msg bad";
+  }
+  btn.disabled = false; btn.textContent = "Join! 💚";
+  return false;
+}
+
+/* ============ CONFETTI ============ */
 function confetti(){
   const bits = ["💚","💖","✨","🧪","⭐","🫧","💜"];
   for(let i=0;i<44;i++){
