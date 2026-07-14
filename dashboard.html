@@ -157,6 +157,7 @@
 <nav class="tabs">
   <button class="tab active" onclick="showPage('dash',this)">📊 Dashboard</button>
   <button class="tab" onclick="showPage('orders',this)">🛒 Orders</button>
+  <button class="tab" onclick="showPage('club',this)">💌 Slime Club</button>
   <button class="tab" onclick="showPage('stock',this)">🏷️ Stock</button>
   <button class="tab" onclick="showPage('gallery',this)">🖼️ Gallery</button>
   <button class="tab" onclick="showPage('collab',this)">💜 Collab Drop</button>
@@ -176,6 +177,7 @@
       <div class="stat s4"><div class="n" id="stUnpaid">0</div><div class="l">Awaiting payment</div></div>
       <div class="stat s5"><div class="n" id="stToDeliver">0</div><div class="l">To deliver</div></div>
       <div class="stat s6"><div class="n" id="stPhotos">0</div><div class="l">Gallery photos</div></div>
+      <div class="stat s3"><div class="n" id="stClub_live">0</div><div class="l">Slime Club members</div></div>
     </div>
     <div class="box" style="margin-top:16px">
       <h3>🏆 Best Sellers</h3>
@@ -190,8 +192,8 @@
   <!-- ORDERS -->
   <section id="page-orders" class="hidden">
     <div class="box">
-      <h3>🛒 Log an Order</h3>
-      <p class="hint">When a Formspree order email arrives, log it here — this feeds the Dashboard numbers for both of you.</p>
+      <h3>🛒 Orders</h3>
+      <p class="hint">Orders placed on slimeville.fun land here <b>automatically</b> — no need to check email! Use the form below only if you need to log an order manually (e.g. someone ordered via WhatsApp directly).</p>
       <div class="grid2">
         <div><label>Customer name 💗</label><input id="oName" placeholder="e.g. Sara A."></div>
         <div><label>Area 📍</label><input id="oArea" placeholder="e.g. JLT"></div>
@@ -199,9 +201,18 @@
       <label>Slimes 🧪</label>
       <div id="flavorPick"></div>
       <div class="total-line">Total (incl. 5 AED delivery): <span id="oTotal">0</span> AED</div>
-      <button class="btn pink" onclick="addOrder()">Log order 🧪</button>
+      <button class="btn pink" onclick="addOrder()">Log order manually 🧪</button>
     </div>
     <div id="orderList"></div>
+  </section>
+
+  <!-- SLIME CLUB -->
+  <section id="page-club" class="hidden">
+    <div class="box">
+      <h3>💌 Slime Club Members</h3>
+      <p class="hint">Everyone who joins the Slime Club on slimeville.fun shows up here automatically — this is your mailing list for future flavor drops!</p>
+      <div id="clubList"></div>
+    </div>
   </section>
 
   <!-- STOCK -->
@@ -280,6 +291,7 @@
 
 <script>
 const KEY = "slimeville-dashboard";
+const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
 const FLAVORS = [
   {id:"strawberry-butter", name:"Strawberry Butter", emoji:"🍓"},
   {id:"bubblegum-cloud", name:"Bubblegum Cloud", emoji:"☁️"},
@@ -294,9 +306,11 @@ let DB = {
   gallery: [],
   collab: {name:"",texture:"",scent:"",desc:"",status:"secret"},
   activity: [],
-  orders: [],
   pins: {}
 };
+let liveOrders = [];   // fetched from Firebase, {key, ...order}
+let liveClub = [];     // fetched from Firebase, {key, ...member}
+let pollTimer = null;
 try{
   localStorage.setItem("__t","1"); localStorage.removeItem("__t");
   const saved = localStorage.getItem(KEY);
@@ -339,6 +353,9 @@ function tryLogin(){
   document.getElementById("login").style.display = "none";
   document.getElementById("whoami").textContent = "👋 " + (currentUser==="amy" ? "Amy" : "Imany");
   renderAll();
+  refreshLiveData();
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(refreshLiveData, 12000); // check for new orders/members every 12s
 }
 function logout(){
   if(confirm("Log out?")){
@@ -356,7 +373,7 @@ function logActivity(text){
 
 /* ---------- tabs ---------- */
 function showPage(p, btn){
-  ["dash","orders","stock","gallery","collab","activity","export"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
+  ["dash","orders","club","stock","gallery","collab","activity","export"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   btn.classList.add("active");
   if(p==="activity") renderActivity();
@@ -385,6 +402,25 @@ function setStock(id, val){
   persist(); renderStock();
 }
 
+/* ---------- live data from Firebase ---------- */
+async function refreshLiveData(){
+  try{
+    const [ordersRes, clubRes] = await Promise.all([
+      fetch(FIREBASE_URL + "/orders.json"),
+      fetch(FIREBASE_URL + "/club.json")
+    ]);
+    const ordersObj = await ordersRes.json();
+    const clubObj = await clubRes.json();
+    liveOrders = ordersObj ? Object.entries(ordersObj).map(([key,v])=>({key,...v})) : [];
+    liveClub = clubObj ? Object.entries(clubObj).map(([key,v])=>({key,...v})) : [];
+    liveOrders.sort((a,b)=> new Date(b.createdAt||0) - new Date(a.createdAt||0));
+    liveClub.sort((a,b)=> new Date(b.joinedAt||0) - new Date(a.joinedAt||0));
+    renderOrders(); renderClub(); renderDash();
+  }catch(e){
+    console.error("Couldn't reach the database:", e);
+  }
+}
+
 /* ---------- orders ---------- */
 let pick = {};
 function renderPick(){
@@ -407,58 +443,86 @@ function updateOrderTotal(){
   const jars = Object.values(pick).reduce((a,b)=>a+b,0);
   document.getElementById("oTotal").textContent = jars>0 ? jars*20+5 : 0;
 }
-function addOrder(){
+async function addOrder(){
   const name = document.getElementById("oName").value.trim();
   const jars = Object.values(pick).reduce((a,b)=>a+b,0);
   if(!name){ alert("Add the customer's name!"); return; }
   if(jars===0){ alert("Pick at least 1 slime!"); return; }
-  DB.orders.unshift({
-    id: Date.now(), date: new Date().toLocaleDateString("en-GB"),
+  const order = {
     name, area: document.getElementById("oArea").value.trim(),
-    items: {...pick}, total: jars*20+5, paid:false, delivered:false
-  });
-  logActivity(`logged an order from ${name} (${jars*20+5} AED)`);
-  document.getElementById("oName").value=""; document.getElementById("oArea").value="";
-  pick = {}; renderPick(); persist(); renderOrders();
+    items: {...pick}, total: jars*20+5, paid:false, delivered:false,
+    createdAt: new Date().toISOString(), dateLabel: new Date().toLocaleDateString("en-GB")
+  };
+  try{
+    await fetch(FIREBASE_URL + "/orders.json", {
+      method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(order)
+    });
+    logActivity(`logged an order from ${name} (${order.total} AED)`);
+    document.getElementById("oName").value=""; document.getElementById("oArea").value="";
+    pick = {}; renderPick(); persist();
+    refreshLiveData();
+  }catch(e){ alert("Couldn't save that order — check your internet!"); }
 }
-function toggleOrder(id, field){
-  const o = DB.orders.find(x=>x.id===id);
-  if(o){ o[field] = !o[field]; persist(); renderOrders(); }
+async function toggleOrder(key, field, current){
+  try{
+    await fetch(FIREBASE_URL + "/orders/" + key + ".json", {
+      method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({[field]: !current})
+    });
+    refreshLiveData();
+  }catch(e){ alert("Couldn't update — check your internet!"); }
 }
-function delOrder(id){
-  if(confirm("Delete this order?")){ DB.orders = DB.orders.filter(x=>x.id!==id); logActivity("deleted an order"); persist(); renderOrders(); }
+async function delOrder(key){
+  if(!confirm("Delete this order?")) return;
+  try{
+    await fetch(FIREBASE_URL + "/orders/" + key + ".json", { method:"DELETE" });
+    logActivity("deleted an order"); persist();
+    refreshLiveData();
+  }catch(e){ alert("Couldn't delete — check your internet!"); }
 }
 function renderOrders(){
   const el = document.getElementById("orderList");
-  if(DB.orders.length===0){ el.innerHTML = `<p style="font-weight:700;font-size:.75rem;color:var(--purple);text-align:center;padding:16px">No orders logged yet 🫙</p>`; return; }
-  el.innerHTML = DB.orders.map(o=>{
-    const items = FLAVORS.filter(f=>o.items[f.id]).map(f=>`${f.emoji} ${f.name} ×${o.items[f.id]}`).join(", ");
+  if(liveOrders.length===0){ el.innerHTML = `<p style="font-weight:700;font-size:.75rem;color:var(--purple);text-align:center;padding:16px">No orders yet — they'll appear here automatically 🫙</p>`; return; }
+  el.innerHTML = liveOrders.map(o=>{
+    const items = FLAVORS.filter(f=>o.items&&o.items[f.id]).map(f=>`${f.emoji} ${f.name} ×${o.items[f.id]}`).join(", ");
     return `<div class="order">
       <div class="top"><span>${o.name}</span><span class="amt">${o.total} AED</span></div>
-      <div class="meta">${o.date}${o.area?" • 📍 "+o.area:""}</div>
+      <div class="meta">${o.dateLabel||""}${o.area?" • 📍 "+o.area:""}${o.phone?" • 📱 "+o.phone:""}</div>
       <div class="items">${items}</div>
       <div class="badges">
-        <span class="pill ${o.paid?"on":""}" onclick="toggleOrder(${o.id},'paid')">${o.paid?"✅ Paid":"💰 Not paid"}</span>
-        <span class="pill ${o.delivered?"on":""}" onclick="toggleOrder(${o.id},'delivered')">${o.delivered?"✅ Delivered":"🚚 To deliver"}</span>
-        <span class="pill del" onclick="delOrder(${o.id})">🗑️</span>
+        <span class="pill ${o.paid?"on":""}" onclick="toggleOrder('${o.key}','paid',${!!o.paid})">${o.paid?"✅ Paid":"💰 Not paid"}</span>
+        <span class="pill ${o.delivered?"on":""}" onclick="toggleOrder('${o.key}','delivered',${!!o.delivered})">${o.delivered?"✅ Delivered":"🚚 To deliver"}</span>
+        <span class="pill del" onclick="delOrder('${o.key}')">🗑️</span>
       </div>
     </div>`;
   }).join("");
 }
 
+/* ---------- slime club (live) ---------- */
+function renderClub(){
+  const el = document.getElementById("clubList");
+  const statEl = document.getElementById("stClub_live");
+  if(statEl) statEl.textContent = liveClub.length;
+  if(liveClub.length===0){
+    el.innerHTML = `<p style="font-weight:700;font-size:.75rem;color:var(--purple);text-align:center;padding:16px">No members yet — they'll appear here automatically when someone joins on the site 💌</p>`;
+    return;
+  }
+  el.innerHTML = liveClub.map(m=>`
+    <div class="member"><span>💌</span><span class="em">${m.email}</span><span class="dt">${m.dateLabel||""}</span></div>`).join("");
+}
+
 /* ---------- dashboard ---------- */
 function renderDash(){
-  const orders = DB.orders;
-  const jars = orders.reduce((s,o)=>s+Object.values(o.items).reduce((a,b)=>a+b,0),0);
+  const orders = liveOrders;
+  const jars = orders.reduce((s,o)=>s+Object.values(o.items||{}).reduce((a,b)=>a+b,0),0);
   document.getElementById("stOrders").textContent = orders.length;
   document.getElementById("stJars").textContent = jars;
-  document.getElementById("stRev").textContent = orders.reduce((s,o)=>s+o.total,0);
+  document.getElementById("stRev").textContent = orders.reduce((s,o)=>s+(o.total||0),0);
   document.getElementById("stUnpaid").textContent = orders.filter(o=>!o.paid).length;
   document.getElementById("stToDeliver").textContent = orders.filter(o=>!o.delivered).length;
   document.getElementById("stPhotos").textContent = DB.gallery.length;
 
   const counts = {}; FLAVORS.forEach(f=>counts[f.id]=0);
-  orders.forEach(o=>Object.entries(o.items).forEach(([id,q])=>counts[id]=(counts[id]||0)+q));
+  orders.forEach(o=>Object.entries(o.items||{}).forEach(([id,q])=>counts[id]=(counts[id]||0)+q));
   const max = Math.max(1,...Object.values(counts));
   document.getElementById("flavorBars").innerHTML = FLAVORS.map(f=>`
     <div class="fbar"><span class="fe">${f.emoji}</span><span class="fn">${f.name}</span>
