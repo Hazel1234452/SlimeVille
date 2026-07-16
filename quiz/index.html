@@ -1,1 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which SlimeVille Flavor Are You? 🧪</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    min-height:100vh;
+    background:linear-gradient(160deg,#FFE6F1 0%,#FFD3E8 50%,#F1D8FF 100%);
+    font-family:'Comfortaa',cursive;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px 12px;
+  }
+  .card{
+    width:100%;max-width:460px;background:#fff;border-radius:26px;
+    border:5px solid #1E1E2F;box-shadow:8px 8px 0 #1E1E2F;
+    padding:28px 24px;position:relative;overflow:hidden;
+  }
+  .logo{font-family:'Fredoka One',cursive;text-align:center;font-size:1.6rem;margin-bottom:4px;
+    text-shadow:2px 2px 0 #1E1E2F,-1px -1px 0 #1E1E2F,1px -1px 0 #1E1E2F,-1px 1px 0 #1E1E2F;}
+  .logo .a{color:#7ED321}.logo .b{color:#FF4D88}
+  .tagline{text-align:center;font-size:.72rem;font-weight:700;color:#9C3C5C;margin-bottom:18px;letter-spacing:.5px}
 
+  .progress-wrap{height:10px;background:#FBEAF0;border-radius:6px;border:2px solid #1E1E2F;overflow:hidden;margin-bottom:20px}
+  .progress-bar{height:100%;background:#FF4D88;width:0%;transition:width .3s}
+
+  h2.q{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#1E1E2F;margin-bottom:16px;line-height:1.35}
+
+  .opt{
+    display:block;width:100%;text-align:left;background:#FFF9FB;
+    border:3px solid #1E1E2F;border-radius:14px;padding:12px 14px;margin-bottom:10px;
+    font-family:'Comfortaa',cursive;font-weight:600;font-size:.85rem;color:#1E1E2F;
+    cursor:pointer;transition:transform .1s;
+  }
+  .opt:hover{background:#FFE6F1;transform:translateX(3px)}
+  .opt:active{transform:scale(.97)}
+
+  .screen{display:none}
+  .screen.active{display:block}
+
+  .jar{width:120px;height:120px;margin:6px auto 12px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:3rem;
+    border:5px solid #1E1E2F;}
+  .result-title{font-family:'Fredoka One',cursive;text-align:center;font-size:1.35rem;color:#1E1E2F;margin-bottom:6px}
+  .result-desc{text-align:center;font-size:.85rem;color:#5a3a48;line-height:1.5;margin-bottom:18px;font-weight:600}
+  .cta{
+    display:block;text-align:center;background:#7ED321;border:3px solid #1E1E2F;border-radius:999px;
+    padding:12px;font-family:'Fredoka One',cursive;font-size:.95rem;color:#1E1E2F;
+    text-decoration:none;box-shadow:4px 4px 0 #1E1E2F;margin-bottom:10px;
+  }
+  .retry{display:block;text-align:center;font-size:.75rem;font-weight:700;color:#9C3C5C;
+    background:none;border:none;cursor:pointer;width:100%;padding:6px;}
+
+  .confetti{position:absolute;top:-10px;font-size:1.1rem;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(420px) rotate(360deg);opacity:0}}
+
+  .start-btn{
+    display:block;width:100%;background:#FF4D88;border:3px solid #1E1E2F;border-radius:999px;
+    padding:13px;font-family:'Fredoka One',cursive;font-size:1rem;color:#fff;
+    box-shadow:4px 4px 0 #1E1E2F;cursor:pointer;
+  }
+  .intro-emoji{text-align:center;font-size:2.6rem;margin-bottom:10px}
+  .intro-text{text-align:center;font-size:.85rem;color:#5a3a48;font-weight:600;margin-bottom:20px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+
+  <div class="logo"><span class="a">Slime</span><span class="b">Ville</span></div>
+  <div class="tagline">squish • stretch • repeat 🧪</div>
+
+  <div class="screen active" id="screen-intro">
+    <div class="intro-emoji">🍓☁️🥭🍬🍫</div>
+    <h2 class="q" style="text-align:center">which SlimeVille flavor matches your vibe?</h2>
+    <p class="intro-text">answer 5 quick questions and we'll match you to your slime soulmate 💌</p>
+    <button class="start-btn" onclick="startQuiz()">take the quiz 🧪</button>
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+    <h2 class="q" id="q-text"></h2>
+    <div id="q-opts"></div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="jar" id="result-jar"></div>
+    <h2 class="result-title" id="result-title"></h2>
+    <p class="result-desc" id="result-desc"></p>
+    <a class="cta" href="https://slimeville.fun" target="_blank">shop this flavor 🧪</a>
+    <button class="retry" onclick="startQuiz()">retake the quiz ↻</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "pick your ideal saturday:",
+    opts: [
+      {t:"tea party with cute snacks 🍰", f:"strawberry"},
+      {t:"gossiping on facetime for 4 hours ☁️", f:"bubblegum"},
+      {t:"beach day, no plans, pure chaos 🌴", f:"mango"},
+      {t:"chaotic sleepover, way too loud 🎉", f:"cottoncandy"},
+      {t:"cozy movie night under blankets 🎬", f:"choco"},
+    ]
+  },
+  {
+    text: "pick a song to blast rn:",
+    opts: [
+      {t:"soft, dreamy, main character music ✨", f:"strawberry"},
+      {t:"pop bop you scream-sing to 🎤", f:"bubblegum"},
+      {t:"upbeat, tropical, dance-in-your-seat 🎶", f:"mango"},
+      {t:"hyperpop, loud, kinda unhinged 🔊", f:"cottoncandy"},
+      {t:"lo-fi, chill, background vibes 🎧", f:"choco"},
+    ]
+  },
+  {
+    text: "your friends would describe you as:",
+    opts: [
+      {t:"soft-spoken and sweet 🩷", f:"strawberry"},
+      {t:"the talkative one, always has tea ☁️", f:"bubblegum"},
+      {t:"the adventurous risk-taker 🥭", f:"mango"},
+      {t:"the loud chaotic one 😂", f:"cottoncandy"},
+      {t:"the comforting homebody bestie 🤎", f:"choco"},
+    ]
+  },
+  {
+    text: "pick a dessert:",
+    opts: [
+      {t:"strawberry shortcake 🍓", f:"strawberry"},
+      {t:"cotton candy from the fair 🎡", f:"bubblegum"},
+      {t:"mango sticky rice 🥭", f:"mango"},
+      {t:"popping candy anything 💥", f:"cottoncandy"},
+      {t:"warm chocolate brownie 🍫", f:"choco"},
+    ]
+  },
+  {
+    text: "pick an aesthetic:",
+    opts: [
+      {t:"soft girl, pastel pink everything 🎀", f:"strawberry"},
+      {t:"cloudcore, dreamy and floaty ☁️", f:"bubblegum"},
+      {t:"tropical, sunny, main character energy 🌺", f:"mango"},
+      {t:"y2k, colorful, glittery chaos ✨", f:"cottoncandy"},
+      {t:"cottagecore, cozy and warm 🧸", f:"choco"},
+    ]
+  },
+];
+
+const flavors = {
+  strawberry: {
+    name: "Strawberry Butter",
+    emoji: "🍓",
+    color: "#FFB6D3",
+    desc: "buttery-soft pink slime that smells like fresh strawberry shortcake — sweet, soft, and made for main character moments."
+  },
+  bubblegum: {
+    name: "Bubblegum Cloud",
+    emoji: "☁️",
+    color: "#C9B8FF",
+    desc: "fluffy, bouncy, and smells like your favorite bubblegum — for the bestie who's always got something to say."
+  },
+  mango: {
+    name: "Mango Tango",
+    emoji: "🥭",
+    color: "#FFC96B",
+    desc: "juicy, tropical, and full of energy — for the one who turns any day into an adventure."
+  },
+  cottoncandy: {
+    name: "Cotton Candy Crunch",
+    emoji: "🍬",
+    color: "#8FE0F0",
+    desc: "crunchy, colorful, and a little unhinged — this slime matches your loud, chaotic, fun energy perfectly."
+  },
+  choco: {
+    name: "Choco Brownie Butter",
+    emoji: "🍫",
+    color: "#C9A27A",
+    desc: "warm, rich, and cozy — smells like a fresh baked brownie, made for the ultimate comfort bestie."
+  },
+};
+
+let current = 0;
+let scores = {};
+
+function startQuiz(){
+  current = 0;
+  scores = {strawberry:0,bubblegum:0,mango:0,cottoncandy:0,choco:0};
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+
+function renderQuestion(){
+  const q = questions[current];
+  document.getElementById('progress').style.width = ((current)/questions.length*100)+'%';
+  document.getElementById('q-text').textContent = q.text;
+  const optsDiv = document.getElementById('q-opts');
+  optsDiv.innerHTML = '';
+  q.opts.forEach(o=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = o.t;
+    btn.onclick = ()=>selectOpt(o.f);
+    optsDiv.appendChild(btn);
+  });
+}
+
+function selectOpt(flavor){
+  scores[flavor]++;
+  current++;
+  if(current < questions.length){
+    renderQuestion();
+  } else {
+    document.getElementById('progress').style.width = '100%';
+    setTimeout(showResult, 200);
+  }
+}
+
+function showResult(){
+  let winner = Object.keys(scores).reduce((a,b)=> scores[a]>=scores[b]?a:b);
+  const f = flavors[winner];
+  document.getElementById('result-jar').style.background = f.color;
+  document.getElementById('result-jar').textContent = f.emoji;
+  document.getElementById('result-title').textContent = "you're " + f.name + "!";
+  document.getElementById('result-desc').textContent = f.desc;
+  showScreen('result');
+  burstConfetti();
+}
+
+function burstConfetti(){
+  const card = document.getElementById('card');
+  const emojis = ['🎉','✨','🧪','💖','🌟'];
+  for(let i=0;i<24;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    c.style.left = Math.random()*100+'%';
+    c.style.animationDuration = (1.2+Math.random()*1.2)+'s';
+    c.style.animationDelay = (Math.random()*0.3)+'s';
+    card.appendChild(c);
+    setTimeout(()=>c.remove(), 2600);
+  }
+}
+</script>
+
+</body>
+</html>
