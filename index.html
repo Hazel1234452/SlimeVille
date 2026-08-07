@@ -69,6 +69,7 @@
   .card.soldout{filter:grayscale(.85);opacity:.75}
   .stockbadge{position:absolute;top:12px;left:-6px;z-index:4;font-family:'Fredoka One',cursive;font-size:.66rem;padding:6px 14px;border:3px solid var(--ink);border-radius:0 999px 999px 0;box-shadow:2px 2px 0 var(--ink)}
   .stockbadge.low{background:var(--yellow);color:var(--ink)}
+  .stockbadge.limited{background:#FF69B4;color:var(--white);font-size:.58rem}
   .stockbadge.out{background:var(--ink);color:var(--white)}
   .swirl{height:150px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.6rem;border-bottom:4px solid var(--ink)}
   .swirl .sprinkles{position:absolute;inset:0;font-size:1rem;opacity:.85}
@@ -266,11 +267,11 @@
 <!-- ═══ COMING SOON: COLLAB DROP ═══ -->
 <section class="section" id="collab">
   <div class="collab-box">
-    <div class="collab-badge">✨ COMING SOON ✨</div>
-    <h2>The Co-Founder Collab Drop 💜</h2>
-    <p>Our newest co-founder is designing a brand-new slime, completely from scratch — the colour, the texture, the scent, the sprinkles, all of it. Nobody knows what it'll be yet. <b>Not even us.</b> 👀</p>
-    <p class="collab-sub">Dropping alongside her YouTube channel launch — <b>August 2026</b> 🎬</p>
-    <p class="collab-tease">Join the Slime Club below and you'll be first to know 💌</p>
+    <div class="collab-badge">💜 CO-FOUNDER COLLAB DROP</div>
+    <h2>Peach Bliss 🍑</h2>
+    <p>Designed entirely from scratch by our co-founder — the colour, texture, scent, and every last sprinkle. Crystal clear, peach scented, loaded with jelly cubes and fishbowl beads. <b>Our first ever clear slime.</b></p>
+    <p class="collab-sub">Available now in the shop 🛒 — 20 AED</p>
+    <p class="collab-tease">Designed with love by Imany 💜 <a href="#shop" style="color:var(--purple);font-weight:700;">Shop it now ↓</a></p>
   </div>
 </section>
 
@@ -393,16 +394,24 @@
 const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
 const DELIVERY_FEE = 5; // AED, flat Dubai delivery
 
+/* ============ PROMO CODES ============ */
+const PROMO_CODES = {
+  "SLIMECLUBDEL": { type:"free_delivery", label:"Free delivery 🚗", discount:5 },
+};
+
 /* ============ STOCK CONTROL ============
-   Change any flavor to: "instock", "low", or "out"
-   low  = shows an orange LOW STOCK badge
-   out  = greys the card + blocks ordering        */
+   Change any flavor to: "instock", "low", "limited", or "out"
+   low     = orange LOW STOCK badge
+   limited = Pinterest's Pick — Limited badge
+   out     = greys the card + blocks ordering        */
 const STOCK = {
   "strawberry-butter":    "instock",
   "bubblegum-cloud":      "instock",
   "mango-tango":          "instock",
   "cotton-candy-crunch":  "instock",
   "choco-brownie-butter": "instock",
+  "peach-bliss":          "instock",
+  "cookies-and-cream":    "limited",
 };
 
 /* ============ PRODUCTS ============ */
@@ -437,6 +446,19 @@ const PRODUCTS = [
    tagColor:"#7A4A2B",
    desc:"Rich chocolatey butter slime with brownie-crumb foam bits. Warning: smells so good you'll want to eat it (don't!) 🚫🍴",
    sprinkles:["🍫","🤎","⭐","✨"]},
+  {id:"peach-bliss", name:"Peach Bliss", emoji:"🍑", price:20,
+   bg:"linear-gradient(135deg,#FFD6EE,#FFBCE0)",
+   texture:"Clear", scent:"Fresh Peach",
+   tagColor:"#FF4D88",
+   collab:true,
+   desc:"Crystal-clear slime packed with jelly cubes and fishbowl beads. Smells like a fresh summer peach 🍑 Designed by our co-founder 💜",
+   sprinkles:["🍑","🫧","💗","✨"]},
+  {id:"cookies-and-cream", name:"Cookies & Cream", emoji:"🍪", price:20,
+   bg:"linear-gradient(135deg,#F5F5F5,#D4D4D4)",
+   texture:"Butter", scent:"Cookies & Cream",
+   tagColor:"#1E1E2F",
+   desc:"Black and white butter slime with oreo crumble bits. Smells exactly like your favourite cookies and cream dessert 🍪🤍 YOU voted for this one!",
+   sprinkles:["🍪","🤍","🖤","✨"]},
 ];
 
 /* ============ LOADER ============ */
@@ -475,6 +497,7 @@ function squish(){
 
 /* ============ CART (in-memory) ============ */
 let cart = {};
+let appliedPromo = null;
 
 const grid = document.getElementById("grid");
 PRODUCTS.forEach(p=>{
@@ -483,12 +506,14 @@ PRODUCTS.forEach(p=>{
   card.className = "card" + (stock==="out" ? " soldout" : "");
   const spr = p.sprinkles.map((s,i)=>`<i style="left:${15+i*22}%;top:${(i%2?18:64)}%">${s}</i>`).join("");
   const badge = stock==="low" ? `<span class="stockbadge low">🔥 LOW STOCK</span>`
+              : stock==="limited" ? `<span class="stockbadge limited">📌 Pinterest's Pick — Limited 🍪</span>`
               : stock==="out" ? `<span class="stockbadge out">😭 SOLD OUT</span>` : "";
   const btn = stock==="out"
     ? `<button class="add" disabled>Sold out 💔</button>`
     : `<button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>`;
+  const collabBadge = p.collab ? `<span class="stockbadge limited" style="background:#7C3AED">💜 Co-Founder Collab</span>` : "";
   card.innerHTML = `
-    ${badge}
+    ${badge}${collabBadge}
     <div class="swirl" style="background:${p.bg}"><span class="sprinkles">${spr}</span>${p.emoji}</div>
     <div class="card-body">
       <h3>${p.name}</h3>
@@ -529,7 +554,29 @@ function cartSubtotal(){
     const p = PRODUCTS.find(x=>x.id===id); return sum + p.price*q;
   },0);
 }
-function cartTotal(){ return cartSubtotal() + (cartSubtotal()>0 ? DELIVERY_FEE : 0); }
+function cartTotal(){
+  const delivery = appliedPromo?.type==="free_delivery" ? 0 : DELIVERY_FEE;
+  return cartSubtotal() + (cartSubtotal()>0 ? delivery : 0);
+}
+
+function applyPromo(){
+  const code = (document.getElementById("promoInput")?.value||"").trim().toUpperCase();
+  const msg = document.getElementById("promoMsg");
+  if(!code){ msg.style.color="var(--pink)"; msg.textContent="type a code first! 🏷️"; return; }
+  if(PROMO_CODES[code]){
+    appliedPromo = {...PROMO_CODES[code], code};
+    msg.style.color="var(--lime-dark)";
+    msg.textContent = `✅ ${appliedPromo.label} applied!`;
+    const del = appliedPromo.type==="free_delivery" ? "FREE 🎉" : DELIVERY_FEE+" AED";
+    document.getElementById("deliveryAmt") && (document.getElementById("deliveryAmt").textContent = del);
+    document.getElementById("totalAmt") && (document.getElementById("totalAmt").textContent = cartTotal()+" AED");
+    document.getElementById("checkoutTotal") && (document.getElementById("checkoutTotal").textContent = cartTotal());
+  } else {
+    appliedPromo = null;
+    msg.style.color="var(--pink)";
+    msg.textContent = `❌ "${code}" doesn't exist — check your code!`;
+  }
+}
 
 function openCart(){ renderCart();
   document.getElementById("drawer").classList.add("open");
@@ -556,13 +603,55 @@ function renderCart(){
       </div>
     </div>`;
   }).join("");
+  // UPSELL — chaotic suggestions based on cart
+  const cartIds = Object.keys(cart);
+  const upsells = PRODUCTS.filter(p=>!cart[p.id] && STOCK[p.id]!=="out").slice(0,2);
+  const upsellLines = {
+    "strawberry-butter": "okay but have you MET Strawberry Butter? she's the blueprint 🍓👀",
+    "bubblegum-cloud": "Bubblegum Cloud is literally calling your name ☁️🍬",
+    "mango-tango": "bestie, Mango Tango would look SO good in your jar 🥭",
+    "cotton-candy-crunch": "the ASMR crunch of Cotton Candy would complete your life 🍬🎧",
+    "choco-brownie-butter": "Choco Brownie Butter smells illegal and u need it 🍫💀",
+    "peach-bliss": "okay Peach Bliss was designed by our co-founder and she's crying waiting for u to add it 🍑💜",
+    "cookies-and-cream": "Cookies & Cream is LIMITED and Pinterest said it's a pick 👀🍪 just saying",
+  };
+  let upsellHtml = "";
+  if(upsells.length>0 && cartIds.length>0){
+    upsellHtml = `
+    <div style="margin-bottom:14px">
+      <div style="font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--purple);text-align:center;margin-bottom:10px;letter-spacing:.5px">👀 bestie, don't forget these...</div>
+      ${upsells.map(u=>`
+      <div style="background:linear-gradient(135deg,#F3EBFF,#FFE6F1);border:3.5px solid var(--ink);border-radius:20px;padding:14px 16px;margin-bottom:10px;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;gap:14px">
+        <div style="font-size:2.4rem;flex-shrink:0">${u.emoji}</div>
+        <div style="flex:1">
+          <div style="font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--ink);margin-bottom:4px">${u.name}</div>
+          <div style="font-weight:700;font-size:.68rem;color:var(--purple);line-height:1.5">${upsellLines[u.id]||"this one slaps ngl"}</div>
+        </div>
+        <button onclick="addToCart('${u.id}',null);renderCart();" style="font-family:'Fredoka One',cursive;font-size:.78rem;background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:10px 16px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);flex-shrink:0;white-space:nowrap">+ add 🧪</button>
+      </div>`).join("")}
+    </div>`;
+  }
+
+  // PROMO CODE
+  const promoHtml = `
+  <div style="margin-bottom:10px">
+    <div style="font-family:'Fredoka One',cursive;font-size:.75rem;margin-bottom:5px">🏷️ promo code</div>
+    <div style="display:flex;gap:8px">
+      <input id="promoInput" placeholder="enter code..." style="flex:1;border:3px solid var(--ink);border-radius:12px;padding:9px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.78rem;background:var(--pink-soft);text-transform:uppercase">
+      <button onclick="applyPromo()" style="font-family:'Fredoka One',cursive;font-size:.72rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:9px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)">Apply</button>
+    </div>
+    <div id="promoMsg" style="font-family:'Fredoka One',cursive;font-size:.68rem;margin-top:5px"></div>
+  </div>`;
+
   html += `<div class="sum-row"><span>Slimes</span><span>${cartSubtotal()} AED</span></div>`;
-  html += `<div class="sum-row"><span>🚗 Dubai delivery</span><span>${DELIVERY_FEE} AED</span></div>`;
-  html += `<div class="total-row">Total <span>${cartTotal()} AED</span></div>`;
+  html += `<div class="sum-row" id="deliveryRow"><span>🚗 Dubai delivery</span><span id="deliveryAmt">${DELIVERY_FEE} AED</span></div>`;
+  html += `<div class="total-row">Total <span id="totalAmt">${cartTotal()} AED</span></div>`;
+  html += upsellHtml;
   html += `<div class="paynote">💳 Pay by <b>cash on delivery</b> or <b>bank transfer</b> — pick below, we'll confirm on WhatsApp!</div>`;
   html += `
   <form class="form" id="orderForm" onsubmit="return submitOrder(event)">
     <div class="err" id="err"></div>
+    ${promoHtml}
     <label for="fname">Your name 💗</label>
     <input id="fname" name="name" required placeholder="e.g. Sara A.">
     <label for="fphone">WhatsApp number 📱</label>
@@ -578,7 +667,7 @@ function renderCart(){
     </select>
     <label for="fnotes">Notes (optional) 📝</label>
     <textarea id="fnotes" name="notes" rows="2" placeholder="Gift wrap? Extra sprinkles?"></textarea>
-    <button class="checkout" id="checkoutBtn" type="submit">Place order • ${cartTotal()} AED 🧪</button>
+    <button class="checkout" id="checkoutBtn" type="submit">Place order • <span id="checkoutTotal">${cartTotal()}</span> AED 🧪</button>
   </form>`;
   body.innerHTML = html;
 }
@@ -601,7 +690,9 @@ async function submitOrder(e){
     area: f.area.value, payment: f.payment.value, notes: f.notes.value || "—",
     items: {...cart},
     order: orderLines,
-    delivery: DELIVERY_FEE,
+    promoCode: appliedPromo ? appliedPromo.code : "none",
+    promoDiscount: appliedPromo ? appliedPromo.label : "none",
+    delivery: cartTotal()-cartSubtotal(),
     total: cartTotal(),
     paid: false, delivered: false,
     createdAt: new Date().toISOString(),
