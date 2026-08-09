@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate Your SlimeVille Experience ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Comfortaa',cursive;background:#FFE6F1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 16px}
+
+  .card{background:#fff;border:4px solid #1E1E2F;border-radius:28px;padding:36px 28px;box-shadow:8px 8px 0 #1E1E2F;max-width:480px;width:100%;text-align:center}
+
+  .logo{font-family:'Fredoka One',cursive;font-size:2.4rem;line-height:1;text-shadow:2.5px 2.5px 0 #1E1E2F,-1.5px -1.5px 0 #1E1E2F,1.5px -1.5px 0 #1E1E2F,-1.5px 1.5px 0 #1E1E2F;margin-bottom:6px}
+  .logo .a{color:#7ED321}.logo .b{color:#FF4D88}
+  .tagline{font-family:'Fredoka One',cursive;font-size:.85rem;color:#5FA818;margin-bottom:24px}
+  .tagline span{color:#FF4D88}
+
+  h1{font-family:'Fredoka One',cursive;font-size:1.5rem;color:#1E1E2F;margin-bottom:8px}
+  .sub{font-weight:700;font-size:.82rem;color:#7C3AED;margin-bottom:28px;line-height:1.6}
+
+  /* STARS */
+  .stars{display:flex;justify-content:center;gap:10px;margin-bottom:10px}
+  .star{font-size:2.8rem;cursor:pointer;transition:transform .15s ease;filter:grayscale(1) opacity(.4);user-select:none}
+  .star:hover,.star.active{filter:none;transform:scale(1.2)}
+  .star-label{font-family:'Fredoka One',cursive;font-size:.82rem;color:#FF4D88;min-height:22px;margin-bottom:22px;transition:opacity .2s}
+
+  /* NAME FIELD */
+  .field{text-align:left;margin-bottom:16px}
+  .field label{font-family:'Fredoka One',cursive;font-size:.78rem;color:#1E1E2F;display:block;margin-bottom:6px}
+  .field input,.field textarea{width:100%;border:3px solid #1E1E2F;border-radius:14px;padding:12px 14px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:#FFE6F1;resize:none}
+  .field input:focus,.field textarea:focus{outline:3px solid #7C3AED}
+
+  .btn{font-family:'Fredoka One',cursive;font-size:1rem;background:#FF4D88;color:#fff;border:4px solid #1E1E2F;border-radius:999px;padding:14px 32px;cursor:pointer;box-shadow:4px 4px 0 #1E1E2F;transition:all .12s;width:100%;margin-top:4px}
+  .btn:active{transform:translate(4px,4px);box-shadow:0 0 0 #1E1E2F}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+
+  .err{background:#FFD8D8;border:3px solid #1E1E2F;border-radius:14px;padding:10px 14px;font-size:.75rem;font-weight:700;margin-bottom:12px;display:none;color:#1E1E2F}
+
+  /* SUCCESS */
+  .success{display:none;text-align:center}
+  .success .big{font-size:3.2rem;margin-bottom:14px}
+  .success h2{font-family:'Fredoka One',cursive;font-size:1.5rem;color:#FF4D88;margin-bottom:10px}
+  .success p{font-weight:700;font-size:.85rem;line-height:1.8;color:#1E1E2F}
+  .success .stars-show{font-size:1.6rem;letter-spacing:4px;margin:10px 0}
+
+  .confetti{position:fixed;top:-12px;font-size:1.1rem;z-index:200;animation:fall linear forwards;pointer-events:none}
+  @keyframes fall{to{transform:translateY(108vh) rotate(680deg)}}
+</style>
+</head>
+<body>
+
+<div class="card" id="formCard">
+  <div class="logo"><span class="a">Slime</span><span class="b">Ville</span></div>
+  <div class="tagline">squish <span>•</span> stretch <span>•</span> repeat</div>
+
+  <h1>Rate your experience ⭐</h1>
+  <p class="sub">your review means the world to us — and helps other slime lovers find us too 💚</p>
+
+  <div class="stars" id="stars">
+    <span class="star" data-val="1" onclick="setStars(1)">⭐</span>
+    <span class="star" data-val="2" onclick="setStars(2)">⭐</span>
+    <span class="star" data-val="3" onclick="setStars(3)">⭐</span>
+    <span class="star" data-val="4" onclick="setStars(4)">⭐</span>
+    <span class="star" data-val="5" onclick="setStars(5)">⭐</span>
+  </div>
+  <div class="star-label" id="starLabel">tap a star to rate 👆</div>
+
+  <div class="field">
+    <label>Your name 💗</label>
+    <input id="rName" placeholder="e.g. Sandeep">
+  </div>
+  <div class="field">
+    <label>Your review 🧪</label>
+    <textarea id="rText" rows="4" placeholder="what did you think of your slime? any faves? would you order again? 💚"></textarea>
+  </div>
+  <div class="field">
+    <label>Which slime did you order? 🫙</label>
+    <input id="rSlime" placeholder="e.g. Strawberry Butter, Mango Tango...">
+  </div>
+
+  <div class="err" id="err"></div>
+  <button class="btn" id="submitBtn" onclick="submitReview()">Submit review 💚</button>
+</div>
+
+<div class="card success" id="successCard">
+  <div class="big">🎉🧪🎉</div>
+  <h2>Thank you so much!</h2>
+  <div class="stars-show" id="successStars"></div>
+  <p>Your review means everything to us 💚<br>We'll share it on our Pinterest and website with your permission — you're officially part of the SlimeVille story now 🧪</p>
+  <br>
+  <p style="color:#7C3AED;font-size:.75rem">Squish • Stretch • Repeat ✨<br><b>The SlimeVille Team</b></p>
+</div>
+
+<script>
+const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
+let rating = 0;
+
+const labels = ["","😬 could be better","😐 it was okay","😊 pretty good!","🤩 loved it!","🌟 absolutely amazing!!"];
+
+function setStars(val){
+  rating = val;
+  document.querySelectorAll(".star").forEach((s,i)=>{
+    s.classList.toggle("active", i < val);
+  });
+  document.getElementById("starLabel").textContent = labels[val];
+}
+
+// hover effect
+document.querySelectorAll(".star").forEach((s,i)=>{
+  s.addEventListener("mouseover",()=>{
+    document.querySelectorAll(".star").forEach((ss,j)=>{
+      ss.style.filter = j<=i ? "none" : "grayscale(1) opacity(.4)";
+      ss.style.transform = j<=i ? "scale(1.15)" : "";
+    });
+    document.getElementById("starLabel").textContent = labels[i+1];
+  });
+  s.addEventListener("mouseout",()=>{
+    document.querySelectorAll(".star").forEach((ss,j)=>{
+      ss.style.filter = j < rating ? "none" : "grayscale(1) opacity(.4)";
+      ss.style.transform = j < rating ? "scale(1.1)" : "";
+    });
+    document.getElementById("starLabel").textContent = rating ? labels[rating] : "tap a star to rate 👆";
+  });
+});
+
+async function submitReview(){
+  const err = document.getElementById("err");
+  const btn = document.getElementById("submitBtn");
+  err.style.display = "none";
+
+  const name = document.getElementById("rName").value.trim();
+  const text = document.getElementById("rText").value.trim();
+  const slime = document.getElementById("rSlime").value.trim();
+
+  if(!rating){ err.textContent = "please tap a star to rate us first! ⭐"; err.style.display="block"; return; }
+  if(!name){ err.textContent = "what's your name? 💗"; err.style.display="block"; return; }
+  if(!text){ err.textContent = "please write a little review — even one line helps! 💚"; err.style.display="block"; return; }
+
+  btn.disabled = true; btn.textContent = "sending... 🌀";
+
+  try{
+    await fetch(FIREBASE_URL + "/reviews.json", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name, text, slime, rating,
+        stars: "⭐".repeat(rating),
+        submittedAt: new Date().toISOString(),
+        dateLabel: new Date().toLocaleDateString("en-GB")
+      })
+    });
+
+    document.getElementById("formCard").style.display = "none";
+    document.getElementById("successCard").style.display = "block";
+    document.getElementById("successStars").textContent = "⭐".repeat(rating);
+    confetti();
+  }catch(e){
+    err.textContent = "something went wrong — check your internet and try again!";
+    err.style.display = "block";
+    btn.disabled = false; btn.textContent = "Submit review 💚";
+  }
+}
+
+function confetti(){
+  const bits = ["💚","💖","✨","🧪","⭐","🫧","💜"];
+  for(let i=0;i<40;i++){
+    const c = document.createElement("span");
+    c.className = "confetti";
+    c.textContent = bits[Math.floor(Math.random()*bits.length)];
+    c.style.left = Math.random()*100+"vw";
+    c.style.animationDuration = (2+Math.random()*2.4)+"s";
+    c.style.animationDelay = (Math.random()*0.6)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+</script>
+</body>
+</html>
