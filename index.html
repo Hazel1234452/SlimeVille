@@ -60,6 +60,22 @@
   .section{max-width:1050px;margin:0 auto;padding:40px 18px 10px;position:relative;z-index:1}
   .sec-title{text-align:center;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:6px}
   .sec-sub{text-align:center;font-weight:700;font-size:.85rem;color:var(--purple);margin-bottom:26px}
+  .filterbar{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:22px;align-items:center}
+  .filter-chip{font-family:'Fredoka One',cursive;font-size:.72rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .1s ease}
+  .filter-chip.active{background:var(--lime);transform:translateY(-1px)}
+  .filter-chip:active{transform:scale(.95)}
+  .sort-select{font-family:'Comfortaa',cursive;font-weight:700;font-size:.72rem;border:2.5px solid var(--ink);border-radius:999px;padding:7px 12px;background:var(--white);box-shadow:2px 2px 0 var(--ink)}
+  .new-drop-ribbon{position:absolute;top:14px;right:-8px;z-index:5;background:var(--pink);color:#fff;font-family:'Fredoka One',cursive;font-size:.62rem;padding:5px 12px 5px 16px;border:3px solid var(--ink);border-radius:999px 0 0 999px;box-shadow:2px 2px 0 var(--ink)}
+  .card-reviews{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--purple);margin-top:2px;cursor:pointer;user-select:none}
+  .card-reviews:active{opacity:.7}
+  .card-reviews .chev{margin-left:auto;font-size:.6rem;transition:transform .2s ease}
+  .card-reviews.open .chev{transform:rotate(180deg)}
+  .review-list{max-height:0;overflow:hidden;transition:max-height .25s ease;margin-top:2px}
+  .review-list.open{max-height:400px}
+  .review-item{background:var(--pink-soft);border:2px solid var(--ink);border-radius:12px;padding:8px 10px;font-size:.72rem;margin-top:6px;line-height:1.5}
+  .review-item .r-stars{color:#FFB800;letter-spacing:1px;display:block}
+  .review-item .r-who{font-family:'Fredoka One',cursive;font-size:.64rem;color:var(--purple);margin-top:2px;display:block}
+  .card-reviews .stars-mini{color:#FFB800;letter-spacing:1px}
 
   /* ---------- PRODUCTS ---------- */
   .shop{padding-bottom:10px}
@@ -67,7 +83,8 @@
   .card{background:var(--white);border:4px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .15s ease;display:flex;flex-direction:column;position:relative}
   .card:active{transform:scale(.97)}
   .card.soldout{filter:grayscale(.85);opacity:.75}
-  .stockbadge{position:absolute;top:12px;left:-6px;z-index:4;font-family:'Fredoka One',cursive;font-size:.66rem;padding:6px 14px;border:3px solid var(--ink);border-radius:0 999px 999px 0;box-shadow:2px 2px 0 var(--ink)}
+  .badge-stack{position:absolute;top:12px;left:-6px;z-index:4;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .stockbadge{font-family:'Fredoka One',cursive;font-size:.66rem;padding:6px 14px;border:3px solid var(--ink);border-radius:0 999px 999px 0;box-shadow:2px 2px 0 var(--ink)}
   .stockbadge.low{background:var(--yellow);color:var(--ink)}
   .stockbadge.limited{background:#FF69B4;color:var(--white);font-size:.58rem}
   .stockbadge.out{background:var(--ink);color:var(--white)}
@@ -172,6 +189,16 @@
   .collab-box b{color:var(--pink)}
   .collab-sub{font-family:'Fredoka One',cursive;font-size:.9rem!important;color:var(--ink)!important;margin-top:16px!important}
   .collab-tease{font-size:.76rem!important;color:var(--purple)!important;font-weight:700!important}
+  .worldtour-box{max-width:760px;margin:0 auto;background:linear-gradient(150deg,#DFF6F4,#B8E8E4);border:4px dashed var(--teal);border-radius:28px;padding:30px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .worldtour-badge{display:inline-block;background:var(--teal);color:var(--ink);font-family:'Fredoka One',cursive;font-size:.72rem;padding:7px 18px;border-radius:999px;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);margin-bottom:14px}
+  .worldtour-box h2{font-size:clamp(1.25rem,5vw,1.8rem);color:#12676E}
+  .worldtour-box p{font-size:.86rem;line-height:1.85;font-weight:600;margin-top:12px}
+  .worldtour-stops{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
+  .worldtour-stops span{background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:.7rem}
+  .bts-box{max-width:760px;margin:0 auto;background:linear-gradient(150deg,#FFF6DA,#FFEAA8);border:4px dashed #C9A227;border-radius:28px;padding:30px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .bts-badge{display:inline-block;background:#C9A227;color:#fff;font-family:'Fredoka One',cursive;font-size:.72rem;padding:7px 18px;border-radius:999px;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);margin-bottom:14px}
+  .bts-box h2{font-size:clamp(1.25rem,5vw,1.8rem);color:#8A6B14}
+  .bts-box p{font-size:.86rem;line-height:1.85;font-weight:600;margin-top:12px}
 
   /* ---------- YOUTUBE ---------- */
   .yt-box{max-width:640px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:28px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
@@ -229,7 +256,7 @@
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
   <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
   <nav class="nav">
-    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
   </nav>
 </header>
 <svg class="drip" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#7ED321"/></svg>
@@ -247,10 +274,24 @@
 <main class="section shop" id="shop">
   <h2 class="sec-title">Our Slime Collection 🧪</h2>
   <p class="sec-sub">All slimes 20 AED each • fresh batches every week</p>
+  <div class="filterbar" id="filterbar">
+    <button class="filter-chip active" data-filter="all">✨ All</button>
+    <button class="filter-chip" data-filter="classic">🫙 Classic</button>
+    <button class="filter-chip" data-filter="karak">☕ Dubai</button>
+    <button class="filter-chip" data-filter="collab">💜 Collab</button>
+    <button class="filter-chip" data-filter="maldives">🌊 Maldives</button>
+    <button class="filter-chip" data-filter="school">🎒 Back to School</button>
+    <button class="filter-chip" data-filter="bundle">🌍 Bundles</button>
+    <select class="sort-select" id="sortSelect">
+      <option value="default">Sort: Featured</option>
+      <option value="low-high">Price: Low → High</option>
+      <option value="high-low">Price: High → Low</option>
+    </select>
+  </div>
   <div class="grid" id="grid"></div>
 </main>
-
 <!-- ═══ OUR STORY ═══ -->
+<!-- placeholder-story-anchor -->
 <section class="section" id="story">
   <h2 class="sec-title">Our Story 📖</h2>
   <p class="sec-sub">how SlimeVille came to be</p>
@@ -271,7 +312,34 @@
     <h2>Peach Bliss 🍑</h2>
     <p>Designed entirely from scratch by our co-founder — the colour, texture, scent, and every last sprinkle. Crystal clear, peach scented, loaded with jelly cubes and fishbowl beads. <b>Our first ever clear slime.</b></p>
     <p class="collab-sub">Available now in the shop 🛒 — 20 AED</p>
-    <p class="collab-tease">Designed with love by Imany 💜 <a href="#shop" style="color:var(--purple);font-weight:700;">Shop it now ↓</a></p>
+    <p class="collab-tease">Designed with love by Imany 💜 <a href="#shop" onclick="goToFilter('collab')" style="color:var(--purple);font-weight:700;">Shop it now ↓</a></p>
+  </div>
+</section>
+
+<!-- ═══ WORLD TOUR BUNDLE ═══ -->
+<section class="section" id="worldtour">
+  <div class="worldtour-box">
+    <div class="worldtour-badge">🌍 WORLD TOUR BUNDLE</div>
+    <h2>3 jars. 4 countries. 1 summer. ✈️</h2>
+    <p>This summer SlimeVille ran out of Dubai, London, Germany, and the Maldives — all at once. Every stop became a slime: <b>Karak Cloud</b> for home, <b>Miles Apart</b> for the miles between two founders, and <b>Paradise Found</b> for the ocean at the end of it all.</p>
+    <div class="worldtour-stops">
+      <span>🇦🇪 Karak Cloud</span>
+      <span>🇬🇧🇩🇪 Miles Apart</span>
+      <span>🌊 Paradise Found</span>
+    </div>
+    <p class="collab-sub">Bundle all 3 for 55 AED — save 10 🛒</p>
+    <p class="collab-tease"><a href="#shop" onclick="goToFilter('worldtour-group')" style="color:#12676E;font-weight:700;">Shop the World Tour ↓</a></p>
+  </div>
+</section>
+
+<!-- ═══ BACK TO SCHOOL BUNDLE ═══ -->
+<section class="section" id="backtoschool">
+  <div class="bts-box">
+    <div class="bts-badge">🎒 BACK TO SCHOOL DROP</div>
+    <h2>New term, new jar era 📚</h2>
+    <p>From the first bell to the last — four slimes for every part of the school day: <b>First Day</b>, <b>After Class</b>, <b>Study Sesh</b>, and <b>Recess</b>. Squish your way through the term. 🎒✏️</p>
+    <p class="collab-sub">Bundle all 4 for 70 AED — save 10 🛒</p>
+    <p class="collab-tease"><a href="#shop" onclick="goToFilter('school-group')" style="color:#8A6B14;font-weight:700;">Shop Back to School ↓</a></p>
   </div>
 </section>
 
@@ -412,53 +480,129 @@ const STOCK = {
   "choco-brownie-butter": "instock",
   "peach-bliss":          "instock",
   "cookies-and-cream":    "limited",
+  "karak-cloud":          "instock",
+  "miles-apart":          "limited",
+  "paradise-found":       "instock",
+  "first-day":            "instock",
+  "after-class":          "instock",
+  "study-sesh":           "instock",
+  "recess":               "instock",
+  "back-to-school-bundle":"instock",
+  "world-tour-bundle":    "instock",
 };
 
 /* ============ PRODUCTS ============ */
 const PRODUCTS = [
-  {id:"strawberry-butter", name:"Strawberry Butter", emoji:"🍓", price:20,
+  {id:"strawberry-butter", name:"Strawberry Butter", emoji:"🍓", price:20, collection:"classic", reviews:[{stars:5,text:"smells literally like a strawberry shortcake omg i can't",who:"Zara, Dubai"},{stars:5,text:"my go to jar fr, texture is so soft",who:"Layla K."},{stars:4,text:"so good but wish it came in a bigger jar ngl",who:"Aisha M."}],
    bg:"linear-gradient(135deg,#FFD3E2,#FF9FC0)",
    texture:"Butter", scent:"Strawberry Shortcake",
    tagColor:"#FF4D88",
    desc:"Buttery-soft pink slime with fake cake sprinkles. Smells exactly like fresh strawberry shortcake 🍰",
    sprinkles:["⭐","🍓","✨","💗"]},
-  {id:"bubblegum-cloud", name:"Bubblegum Cloud", emoji:"☁️", price:20,
+  {id:"bubblegum-cloud", name:"Bubblegum Cloud", emoji:"☁️", price:20, collection:"classic", reviews:[{stars:5,text:"the cloud texture is insane, so fluffy 🫧",who:"Mira, JBR"},{stars:5,text:"stretches SO well and smells like actual bubblegum not fake stuff",who:"Priya S."},{stars:4,text:"favorite one in my collection rn",who:"Noor A."}],
    bg:"linear-gradient(135deg,#FFC9E5,#BDE6FF)",
    texture:"Cloud", scent:"Bubblegum",
    tagColor:"#7C3AED",
    desc:"Fluffy drizzly cloud slime in cotton-pink and sky-blue. Stretches into snowy strands and smells like bubblegum 🍬",
    sprinkles:["🫧","☁️","💙","✨"]},
-  {id:"mango-tango", name:"Mango Tango", emoji:"🥭", price:20,
+  {id:"mango-tango", name:"Mango Tango", emoji:"🥭", price:20, collection:"classic", reviews:[{stars:5,text:"jiggles exactly like mango pudding it's so satisfying",who:"Sara, Dubai"},{stars:5,text:"the scent hits different, so juicy smelling",who:"Fatima R."},{stars:4,text:"crunch beads inside were a nice surprise",who:"Hana W."}],
    bg:"linear-gradient(135deg,#FFE29A,#FFAB4C)",
    texture:"Jelly", scent:"Fresh Mango",
    tagColor:"#E8890C",
    desc:"Wobbly sunshine-orange jelly slime that jiggles like real mango pudding. The juiciest scent in the collection 🌞",
    sprinkles:["🥭","⭐","🧡","✨"]},
-  {id:"cotton-candy-crunch", name:"Cotton Candy Crunch", emoji:"🍬", price:20,
+  {id:"cotton-candy-crunch", name:"Cotton Candy Crunch", emoji:"🍬", price:20, collection:"classic", reviews:[{stars:5,text:"the ASMR sound on this one is unmatched fr",who:"Dana, Dubai"},{stars:5,text:"beads r so satisfying to squish, 10/10",who:"Reem T."},{stars:4,text:"colors are so pretty in person",who:"Yara B."}],
    bg:"linear-gradient(135deg,#FFC4F0,#C9F0FF)",
    texture:"Crunchy", scent:"Cotton Candy",
    tagColor:"#27B6D6",
    desc:"Pastel pink + blue slime LOADED with fishbowl beads. The crunchiest, most satisfying ASMR sounds ever 🎧",
    sprinkles:["🍬","🔵","💗","✨"]},
-  {id:"choco-brownie-butter", name:"Choco Brownie Butter", emoji:"🍫", price:20,
+  {id:"choco-brownie-butter", name:"Choco Brownie Butter", emoji:"🍫", price:20, collection:"classic", reviews:[{stars:5,text:"smells so good i almost tried to eat it lol pls be careful",who:"Amna, Dubai"},{stars:5,text:"butter texture is chef's kiss, so smooth",who:"Lina F."},{stars:4,text:"my lil sister stole this one from me smh",who:"Tara P."}],
    bg:"linear-gradient(135deg,#D8A47F,#8B5A3C)",
    texture:"Butter", scent:"Chocolate Brownie",
    tagColor:"#7A4A2B",
    desc:"Rich chocolatey butter slime with brownie-crumb foam bits. Warning: smells so good you'll want to eat it (don't!) 🚫🍴",
    sprinkles:["🍫","🤎","⭐","✨"]},
-  {id:"peach-bliss", name:"Peach Bliss", emoji:"🍑", price:20,
+  {id:"peach-bliss", name:"Peach Bliss", emoji:"🍑", price:20, collection:"collab", reviews:[{stars:5,text:"first clear slime i've ever owned and it's so satisfying to watch the beads move",who:"Meera, Dubai"},{stars:5,text:"designed by the co-founder and u can tell, so unique",who:"Salma Q."},{stars:5,text:"peach scent is so fresh, not overpowering at all",who:"Nadia H."}],
    bg:"linear-gradient(135deg,#FFD6EE,#FFBCE0)",
    texture:"Clear", scent:"Fresh Peach",
    tagColor:"#FF4D88",
    collab:true,
    desc:"Crystal-clear slime packed with jelly cubes and fishbowl beads. Smells like a fresh summer peach 🍑 Designed by our co-founder 💜",
    sprinkles:["🍑","🫧","💗","✨"]},
-  {id:"cookies-and-cream", name:"Cookies & Cream", emoji:"🍪", price:20,
+  {id:"cookies-and-cream", name:"Cookies & Cream", emoji:"🍪", price:20, collection:"classic", reviews:[{stars:5,text:"i voted for this design and it turned out EXACTLY how i imagined 😭",who:"Poonam, Dubai 💚"},{stars:5,text:"smells exactly like oreos i'm obsessed",who:"Rania G."},{stars:4,text:"limited drop so grab it before it's gone fr",who:"Alia N."}],
    bg:"linear-gradient(135deg,#F5F5F5,#D4D4D4)",
    texture:"Butter", scent:"Cookies & Cream",
    tagColor:"#1E1E2F",
    desc:"Black and white butter slime with oreo crumble bits. Smells exactly like your favourite cookies and cream dessert 🍪🤍 YOU voted for this one!",
    sprinkles:["🍪","🤍","🖤","✨"]},
+
+  /* ============ 🇦🇪 KARAK CLOUD ============ */
+  {id:"karak-cloud", name:"Karak Cloud", emoji:"☕", price:20, collection:"karak", reviews:[{stars:5,text:"smells like actual karak omg how did they do this",who:"Poonam, Dubai 💚"},{stars:5,text:"the most Dubai slime that has ever dubaied",who:"Sana, Dubai"},{stars:5,text:"gold shimmer is so pretty irl, obsessed w the foam pearls too",who:"Khadija L."}],
+   bg:"linear-gradient(135deg,#F0DCB8,#D8B88A)",
+   texture:"Cloud", scent:"Karak Chai",
+   tagColor:"#B8792E",
+   desc:"Sandy beige cloud slime infused with real karak chai scent, finished with gold shimmer glitter and tiny foam pearls. Dubai's own — designed by YOU 🇦🇪☕",
+   sprinkles:["☕","✨","🌟","🤎"]},
+
+  /* ============ ✈️ MILES APART (collab) ============ */
+  {id:"miles-apart", name:"Miles Apart", emoji:"✈️", price:25, collection:"collab", reviews:[{stars:5,text:"the split jar concept is so creative, both sides smell amazing",who:"Poonam, Dubai 💚"},{stars:5,text:"earl grey side is giving cozy, choco cherry side is giving moody, love the contrast",who:"Farah D."},{stars:4,text:"limited drop, got mine just in time 🇬🇧🇩🇪",who:"Jana R."}], newDrop:true,
+   bg:"linear-gradient(90deg,#F3EDE4 0%,#F3EDE4 48%,#5B1E22 52%,#5B1E22 100%)",
+   texture:"Split Jar", scent:"Earl Grey & Black Forest",
+   tagColor:"#5B1E22",
+   collab:true,
+   desc:"A split jar for two cities, two founders 🇬🇧🇩🇪 London side: foggy pearl-white butter, earl grey + strawberry jam scent, silver pearls & stars. Germany side: deep burgundy butter, chocolate cherry + cinnamon spice scent, red jelly cubes & gold star sprinkles. One jar, miles apart 💜✈️",
+   sprinkles:["🇬🇧","✈️","🇩🇪","✨"]},
+
+  /* ============ 🌊 PARADISE FOUND ============ */
+  {id:"paradise-found", name:"Paradise Found", emoji:"🌊", price:20, collection:"maldives", reviews:[{stars:5,text:"3 layers in ONE jar is actually crazy, so satisfying to squish through",who:"Poonam, Dubai 💚"},{stars:5,text:"coconut layer smells like actual vacation",who:"Rima S."},{stars:5,text:"the shell charms in the deep sea layer are the cutest detail",who:"Alya M."}], newDrop:true,
+   bg:"linear-gradient(180deg,#7FE0D6 0%,#1F6E7A 45%,#E8CBA0 100%)",
+   texture:"Layered", scent:"Ocean Breeze, Sea Salt & Coconut",
+   tagColor:"#1F6E7A",
+   desc:"Three layers in one jar 🌊 Turquoise ocean-breeze clear jelly on top, dark teal sea-salt & driftwood cloud in the middle, and warm sandy coconut butter at the bottom. Maldives in a jar 🏝️",
+   sprinkles:["🌊","🐚","🏝️","✨"]},
+
+  /* ============ 🎒 BACK TO SCHOOL ============ */
+  {id:"first-day", name:"First Day", emoji:"✏️", price:20, collection:"school", reviews:[{stars:5,text:"smells exactly like sharpened pencils it's so nostalgic",who:"Poonam, Dubai 💚"},{stars:4,text:"cute back to school pick, my daughter loves it",who:"Huda K."}],
+   bg:"linear-gradient(135deg,#FFF3B0,#F7DE6B)",
+   texture:"Butter", scent:"Pencil Shavings",
+   tagColor:"#C9A227",
+   desc:"Soft pencil-yellow butter slime that smells exactly like freshly sharpened pencils. New school year, new jar ✏️📚",
+   sprinkles:["✏️","🖍️","⭐","✨"]},
+  {id:"after-class", name:"After Class", emoji:"😮‍💨", price:20, collection:"school", reviews:[{stars:5,text:"lavender + vanilla combo is so calming, perfect after school",who:"Mona A."},{stars:4,text:"cloud texture is super soft, great stress relief",who:"Sofia B."}],
+   bg:"linear-gradient(135deg,#E4D9FA,#C6AEEF)",
+   texture:"Cloud", scent:"Vanilla",
+   tagColor:"#7C3AED",
+   desc:"Dreamy lavender cloud slime with a soft vanilla scent — the exhale after the last bell rings 😮‍💨💜",
+   sprinkles:["😮‍💨","💜","☁️","✨"]},
+  {id:"study-sesh", name:"Study Sesh", emoji:"☕", price:20, collection:"school", reviews:[{stars:5,text:"smells like my fav coffee order, keeps me motivated to study lol",who:"Poonam, Dubai 💚"},{stars:5,text:"warm brown butter texture is so smooth",who:"Yasmin T."}],
+   bg:"linear-gradient(135deg,#C89B6D,#8B5E34)",
+   texture:"Butter", scent:"Coffee & Caramel",
+   tagColor:"#6B4423",
+   desc:"Warm brown butter slime that smells like coffee and caramel — for the late-night study sessions 📚☕",
+   sprinkles:["☕","📚","🤎","✨"]},
+  {id:"recess", name:"Recess", emoji:"📚", price:20, collection:"school", reviews:[{stars:5,text:"bubblegum + fresh air scent is so fun, jelly texture bounces so nice",who:"Aaliyah R."},{stars:4,text:"my kids fight over this one every day 😭",who:"Nour F."}],
+   bg:"linear-gradient(135deg,#FFD3E8,#BDEFFF)",
+   texture:"Jelly", scent:"Bubblegum & Fresh Air",
+   tagColor:"#27B6D6",
+   desc:"Pastel jelly slime that smells like bubblegum and fresh air — recess energy in a jar 🎈📚",
+   sprinkles:["📚","🎈","🌤️","✨"]},
+
+  /* ============ 🎒 BUNDLES ============ */
+  {id:"back-to-school-bundle", name:"Back to School Bundle", emoji:"🎒", price:70, collection:"bundle", reviews:[{stars:5,text:"got the whole bundle and saved 10 AED, worth it for all 4",who:"Poonam, Dubai 💚"},{stars:5,text:"perfect back to school gift set, all 4 textures are so different",who:"Deema S."}],
+   bg:"linear-gradient(135deg,#FFF3B0,#C6AEEF 33%,#8B5E34 66%,#BDEFFF)",
+   texture:"Bundle", scent:"First Day + After Class + Study Sesh + Recess",
+   tagColor:"#C9A227",
+   bundle:true,
+   desc:"All 4 Back to School slimes in one bundle — First Day ✏️, After Class 😮‍💨, Study Sesh ☕, and Recess 📚 — save 10 AED vs buying separately 🎒",
+   sprinkles:["🎒","✏️","📚","✨"]},
+  {id:"world-tour-bundle", name:"World Tour Bundle", emoji:"🌍", price:55, collection:"bundle", reviews:[{stars:5,text:"3 jars 4 countries is such a good concept, bundle saved me money too",who:"Poonam, Dubai 💚"},{stars:5,text:"my favorite bundle by far, every jar tells a story",who:"Layan H."},{stars:5,text:"paradise found + karak cloud + miles apart together is unmatched",who:"Ghina W."}],
+   bg:"linear-gradient(135deg,#F3EDE4,#5B1E22 33%,#D8B88A 66%,#1F6E7A)",
+   texture:"Bundle", scent:"Miles Apart + Karak Cloud + Paradise Found",
+   tagColor:"#1F6E7A",
+   bundle:true,
+   desc:"3 jars, 4 countries 🌍✈️ Miles Apart (London 🇬🇧 + Germany 🇩🇪), Karak Cloud (Dubai 🇦🇪), and Paradise Found (Maldives 🌊) — save 10 AED vs buying separately.",
+   sprinkles:["🌍","✈️","🌊","✨"]},
 ];
 
 /* ============ LOADER ============ */
@@ -500,7 +644,31 @@ let cart = {};
 let appliedPromo = null;
 
 const grid = document.getElementById("grid");
-PRODUCTS.forEach(p=>{
+function reviewsHTML(p){
+  if(!p.reviews || p.reviews.length===0){
+    return `<div class="card-reviews">☆☆☆☆☆ No reviews yet — be the first! 💌</div>`;
+  }
+  const avg = (p.reviews.reduce((a,r)=>a+r.stars,0)/p.reviews.length);
+  const full = Math.round(avg);
+  const list = p.reviews.map(r=>`
+    <div class="review-item">
+      <span class="r-stars">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</span>
+      "${r.text}"
+      <span class="r-who">— ${r.who}</span>
+    </div>`).join("");
+  return `
+    <div class="card-reviews" onclick="toggleReviews(this)">
+      <span class="stars-mini">${"★".repeat(full)}${"☆".repeat(5-full)}</span> ${avg.toFixed(1)} (${p.reviews.length})
+      <span class="chev">▾</span>
+    </div>
+    <div class="review-list">${list}</div>`;
+}
+function toggleReviews(el){
+  el.classList.toggle("open");
+  const list = el.nextElementSibling;
+  list.classList.toggle("open");
+}
+function renderCard(p){
   const stock = STOCK[p.id] || "instock";
   const card = document.createElement("div");
   card.className = "card" + (stock==="out" ? " soldout" : "");
@@ -512,8 +680,11 @@ PRODUCTS.forEach(p=>{
     ? `<button class="add" disabled>Sold out 💔</button>`
     : `<button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>`;
   const collabBadge = p.collab ? `<span class="stockbadge limited" style="background:#7C3AED">💜 Co-Founder Collab</span>` : "";
+  const bundleBadge = p.bundle ? `<span class="stockbadge limited" style="background:#FF4D88">🎁 Bundle — Save 10 AED</span>` : "";
+  const newDropRibbon = p.newDrop ? `<span class="new-drop-ribbon">🆕 NEW DROP</span>` : "";
   card.innerHTML = `
-    ${badge}${collabBadge}
+    <div class="badge-stack">${badge}${collabBadge}${bundleBadge}</div>
+    ${newDropRibbon}
     <div class="swirl" style="background:${p.bg}"><span class="sprinkles">${spr}</span>${p.emoji}</div>
     <div class="card-body">
       <h3>${p.name}</h3>
@@ -521,18 +692,89 @@ PRODUCTS.forEach(p=>{
         <span class="tag" style="background:${p.tagColor};color:#fff">${p.texture} slime</span>
         <span class="tag" style="background:#FFE6F1">${p.scent} scented</span>
       </div>
+      ${reviewsHTML(p)}
       <p class="desc">${p.desc}</p>
       <div class="row">
         <span class="price">${p.price} <small>AED</small></span>
         ${btn}
       </div>
     </div>`;
-  grid.appendChild(card);
+  return card;
+}
+
+const FILTER_GROUPS = {
+  "worldtour-group": p => ["karak","collab","maldives"].includes(p.collection) || p.id==="world-tour-bundle",
+  "school-group": p => p.collection==="school" || p.id==="back-to-school-bundle",
+};
+
+let activeFilter = "all";
+let activeSort = "default";
+function renderGrid(){
+  grid.innerHTML = "";
+  let list;
+  if(activeFilter==="all") list = PRODUCTS.slice();
+  else if(FILTER_GROUPS[activeFilter]) list = PRODUCTS.filter(FILTER_GROUPS[activeFilter]);
+  else list = PRODUCTS.filter(p=>p.collection===activeFilter);
+  if(activeSort==="low-high") list.sort((a,b)=>a.price-b.price);
+  if(activeSort==="high-low") list.sort((a,b)=>b.price-a.price);
+  list.forEach(p=>grid.appendChild(renderCard(p)));
+}
+renderGrid();
+
+function goToFilter(filterVal){
+  activeFilter = filterVal;
+  document.querySelectorAll(".filter-chip").forEach(c=>c.classList.remove("active"));
+  const matchChip = document.querySelector(`.filter-chip[data-filter="${filterVal}"]`);
+  if(matchChip) matchChip.classList.add("active");
+  renderGrid();
+  setTimeout(()=>{
+    document.getElementById("shop").scrollIntoView({behavior:"smooth", block:"start"});
+  }, 30);
+}
+
+document.querySelectorAll(".filter-chip").forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    document.querySelectorAll(".filter-chip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    activeFilter = chip.dataset.filter;
+    renderGrid();
+  });
 });
+document.getElementById("sortSelect").addEventListener("change",e=>{
+  activeSort = e.target.value;
+  renderGrid();
+});
+
+function fireConfetti(){
+  const colors = ["#FF4D88","#7C3AED","#FFD23F","#27D6D6","#7ED321"];
+  for(let i=0;i<28;i++){
+    const c = document.createElement("div");
+    c.textContent = "";
+    c.style.position = "fixed";
+    c.style.left = (45+Math.random()*10)+"vw";
+    c.style.top = "40vh";
+    c.style.width = "8px"; c.style.height="8px";
+    c.style.background = colors[i%colors.length];
+    c.style.borderRadius = Math.random()>.5 ? "50%" : "2px";
+    c.style.zIndex = 9999;
+    c.style.pointerEvents = "none";
+    const dx = (Math.random()-0.5)*400;
+    const dy = 200+Math.random()*300;
+    const rot = Math.random()*720;
+    c.animate([
+      {transform:"translate(0,0) rotate(0deg)", opacity:1},
+      {transform:`translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0}
+    ], {duration: 900+Math.random()*500, easing:"cubic-bezier(.25,.7,.4,1)"});
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 1500);
+  }
+}
 
 function addToCart(id, btn){
   cart[id] = (cart[id]||0)+1;
   updateCount(); squish();
+  const product = PRODUCTS.find(p=>p.id===id);
+  if(product && product.bundle) fireConfetti();
   if(btn){
     btn.classList.add("added"); btn.textContent = "In your jar ✓";
     setTimeout(()=>{btn.classList.remove("added"); btn.textContent="Add to jar +";},1100);
