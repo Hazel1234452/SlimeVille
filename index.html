@@ -12,7 +12,29 @@
     --pink:#FF4D88; --pink-soft:#FFE6F1;
     --purple:#7C3AED; --teal:#27D6D6; --yellow:#FFD23F;
     --ink:#1E1E2F; --white:#FFFFFF;
+    --card-bg:#FFFFFF; --page-bg:var(--pink-soft); --text-main:#1E1E2F;
   }
+  html.dark{
+    --pink-soft:#161622; --white:#232334; --ink:#F1F0FF;
+    --card-bg:#232334; --page-bg:#161622; --text-main:#F1F0FF;
+  }
+  html.dark body{background:var(--page-bg)}
+  html.dark .card{background:var(--card-bg)}
+  html.dark .filter-chip, html.dark .sort-select{background:var(--card-bg);color:var(--text-main)}
+  .dark-toggle{font-family:'Fredoka One',cursive;font-size:.7rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+  .quiz-box{max-width:560px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:16px}
+  .quiz-opt{display:block;width:100%;text-align:left;background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:14px;padding:12px 16px;margin-bottom:10px;cursor:pointer;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;color:var(--ink)}
+  .quiz-opt:active{transform:scale(.98)}
+  .quiz-progress{font-family:'Fredoka One',cursive;font-size:.7rem;color:var(--purple);margin-bottom:14px}
+  .quiz-result-emoji{font-size:3rem;margin-bottom:8px}
+  .quiz-restart{margin-top:14px;font-family:'Fredoka One',cursive;font-size:.75rem;background:var(--purple);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:8px 18px;cursor:pointer}
+  .tracker-box{max-width:480px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:26px;box-shadow:6px 6px 0 var(--ink)}
+  .tracker-box input{width:100%;padding:12px 14px;border:2.5px solid var(--ink);border-radius:12px;font-family:'Comfortaa',cursive;font-size:.85rem}
+  .track-order-card{background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:14px;padding:14px 16px;margin-top:12px;font-size:.8rem;line-height:1.7}
+  .track-status{font-family:'Fredoka One',cursive;font-size:.7rem;padding:4px 12px;border-radius:999px;display:inline-block;margin-top:4px}
+  .track-status.pending{background:var(--yellow)}
+  .track-status.delivered{background:var(--lime)}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:'Comfortaa',cursive;background:var(--pink-soft);color:var(--ink);overflow-x:hidden}
   h1,h2,h3,.fredoka{font-family:'Fredoka One',cursive;font-weight:400}
@@ -256,7 +278,8 @@
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
   <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
   <nav class="nav">
-    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#quiz">🎨 Slime Quiz</a><a href="#tracker">📦 Track Order</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">🌙 Dark</button>
   </nav>
 </header>
 <svg class="drip" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M0,0 H500 V8 C480,8 478,30 465,30 C452,30 455,8 440,8 C420,8 422,36 405,36 C388,36 392,8 370,8 C350,8 352,26 338,26 C324,26 328,8 305,8 C285,8 288,38 270,38 C252,38 256,8 235,8 C215,8 218,28 204,28 C190,28 194,8 170,8 C150,8 153,34 136,34 C119,34 123,8 100,8 C82,8 84,24 71,24 C58,24 61,8 40,8 C24,8 26,30 12,30 C4,30 4,8 0,8 Z" fill="#7ED321"/></svg>
@@ -340,6 +363,26 @@
     <p>From the first bell to the last — four slimes for every part of the school day: <b>First Day</b>, <b>After Class</b>, <b>Study Sesh</b>, and <b>Recess</b>. Squish your way through the term. 🎒✏️</p>
     <p class="collab-sub">Bundle all 4 for 70 AED — save 10 🛒</p>
     <p class="collab-tease"><a href="#shop" onclick="goToFilter('school-group')" style="color:#8A6B14;font-weight:700;">Shop Back to School ↓</a></p>
+  </div>
+</section>
+
+<!-- ═══ SLIME QUIZ ═══ -->
+<section class="section" id="quiz">
+  <h2 class="sec-title">Which SlimeVille Slime Are You? 🎨</h2>
+  <p class="sec-sub">answer 3 questions, get matched with your slime soulmate</p>
+  <div class="quiz-box" id="quizBox"></div>
+</section>
+
+<!-- ═══ ORDER TRACKER ═══ -->
+<section class="section" id="tracker">
+  <h2 class="sec-title">Track Your Order 📦</h2>
+  <p class="sec-sub">enter the email or WhatsApp number you ordered with</p>
+  <div class="tracker-box">
+    <form id="trackerForm" onsubmit="return trackOrder(event)">
+      <input id="trackQuery" placeholder="email or phone used at checkout" required>
+      <button type="submit" class="checkout" style="margin-top:10px;">Find my order 🔍</button>
+    </form>
+    <div id="trackerResults"></div>
   </div>
 </section>
 
@@ -672,6 +715,7 @@ function renderCard(p){
   const stock = STOCK[p.id] || "instock";
   const card = document.createElement("div");
   card.className = "card" + (stock==="out" ? " soldout" : "");
+  card.dataset.pid = p.id;
   const spr = p.sprinkles.map((s,i)=>`<i style="left:${15+i*22}%;top:${(i%2?18:64)}%">${s}</i>`).join("");
   const badge = stock==="low" ? `<span class="stockbadge low">🔥 LOW STOCK</span>`
               : stock==="limited" ? `<span class="stockbadge limited">📌 Pinterest's Pick — Limited 🍪</span>`
@@ -718,6 +762,7 @@ function renderGrid(){
   if(activeSort==="low-high") list.sort((a,b)=>a.price-b.price);
   if(activeSort==="high-low") list.sort((a,b)=>b.price-a.price);
   list.forEach(p=>grid.appendChild(renderCard(p)));
+  loadBestseller();
 }
 renderGrid();
 
@@ -744,6 +789,135 @@ document.getElementById("sortSelect").addEventListener("change",e=>{
   activeSort = e.target.value;
   renderGrid();
 });
+
+/* ============ DARK MODE ============ */
+function toggleDark(){
+  const isDark = document.documentElement.classList.toggle("dark");
+  document.getElementById("darkToggle").textContent = isDark ? "☀️ Light" : "🌙 Dark";
+  try{ localStorage.setItem("sv-dark", isDark ? "1":"0"); }catch(e){}
+}
+(function initDark(){
+  try{
+    if(localStorage.getItem("sv-dark")==="1"){
+      document.documentElement.classList.add("dark");
+    }
+  }catch(e){}
+})();
+
+/* ============ BESTSELLER RIBBON (live from orders) ============ */
+async function loadBestseller(){
+  try{
+    const res = await fetch(FIREBASE_URL + "/orders.json");
+    if(!res.ok) return;
+    const data = await res.json();
+    if(!data) return;
+    const tally = {};
+    Object.values(data).forEach(o=>{
+      if(!o.items) return;
+      Object.entries(o.items).forEach(([id,q])=>{ tally[id] = (tally[id]||0) + q; });
+    });
+    const sorted = Object.entries(tally).sort((a,b)=>b[1]-a[1]);
+    if(sorted.length===0) return;
+    const topId = sorted[0][0];
+    document.querySelectorAll(".card").forEach(card=>{
+      if(card.dataset.pid === topId){
+        const stack = card.querySelector(".badge-stack");
+        if(stack && !stack.querySelector(".bestseller-badge")){
+          const b = document.createElement("span");
+          b.className = "stockbadge bestseller-badge";
+          b.style.background = "var(--yellow)";
+          b.style.color = "var(--ink)";
+          b.textContent = "🏆 Bestseller";
+          stack.appendChild(b);
+        }
+      }
+    });
+  }catch(e){ /* fail silently, not critical */ }
+}
+
+/* ============ SLIME QUIZ ============ */
+const QUIZ_QUESTIONS = [
+  {q:"pick a vibe for today:", opts:[
+    {t:"☕ cozy & calm", tag:"cozy"},
+    {t:"🌊 adventurous & fresh", tag:"adventure"},
+    {t:"📚 focused & productive", tag:"focus"},
+    {t:"🎉 fun & chaotic", tag:"fun"},
+  ]},
+  {q:"pick a texture:", opts:[
+    {t:"☁️ soft & fluffy", tag:"cozy"},
+    {t:"💧 jiggly & clear", tag:"adventure"},
+    {t:"🧈 smooth & buttery", tag:"focus"},
+    {t:"✨ crunchy & sparkly", tag:"fun"},
+  ]},
+  {q:"pick a place:", opts:[
+    {t:"🏠 home, blanket, tea", tag:"cozy"},
+    {t:"🏝️ anywhere with an ocean", tag:"adventure"},
+    {t:"📖 the library at 11pm", tag:"focus"},
+    {t:"🎡 the loudest party in town", tag:"fun"},
+  ]},
+];
+const QUIZ_RESULTS = {
+  cozy: {emoji:"☕", name:"Karak Cloud", desc:"you're warm, grounding, and everyone's favorite comfort person. sandy cloud, karak chai, gold shimmer — that's you 🤎"},
+  adventure: {emoji:"🌊", name:"Paradise Found", desc:"you're always chasing the next view. three layers, one ocean breeze, zero chill 🌊"},
+  focus: {emoji:"☕", name:"Study Sesh", desc:"you get things DONE. warm brown butter, coffee + caramel, deadline energy 📚"},
+  fun: {emoji:"🎉", name:"Cotton Candy Crunch", desc:"you're the chaos everyone needs. crunchy beads, loud colors, zero regrets 🎉"},
+};
+let quizAnswers = [];
+function renderQuiz(){
+  const box = document.getElementById("quizBox");
+  const step = quizAnswers.length;
+  if(step >= QUIZ_QUESTIONS.length){
+    const tally = {};
+    quizAnswers.forEach(t=>tally[t]=(tally[t]||0)+1);
+    const winner = Object.entries(tally).sort((a,b)=>b[1]-a[1])[0][0];
+    const r = QUIZ_RESULTS[winner];
+    box.innerHTML = `
+      <div class="quiz-result-emoji">${r.emoji}</div>
+      <div class="quiz-q">You're ${r.name}!</div>
+      <p style="font-size:.85rem;line-height:1.7;margin-bottom:10px;">${r.desc}</p>
+      <button class="quiz-restart" onclick="restartQuiz()">Take again 🔄</button>`;
+    return;
+  }
+  const q = QUIZ_QUESTIONS[step];
+  box.innerHTML = `
+    <div class="quiz-progress">Question ${step+1} of ${QUIZ_QUESTIONS.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    ${q.opts.map(o=>`<button class="quiz-opt" onclick="answerQuiz('${o.tag}')">${o.t}</button>`).join("")}
+  `;
+}
+function answerQuiz(tag){ quizAnswers.push(tag); renderQuiz(); }
+function restartQuiz(){ quizAnswers = []; renderQuiz(); }
+renderQuiz();
+
+/* ============ ORDER TRACKER ============ */
+async function trackOrder(e){
+  e.preventDefault();
+  const q = document.getElementById("trackQuery").value.trim().toLowerCase();
+  const results = document.getElementById("trackerResults");
+  results.innerHTML = `<p style="font-size:.8rem;margin-top:12px;">Searching... 🔍</p>`;
+  try{
+    const res = await fetch(FIREBASE_URL + "/orders.json");
+    const data = await res.json();
+    if(!data){ results.innerHTML = `<p style="font-size:.8rem;margin-top:12px;">No orders found yet 🫙</p>`; return; }
+    const matches = Object.values(data).filter(o =>
+      (o.email && o.email.toLowerCase().includes(q)) ||
+      (o.phone && o.phone.replace(/\s/g,"").includes(q.replace(/\s/g,"")))
+    );
+    if(matches.length===0){
+      results.innerHTML = `<p style="font-size:.8rem;margin-top:12px;">No orders found for that email/number. Double check and try again! 🫙</p>`;
+      return;
+    }
+    matches.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+    results.innerHTML = matches.map(o=>`
+      <div class="track-order-card">
+        <b>${o.dateLabel || ""}</b> — ${o.total} AED<br>
+        ${(o.order||"").replace(/\n/g,"<br>")}<br>
+        <span class="track-status ${o.delivered?'delivered':'pending'}">${o.delivered ? '✅ Delivered' : '🧪 Being mixed / on the way'}</span>
+      </div>`).join("");
+  }catch(err){
+    results.innerHTML = `<p style="font-size:.8rem;margin-top:12px;">Hmm, couldn't reach the order database. Check your connection!</p>`;
+  }
+}
 
 function fireConfetti(){
   const colors = ["#FF4D88","#7C3AED","#FFD23F","#27D6D6","#7ED321"];
