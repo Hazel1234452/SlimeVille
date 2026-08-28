@@ -22,6 +22,7 @@
   html.dark .card{background:var(--card-bg)}
   html.dark .filter-chip, html.dark .sort-select{background:var(--card-bg);color:var(--text-main)}
   .dark-toggle{font-family:'Fredoka One',cursive;font-size:.7rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+  .music-select{font-family:'Fredoka One',cursive;font-size:.7rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
   .quiz-box{max-width:560px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
   .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:16px}
   .quiz-opt{display:block;width:100%;text-align:left;background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:14px;padding:12px 16px;margin-bottom:10px;cursor:pointer;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;color:var(--ink)}
@@ -35,6 +36,85 @@
   .track-status{font-family:'Fredoka One',cursive;font-size:.7rem;padding:4px 12px;border-radius:999px;display:inline-block;margin-top:4px}
   .track-status.pending{background:var(--yellow)}
   .track-status.delivered{background:var(--lime)}
+  /* ============ WIZARD SECTION ============ */
+  .wizard-section{background:radial-gradient(ellipse at 20% 0%,#2f4f3a,#0f1f14 45%,#1a0f0f 80%);padding:60px 18px;position:relative;overflow:hidden}
+  .wizard-section::before{content:"✨";position:absolute;top:10%;left:8%;font-size:1.4rem;opacity:.5;animation:twinkle 3s ease-in-out infinite}
+  .wizard-section::after{content:"✨";position:absolute;bottom:15%;right:10%;font-size:1.2rem;opacity:.4;animation:twinkle 4s ease-in-out infinite .5s}
+  @keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.8;transform:scale(1.3)}}
+  .wizard-inner{max-width:640px;margin:0 auto;position:relative;z-index:2}
+  .wizard-badge{display:block;text-align:center;font-family:'Fredoka One',cursive;font-size:.75rem;color:#D4AF37;letter-spacing:3px;margin-bottom:10px}
+  .wizard-title{font-family:'Fredoka One',cursive;text-align:center;font-size:clamp(1.6rem,6vw,2.4rem);color:#D4AF37;text-shadow:2px 2px 0 #1a0f0f;margin-bottom:6px}
+  .wizard-sub{text-align:center;font-family:'Comfortaa',cursive;font-size:.85rem;color:#C9D6C9;margin-bottom:30px}
+  .wizard-product-card{background:linear-gradient(160deg,#1a2b1f,#241414);border:3px solid #D4AF37;border-radius:20px;padding:24px;text-align:center;box-shadow:0 0 24px rgba(212,175,55,.25);margin-bottom:36px}
+  .wizard-swirl{width:100px;height:100px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;border:3px solid #D4AF37;box-shadow:0 0 20px rgba(212,175,55,.4)}
+  .wizard-product-card h3{font-family:'Fredoka One',cursive;color:#F0DDA8;font-size:1.2rem;margin-bottom:6px}
+  .wizard-product-card p{color:#C9D6C9;font-size:.82rem;line-height:1.7;margin-bottom:14px}
+  .wizard-add-btn{font-family:'Fredoka One',cursive;font-size:.85rem;background:#D4AF37;color:#1a0f0f;border:none;border-radius:999px;padding:12px 28px;cursor:pointer;box-shadow:0 4px 0 #8B6F1F}
+  .wizard-add-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8B6F1F}
+  .letter-trigger-wrap{text-align:center}
+  .letter-trigger{font-family:'Fredoka One',cursive;font-size:.85rem;background:transparent;color:#D4AF37;border:2.5px solid #D4AF37;border-radius:999px;padding:12px 26px;cursor:pointer}
+  .letter-trigger:active{transform:scale(.97)}
+  .name-prompt{margin-top:16px;display:none}
+  .name-prompt.show{display:block}
+  .name-prompt input{font-family:'Comfortaa',cursive;font-size:.85rem;padding:10px 14px;border-radius:10px;border:2px solid #D4AF37;background:#0f1f14;color:#F0DDA8;width:70%;max-width:280px}
+  .name-prompt input::placeholder{color:#7a8a7a}
+  .envelope-wrap{max-width:420px;margin:26px auto 0;perspective:1200px;display:none}
+  .envelope-wrap.show{display:block}
+  .envelope{position:relative;background:#C9A24A;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.5);cursor:pointer;min-height:260px;overflow:visible}
+  .envelope-flap{position:absolute;top:0;left:0;width:100%;height:50%;background:#B08A34;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .7s ease;z-index:3;border-radius:8px 8px 0 0}
+  .envelope.open .envelope-flap{transform:rotateX(180deg)}
+  .wax-seal{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:radial-gradient(circle at 35% 30%,#a8231f,#6e1512);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 3px 6px rgba(0,0,0,.5);z-index:4;transition:opacity .4s ease, transform .4s ease}
+  .envelope.open .wax-seal{opacity:0;transform:translate(-50%,-50%) scale(0.4);pointer-events:none}
+  .envelope-hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-family:'Fredoka One',cursive;font-size:.65rem;color:#4a3410;z-index:2}
+  .parchment{background:linear-gradient(#f4e8c9,#ece0bd);border:2px solid #a8863f;border-radius:6px;padding:26px 24px;margin-top:14px;max-height:0;overflow:hidden;transition:max-height .6s ease, padding .6s ease;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+  .parchment.show{max-height:900px;padding:26px 24px}
+  .parchment h4{font-family:'Fredoka One',cursive;text-align:center;font-size:1rem;color:#5a3d1a;margin-bottom:4px}
+  .parchment .crest{text-align:center;font-size:1.8rem;margin-bottom:6px}
+  .parchment p{font-family:'Georgia',serif;font-size:.83rem;line-height:1.85;color:#3a2a12;margin-bottom:10px}
+  .parchment .sig{font-family:'Georgia',serif;font-style:italic;font-size:.85rem;color:#3a2a12;margin-top:16px}
+  .parchment-close{display:block;margin:14px auto 0;font-family:'Fredoka One',cursive;font-size:.7rem;background:#a8863f;color:#f4e8c9;border:none;border-radius:999px;padding:8px 18px;cursor:pointer}
+  /* ============ TICKER ============ */
+  .ticker-wrap{background:var(--ink);overflow:hidden;white-space:nowrap;padding:9px 0;position:relative;z-index:70}
+  .ticker-track{display:inline-block;padding-left:100%;animation:ticker-scroll 38s linear infinite}
+  .ticker-wrap:hover .ticker-track{animation-play-state:paused}
+  .ticker-track span{color:var(--yellow);font-family:'Fredoka One',cursive;font-size:.72rem;margin-right:38px}
+  @keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+  /* ============ STORY HIGHLIGHTS ============ */
+  .highlights-wrap{display:flex;gap:16px;overflow-x:auto;padding:6px 20px 22px;max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch}
+  .highlights-wrap::-webkit-scrollbar{display:none}
+  .highlight-item{flex:0 0 auto;text-align:center;cursor:pointer;width:64px}
+  .highlight-ring{width:58px;height:58px;border-radius:50%;background:conic-gradient(from 45deg,var(--pink),var(--purple),var(--yellow),var(--teal),var(--pink));padding:3px;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+  .highlight-ring span{background:var(--white);width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+  .highlight-ring.surprise{background:conic-gradient(from 45deg,#FFD23F,#FF4D88,#7C3AED,#FFD23F)}
+  .highlight-label{font-family:'Fredoka One',cursive;font-size:.6rem;color:var(--ink)}
+  /* ============ MINI GAME ============ */
+  .game-box{max-width:340px;margin:0 auto;text-align:center;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:26px;box-shadow:6px 6px 0 var(--ink)}
+  .game-blob{font-size:5rem;cursor:pointer;user-select:none;transition:transform .08s ease;filter:drop-shadow(2px 4px 0 rgba(0,0,0,.2))}
+  .game-blob.squished{transform:scale(.72,1.15)}
+  .game-stats{display:flex;justify-content:space-around;font-family:'Fredoka One',cursive;font-size:.75rem;color:var(--purple);margin:16px 0}
+  .points-badge{display:inline-block;background:var(--yellow);border:2.5px solid var(--ink);border-radius:999px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:.8rem;margin-bottom:10px}
+  .leaderboard-box{max-width:340px;margin:16px auto 0;background:var(--white);border:3px solid var(--ink);border-radius:18px;padding:16px 18px;box-shadow:4px 4px 0 var(--ink)}
+  .leaderboard-box h4{font-family:'Fredoka One',cursive;font-size:.85rem;margin-bottom:8px;text-align:center}
+  .lb-row{font-family:'Comfortaa',cursive;font-size:.8rem;font-weight:700;padding:4px 0}
+  .notify-btn{font-family:'Fredoka One',cursive;font-size:.68rem;background:var(--purple);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;margin-top:8px}
+  .visitor-badge{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:.7rem;box-shadow:2px 2px 0 var(--ink)}
+  .visitor-dot{width:8px;height:8px;background:#4CD964;border-radius:50%;animation:pulse-dot 1.4s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+  /* ============ SPARKLE CURSOR ============ */
+  .cursor-sparkle{position:fixed;pointer-events:none;font-size:12px;z-index:9998;animation:sparkle-fade .6s ease forwards}
+  @keyframes sparkle-fade{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(.4)}}
+  /* ============ SPIN WHEEL ============ */
+  .wheel-overlay{position:fixed;inset:0;background:rgba(30,30,47,.75);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
+  .wheel-overlay.show{display:flex}
+  .wheel-modal{background:var(--white);border:4px solid var(--ink);border-radius:26px;padding:26px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--ink);position:relative}
+  .wheel-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--ink)}
+  .wheel-modal h3{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:4px}
+  .wheel-modal p{font-size:.78rem;color:var(--purple);margin-bottom:16px}
+  .wheel-outer{position:relative;width:220px;height:220px;margin:0 auto 18px}
+  .wheel-pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:1.4rem;z-index:3;color:var(--ink)}
+  .wheel-disc{position:relative;width:220px;height:220px;border-radius:50%;border:5px solid var(--ink);overflow:hidden;transition:transform 3.5s cubic-bezier(.15,.8,.2,1);background:conic-gradient(#FF4D88 0deg 60deg,#7C3AED 60deg 120deg,#FFD23F 120deg 180deg,#7ED321 180deg 240deg,#27D6D6 240deg 300deg,#FF8C42 300deg 360deg)}
+  .wheel-seg{position:absolute;top:50%;left:50%;width:76px;margin-left:-38px;text-align:center;font-family:'Fredoka One',cursive;font-size:.72rem;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.5),-1px -1px 0 rgba(0,0,0,.3)}
+  .wheel-result{font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--purple);margin-top:12px;min-height:20px}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:'Comfortaa',cursive;background:var(--pink-soft);color:var(--ink);overflow-x:hidden}
   h1,h2,h3,.fredoka{font-family:'Fredoka One',cursive;font-weight:400}
@@ -260,6 +340,33 @@
 </head>
 <body>
 
+<!-- ═══ SPIN WHEEL POPUP (first visit) ═══ -->
+<div class="wheel-overlay" id="wheelOverlay">
+  <div class="wheel-modal">
+    <button class="wheel-close" onclick="closeWheel(false)">✕</button>
+    <h3>🎁 Spin for a discount!</h3>
+    <p>first time here? spin once, win a code 🎡</p>
+    <div class="wheel-outer">
+      <div class="wheel-pointer">▼</div>
+      <div class="wheel-disc" id="wheelDisc">
+        <div class="wheel-seg" style="transform:rotate(30deg) translate(0,-72px) rotate(-30deg)">5% OFF</div>
+        <div class="wheel-seg" style="transform:rotate(90deg) translate(0,-72px) rotate(-90deg)">Free Delivery</div>
+        <div class="wheel-seg" style="transform:rotate(150deg) translate(0,-72px) rotate(-150deg)">10% OFF</div>
+        <div class="wheel-seg" style="transform:rotate(210deg) translate(0,-72px) rotate(-210deg)">Try Again</div>
+        <div class="wheel-seg" style="transform:rotate(270deg) translate(0,-72px) rotate(-270deg)">15% OFF</div>
+        <div class="wheel-seg" style="transform:rotate(330deg) translate(0,-72px) rotate(-330deg)">Free Delivery</div>
+      </div>
+    </div>
+    <button class="wizard-add-btn" id="spinBtn" onclick="spinWheel()">Spin the wheel 🎡</button>
+    <div class="wheel-result" id="wheelResult"></div>
+  </div>
+</div>
+
+<!-- ═══ TESTIMONIAL TICKER ═══ -->
+<div class="ticker-wrap" id="tickerWrap">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
 <!-- ═══ LOADING SCREEN ═══ -->
 <div id="loader">
   <img src="logo.png" alt="SlimeVille" class="lload">
@@ -278,7 +385,15 @@
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
   <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
   <nav class="nav">
-    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#quiz">🎨 Slime Quiz</a><a href="#tracker">📦 Track Order</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#wizard">🧙 Butterbeer</a><a href="#quiz">🎨 Slime Quiz</a><a href="#minigame">🎮 Squish Game</a><a href="#tracker">📦 Track Order</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <select class="music-select" id="musicSelect" onchange="changeMusic(this.value)">
+      <option value="off">🎵 Music: Off</option>
+      <option value="magical">🪄 Magical</option>
+      <option value="chill">🎧 Chill</option>
+      <option value="playful">🎉 Playful</option>
+      <option value="asmr">🧪 Slime ASMR</option>
+    </select>
+    <audio id="bgAudio" loop preload="none"></audio>
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">🌙 Dark</button>
   </nav>
 </header>
@@ -292,7 +407,21 @@
     <span class="badge b2">🛡️ Safe &amp; non-toxic</span>
     <span class="badge b3">🚗 Dubai delivery — 5 AED</span>
   </div>
+  <div style="text-align:center;margin-top:14px;">
+    <span class="visitor-badge"><span class="visitor-dot"></span> <span id="visitorCount">4</span> people browsing rn 👀</span>
+  </div>
 </section>
+
+<!-- ═══ STORY HIGHLIGHTS BAR ═══ -->
+<div class="highlights-wrap">
+  <div class="highlight-item" onclick="goToFilter('all')"><div class="highlight-ring"><span>🧪</span></div><div class="highlight-label">All Slimes</div></div>
+  <div class="highlight-item" onclick="goToFilter('worldtour-group')"><div class="highlight-ring"><span>🌍</span></div><div class="highlight-label">World Tour</div></div>
+  <div class="highlight-item" onclick="goToFilter('school-group')"><div class="highlight-ring"><span>🎒</span></div><div class="highlight-label">Back to School</div></div>
+  <div class="highlight-item" onclick="location.hash='#wizard'"><div class="highlight-ring"><span>🧙</span></div><div class="highlight-label">Butterbeer</div></div>
+  <div class="highlight-item" onclick="goToFilter('collab')"><div class="highlight-ring"><span>💜</span></div><div class="highlight-label">Collab Drop</div></div>
+  <div class="highlight-item" onclick="goToFilter('karak')"><div class="highlight-ring"><span>☕</span></div><div class="highlight-label">Karak Cloud</div></div>
+  <div class="highlight-item" onclick="surpriseMe()"><div class="highlight-ring surprise"><span>🎁</span></div><div class="highlight-label">Surprise Me</div></div>
+</div>
 
 <main class="section shop" id="shop">
   <h2 class="sec-title">Our Slime Collection 🧪</h2>
@@ -305,6 +434,7 @@
     <button class="filter-chip" data-filter="maldives">🌊 Maldives</button>
     <button class="filter-chip" data-filter="school">🎒 Back to School</button>
     <button class="filter-chip" data-filter="bundle">🌍 Bundles</button>
+    <button class="filter-chip" data-filter="wizard">🧙 Wizard</button>
     <select class="sort-select" id="sortSelect">
       <option value="default">Sort: Featured</option>
       <option value="low-high">Price: Low → High</option>
@@ -373,6 +503,25 @@
   <div class="quiz-box" id="quizBox"></div>
 </section>
 
+<!-- ═══ MINI GAME ═══ -->
+<section class="section" id="minigame">
+  <h2 class="sec-title">Squish Challenge 🎮</h2>
+  <p class="sec-sub">how many times can you squish the blob in 10 seconds?</p>
+  <div class="game-box">
+    <div class="game-blob" id="gameBlob" onclick="squishBlob()">🟢</div>
+    <div class="game-stats">
+      <div>⏱️ <span id="gameTime">10</span>s</div>
+      <div>squishes: <span id="gameScore">0</span></div>
+      <div>best: <span id="gameBest">0</span></div>
+    </div>
+    <button class="quiz-restart" id="gameStartBtn" onclick="startGame()">Start Squishing ▶️</button>
+  </div>
+  <div class="leaderboard-box">
+    <h4>🏅 Top Squishers</h4>
+    <div id="leaderboardList"><p style="font-size:.75rem;color:var(--purple)">loading...</p></div>
+  </div>
+</section>
+
 <!-- ═══ ORDER TRACKER ═══ -->
 <section class="section" id="tracker">
   <h2 class="sec-title">Track Your Order 📦</h2>
@@ -383,6 +532,46 @@
       <button type="submit" class="checkout" style="margin-top:10px;">Find my order 🔍</button>
     </form>
     <div id="trackerResults"></div>
+  </div>
+</section>
+
+<!-- ═══ WIZARD / BUTTERBEER SECTION ═══ -->
+<section class="wizard-section" id="wizard">
+  <div class="wizard-inner">
+    <span class="wizard-badge">✦ ✦ ✦ A MOST MAGICAL BREW ✦ ✦ ✦</span>
+    <h2 class="wizard-title">🍺 Butterbeer Brew</h2>
+    <p class="wizard-sub">for the two potterheads who built this whole business on a shared notes app</p>
+
+    <div class="wizard-product-card">
+      <div class="wizard-swirl" style="background:linear-gradient(180deg,#F0DDA8 0%,#C9974B 55%,#8B5A2B 100%)">🍺</div>
+      <h3>Butterbeer Brew</h3>
+      <p>Warm amber butter slime with a foamy cream-soda top layer, scented like butterscotch and warm cream soda, swirled with bronze glitter. 22 AED ✨</p>
+      <button class="wizard-add-btn" onclick="addToCart('butterbeer-brew',this)">Add to jar +</button>
+    </div>
+
+    <div class="letter-trigger-wrap">
+      <button class="letter-trigger" onclick="showNamePrompt()">✉️ Claim your Acceptance Letter</button>
+      <div class="name-prompt" id="namePrompt">
+        <p style="color:#C9D6C9;font-size:.78rem;margin-bottom:10px;">what shall we call you, witch or wizard?</p>
+        <input id="letterName" placeholder="your name" maxlength="30">
+        <div style="margin-top:12px;"><button class="wizard-add-btn" onclick="revealEnvelope()">Seal it ✨</button></div>
+      </div>
+    </div>
+
+    <div class="envelope-wrap" id="envelopeWrap">
+      <div class="envelope" id="envelope" onclick="openEnvelope()">
+        <div class="envelope-flap"></div>
+        <div class="wax-seal">🧪</div>
+        <div class="envelope-hint">tap to break the seal</div>
+      </div>
+      <div class="parchment" id="parchment">
+        <div class="crest">🧪✨🧪</div>
+        <h4>SLIMEVILLE ACADEMY OF SQUISH &amp; SORCERY</h4>
+        <p id="letterBody"></p>
+        <p class="sig" id="letterSig"></p>
+        <button class="parchment-close" onclick="closeEnvelope()">Close scroll</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -508,6 +697,10 @@ const DELIVERY_FEE = 5; // AED, flat Dubai delivery
 /* ============ PROMO CODES ============ */
 const PROMO_CODES = {
   "SLIMECLUBDEL": { type:"free_delivery", label:"Free delivery 🚗", discount:5 },
+  "WHEEL5": { type:"percent", label:"5% off 🎡", percent:5 },
+  "WHEEL10": { type:"percent", label:"10% off 🎡", percent:10 },
+  "WHEEL15": { type:"percent", label:"15% off 🎡", percent:15 },
+  "WHEELFREE": { type:"free_delivery", label:"Free delivery 🎡", discount:5 },
 };
 
 /* ============ STOCK CONTROL ============
@@ -532,6 +725,7 @@ const STOCK = {
   "recess":               "instock",
   "back-to-school-bundle":"instock",
   "world-tour-bundle":    "instock",
+  "butterbeer-brew":      "limited",
 };
 
 /* ============ PRODUCTS ============ */
@@ -579,6 +773,17 @@ const PRODUCTS = [
    tagColor:"#1E1E2F",
    desc:"Black and white butter slime with oreo crumble bits. Smells exactly like your favourite cookies and cream dessert 🍪🤍 YOU voted for this one!",
    sprinkles:["🍪","🤍","🖤","✨"]},
+
+  /* ============ 🧙 BUTTERBEER BREW ============ */
+  {id:"butterbeer-brew", name:"Butterbeer Brew", emoji:"🍺", price:22, collection:"wizard", reviews:[
+    {stars:5,text:"tastes like actual butterbeer... i mean SMELLS. do not taste your slime 😭","who":"Farida K."},
+    {stars:5,text:"the foam top is so satisfying, feels like a real drink","who":"Layan M."},
+    {stars:5,text:"most magical thing in my slime collection fr","who":"Rima S."}],
+   bg:"linear-gradient(180deg,#F0DDA8 0%,#C9974B 55%,#8B5A2B 100%)",
+   texture:"Butter", scent:"Butterscotch & Cream Soda",
+   tagColor:"#8B5A2B", newDrop:true,
+   desc:"Warm amber butter slime with a foamy cream-soda top layer, scented like butterscotch and warm cream soda. Bronze glitter swirled through for that just-poured-in-a-tavern shimmer 🍺✨ two potterheads, one very magical jar.",
+   sprinkles:["🍺","✨","🟤","🌟"]},
 
   /* ============ 🇦🇪 KARAK CLOUD ============ */
   {id:"karak-cloud", name:"Karak Cloud", emoji:"☕", price:20, collection:"karak", reviews:[{stars:5,text:"smells like actual karak omg how did they do this",who:"Poonam, Dubai 💚"},{stars:5,text:"the most Dubai slime that has ever dubaied",who:"Sana, Dubai"},{stars:5,text:"gold shimmer is so pretty irl, obsessed w the foam pearls too",who:"Khadija L."}],
@@ -685,6 +890,12 @@ function squish(){
 /* ============ CART (in-memory) ============ */
 let cart = {};
 let appliedPromo = null;
+(function restoreSavedPromo(){
+  try{
+    const saved = localStorage.getItem("sv-active-promo");
+    if(saved && PROMO_CODES[saved]) appliedPromo = {...PROMO_CODES[saved], code:saved};
+  }catch(e){}
+})();
 
 const grid = document.getElementById("grid");
 function reviewsHTML(p){
@@ -721,7 +932,7 @@ function renderCard(p){
               : stock==="limited" ? `<span class="stockbadge limited">📌 Pinterest's Pick — Limited 🍪</span>`
               : stock==="out" ? `<span class="stockbadge out">😭 SOLD OUT</span>` : "";
   const btn = stock==="out"
-    ? `<button class="add" disabled>Sold out 💔</button>`
+    ? `<button class="add" disabled>Sold out 💔</button><br><button class="notify-btn" onclick="notifyMe('${p.id}',this)">🔔 Notify me when back</button>`
     : `<button class="add" onclick="addToCart('${p.id}',this)">Add to jar +</button>`;
   const collabBadge = p.collab ? `<span class="stockbadge limited" style="background:#7C3AED">💜 Co-Founder Collab</span>` : "";
   const bundleBadge = p.bundle ? `<span class="stockbadge limited" style="background:#FF4D88">🎁 Bundle — Save 10 AED</span>` : "";
@@ -765,6 +976,8 @@ function renderGrid(){
   loadBestseller();
 }
 renderGrid();
+initTicker();
+loadLeaderboard();
 
 function goToFilter(filterVal){
   activeFilter = filterVal;
@@ -789,6 +1002,281 @@ document.getElementById("sortSelect").addEventListener("change",e=>{
   activeSort = e.target.value;
   renderGrid();
 });
+
+/* ============ SPIN WHEEL ============ */
+const WHEEL_SEGMENTS = [
+  {code:"WHEEL5", label:"5% OFF", win:true},
+  {code:"WHEELFREE", label:"Free Delivery", win:true},
+  {code:"WHEEL10", label:"10% OFF", win:true},
+  {code:null, label:"Try Again Next Time", win:false},
+  {code:"WHEEL15", label:"15% OFF", win:true},
+  {code:"WHEELFREE", label:"Free Delivery", win:true},
+];
+let wheelSpun = false;
+function initWheel(){
+  try{
+    if(localStorage.getItem("sv-wheel-seen")==="1") return;
+  }catch(e){}
+  setTimeout(()=>{
+    document.getElementById("wheelOverlay").classList.add("show");
+  }, 1500);
+}
+function closeWheel(){
+  document.getElementById("wheelOverlay").classList.remove("show");
+  try{ localStorage.setItem("sv-wheel-seen","1"); }catch(e){}
+}
+function spinWheel(){
+  if(wheelSpun) return;
+  wheelSpun = true;
+  document.getElementById("spinBtn").disabled = true;
+  const idx = Math.floor(Math.random()*WHEEL_SEGMENTS.length);
+  const seg = WHEEL_SEGMENTS[idx];
+  const segAngle = 360/WHEEL_SEGMENTS.length;
+  const targetRotation = 1800 + (360 - (idx*segAngle + segAngle/2));
+  document.getElementById("wheelDisc").style.transform = `rotate(${targetRotation}deg)`;
+  setTimeout(()=>{
+    const resultEl = document.getElementById("wheelResult");
+    if(seg.win){
+      applyPromoCode(seg.code, true);
+      resultEl.innerHTML = `🎉 you won <b>${seg.label}</b>! it's already applied to your jar — just checkout 🫙`;
+    } else {
+      resultEl.innerHTML = `😅 no luck this time — but SLIMECLUBDEL always works for free delivery!`;
+    }
+    try{ localStorage.setItem("sv-wheel-seen","1"); }catch(e){}
+  }, 3600);
+}
+initWheel();
+
+/* ============ RESTOCK NOTIFY ME ============ */
+async function notifyMe(id, btn){
+  const email = prompt("What's your email? We'll ping you the moment it's back 📬");
+  if(!email) return;
+  btn.textContent = "Saving...";
+  try{
+    await fetch(FIREBASE_URL + "/notifyMe.json", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ productId:id, email, requestedAt:new Date().toISOString() })
+    });
+    btn.textContent = "✅ We'll notify you!";
+    btn.disabled = true;
+  }catch(e){
+    btn.textContent = "Hmm, try again?";
+  }
+}
+
+/* ============ LIVE VISITOR COUNTER (simulated) ============ */
+function initVisitorCounter(){
+  const el = document.getElementById("visitorCount");
+  if(!el) return;
+  let n = 2 + Math.floor(Math.random()*6);
+  el.textContent = n;
+  setInterval(()=>{
+    n = Math.max(1, n + (Math.random()>0.5 ? 1 : -1));
+    el.textContent = n;
+  }, 6000 + Math.random()*4000);
+}
+initVisitorCounter();
+
+/* ============ SQUISH GAME LEADERBOARD (Firebase) ============ */
+async function submitLeaderboardScore(score){
+  const name = prompt(`🏅 ${score} squishes! Add your name to the leaderboard:`);
+  if(!name) return;
+  try{
+    await fetch(FIREBASE_URL + "/leaderboard.json", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ name: name.slice(0,20), score, at:new Date().toISOString() })
+    });
+    loadLeaderboard();
+  }catch(e){}
+}
+async function loadLeaderboard(){
+  const el = document.getElementById("leaderboardList");
+  if(!el) return;
+  try{
+    const res = await fetch(FIREBASE_URL + "/leaderboard.json");
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p style='font-size:.75rem;color:var(--purple)'>no scores yet — be the first! 🏅</p>"; return; }
+    const top = Object.values(data).sort((a,b)=>b.score-a.score).slice(0,5);
+    el.innerHTML = top.map((e,i)=>`<div class="lb-row">${["🥇","🥈","🥉","4.","5."][i]} ${e.name} — ${e.score}</div>`).join("");
+  }catch(e){}
+}
+
+/* ============ SHAREABLE QUIZ RESULT CARD ============ */
+function downloadQuizCard(resultName, resultEmoji, resultDesc){
+  const canvas = document.createElement("canvas");
+  canvas.width = 600; canvas.height = 600;
+  const ctx = canvas.getContext("2d");
+  const grad = ctx.createLinearGradient(0,0,600,600);
+  grad.addColorStop(0,"#FFE6F1"); grad.addColorStop(1,"#F3EBFF");
+  ctx.fillStyle = grad; ctx.fillRect(0,0,600,600);
+  ctx.textAlign = "center";
+  ctx.font = "80px sans-serif";
+  ctx.fillText(resultEmoji, 300, 200);
+  ctx.fillStyle = "#7C3AED";
+  ctx.font = "bold 36px Comic Sans MS, sans-serif";
+  ctx.fillText("I'm " + resultName + "!", 300, 280);
+  ctx.fillStyle = "#1E1E2F";
+  ctx.font = "18px Comic Sans MS, sans-serif";
+  wrapCanvasText(ctx, resultDesc, 300, 330, 460, 28);
+  ctx.fillStyle = "#FF4D88";
+  ctx.font = "bold 22px Comic Sans MS, sans-serif";
+  ctx.fillText("🧪 slimeville.fun", 300, 560);
+  const link = document.createElement("a");
+  link.download = "my-slimeville-result.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(" ");
+  let line = "";
+  let lines = [];
+  words.forEach(w=>{
+    const test = line + w + " ";
+    if(ctx.measureText(test).width > maxWidth && line !== ""){
+      lines.push(line); line = w + " ";
+    } else { line = test; }
+  });
+  lines.push(line);
+  lines.forEach((l,i)=> ctx.fillText(l.trim(), x, y + i*lineHeight));
+}
+
+/* ============ BACKGROUND MUSIC (synth ambient, no external file) ============ */
+let musicCtx = null, musicNodes = [], musicPlaying = false;
+const REAL_TRACKS = {
+  magical: "music/mountaindweller-magical-sparkling-orchestral-music-192725.mp3",
+  chill: "music/loksii-no-copyright-music-211881.mp3",
+  playful: "music/soundsurfer-playful-577784.mp3",
+  asmr: "music/fleshy-goo-movement-joshua-chivers-2-2-00-10.mp3",
+};
+function stopMusic(){
+  musicPlaying = false;
+  const audio = document.getElementById("bgAudio");
+  if(audio){ audio.pause(); audio.currentTime = 0; }
+}
+function changeMusic(preset){
+  stopMusic();
+  if(preset==="off"){ try{ localStorage.setItem("sv-music","off"); }catch(e){} return; }
+  if(!REAL_TRACKS[preset]) return;
+  const audio = document.getElementById("bgAudio");
+  audio.src = REAL_TRACKS[preset];
+  audio.volume = 0.45;
+  audio.play().then(()=>{
+    musicPlaying = true;
+    try{ localStorage.setItem("sv-music", preset); }catch(e){}
+  }).catch(()=>{ /* blocked until user gesture, fine */ });
+}
+(function initMusicSelect(){
+  try{
+    const saved = localStorage.getItem("sv-music");
+    const sel = document.getElementById("musicSelect");
+    if(saved && saved!=="off" && sel){
+      sel.value = saved;
+      // don't autoplay without a user gesture — browsers block it anyway.
+      // user just needs to reselect once, or we could wait for first click:
+      document.addEventListener("click", function once(){
+        changeMusic(saved);
+        document.removeEventListener("click", once);
+      }, {once:true});
+    }
+  }catch(e){}
+})();
+
+/* ============ SPARKLE CURSOR TRAIL ============ */
+let lastSparkle = 0;
+document.addEventListener("mousemove", (e)=>{
+  const now = Date.now();
+  if(now - lastSparkle < 60) return;
+  lastSparkle = now;
+  const s = document.createElement("div");
+  s.className = "cursor-sparkle";
+  s.textContent = ["✨","🫧","💫"][Math.floor(Math.random()*3)];
+  s.style.left = (e.clientX - 6) + "px";
+  s.style.top = (e.clientY - 6) + "px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(), 600);
+});
+
+/* ============ TESTIMONIAL TICKER ============ */
+function initTicker(){
+  const track = document.getElementById("tickerTrack");
+  const bits = [];
+  PRODUCTS.forEach(p=>{
+    (p.reviews||[]).forEach(r=>{
+      bits.push(`⭐ "${r.text}" — ${r.who} (${p.name})`);
+    });
+  });
+  if(bits.length===0) return;
+  track.innerHTML = bits.map(b=>`<span>${b}</span>`).join("");
+  // slow, readable pace: ~6.5s of scroll time per item in the loop
+  const duration = Math.max(40, bits.length * 6.5);
+  track.style.animationDuration = duration + "s";
+}
+
+/* ============ SURPRISE ME ============ */
+function surpriseMe(){
+  goToFilter("all");
+  setTimeout(()=>{
+    const cards = document.querySelectorAll(".card");
+    if(cards.length===0) return;
+    const pick = cards[Math.floor(Math.random()*cards.length)];
+    pick.scrollIntoView({behavior:"smooth", block:"center"});
+    pick.style.transition = "box-shadow .3s ease, transform .3s ease";
+    pick.style.boxShadow = "0 0 0 5px var(--yellow), 6px 6px 0 var(--ink)";
+    pick.style.transform = "scale(1.03)";
+    setTimeout(()=>{
+      pick.style.boxShadow = "";
+      pick.style.transform = "";
+    }, 1800);
+  }, 200);
+}
+
+/* ============ MINI GAME: SQUISH CHALLENGE ============ */
+let gameActive = false, gameScore = 0, gameTimer = null, gameTimeLeft = 10;
+function startGame(){
+  if(gameActive) return;
+  gameActive = true;
+  gameScore = 0; gameTimeLeft = 10;
+  document.getElementById("gameScore").textContent = "0";
+  document.getElementById("gameTime").textContent = "10";
+  document.getElementById("gameStartBtn").disabled = true;
+  document.getElementById("gameStartBtn").textContent = "Squishing... 🟢";
+  gameTimer = setInterval(()=>{
+    gameTimeLeft--;
+    document.getElementById("gameTime").textContent = gameTimeLeft;
+    if(gameTimeLeft<=0){
+      clearInterval(gameTimer);
+      gameActive = false;
+      document.getElementById("gameStartBtn").disabled = false;
+      document.getElementById("gameStartBtn").textContent = "Squish Again ▶️";
+      let best = 0;
+      try{ best = parseInt(localStorage.getItem("sv-squish-best")||"0"); }catch(e){}
+      if(gameScore > best){
+        best = gameScore;
+        try{ localStorage.setItem("sv-squish-best", String(best)); }catch(e){}
+      }
+      document.getElementById("gameBest").textContent = best;
+      if(gameScore >= 5){
+        setTimeout(()=>submitLeaderboardScore(gameScore), 300);
+      }
+    }
+  }, 1000);
+}
+function squishBlob(){
+  if(!gameActive) return;
+  gameScore++;
+  document.getElementById("gameScore").textContent = gameScore;
+  const blob = document.getElementById("gameBlob");
+  blob.classList.add("squished");
+  setTimeout(()=>blob.classList.remove("squished"), 90);
+}
+(function initGameBest(){
+  try{
+    const el = document.getElementById("gameBest");
+    if(el) el.textContent = localStorage.getItem("sv-squish-best")||"0";
+  }catch(e){}
+})();
 
 /* ============ DARK MODE ============ */
 function toggleDark(){
@@ -875,6 +1363,7 @@ function renderQuiz(){
       <div class="quiz-result-emoji">${r.emoji}</div>
       <div class="quiz-q">You're ${r.name}!</div>
       <p style="font-size:.85rem;line-height:1.7;margin-bottom:10px;">${r.desc}</p>
+      <button class="quiz-restart" onclick="downloadQuizCard('${r.name.replace(/'/g,"\\'")}','${r.emoji}','${r.desc.replace(/'/g,"\\'")}')" style="background:var(--pink);margin-right:8px;">📥 Download my result</button>
       <button class="quiz-restart" onclick="restartQuiz()">Take again 🔄</button>`;
     return;
   }
@@ -908,7 +1397,10 @@ async function trackOrder(e){
       return;
     }
     matches.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
-    results.innerHTML = matches.map(o=>`
+    const totalSpent = matches.reduce((sum,o)=> sum + (o.total||0), 0);
+    const points = Math.floor(totalSpent); // 1 point per AED spent
+    const pointsHtml = `<div class="points-badge">🎟️ ${points} loyalty points earned</div>`;
+    results.innerHTML = pointsHtml + matches.map(o=>`
       <div class="track-order-card">
         <b>${o.dateLabel || ""}</b> — ${o.total} AED<br>
         ${(o.order||"").replace(/\n/g,"<br>")}<br>
@@ -917,6 +1409,34 @@ async function trackOrder(e){
   }catch(err){
     results.innerHTML = `<p style="font-size:.8rem;margin-top:12px;">Hmm, couldn't reach the order database. Check your connection!</p>`;
   }
+}
+
+/* ============ WIZARD ACCEPTANCE LETTER ============ */
+function showNamePrompt(){
+  document.getElementById("namePrompt").classList.add("show");
+}
+function revealEnvelope(){
+  const name = document.getElementById("letterName").value.trim() || "Squisher";
+  const body = `We are pleased to inform you that you have been accepted into the Butterbeer Brewing House of SlimeVille Academy of Squish &amp; Sorcery. Enclosed (metaphorically) is a full inventory of required equipment: one (1) jar, one (1) spoon for stirring not eating, and an unshakeable love of anything that smells like a bakery.<br><br>Term begins the moment you add Butterbeer Brew to your jar. We await your owl — or more realistically, your order — by no later than the next full moon.<br><br>Two founders built this whole realm from a shared notes app full of half-finished slime ideas and one very persistent Harry Potter obsession. Welcome to the club, ${name}.`;
+  document.getElementById("letterBody").innerHTML = body;
+  document.getElementById("letterSig").innerHTML = "Yours in squish and sorcery,<br><b>Professor Amy</b>, Headmistress of Squish 🇦🇪<br><b>Professor Imany</b>, Deputy Headmistress of Sorcery 🇩🇪";
+  document.getElementById("envelopeWrap").classList.add("show");
+  document.getElementById("envelope").classList.remove("open");
+  document.getElementById("parchment").classList.remove("show");
+  setTimeout(()=>{
+    document.getElementById("envelopeWrap").scrollIntoView({behavior:"smooth", block:"center"});
+  }, 100);
+}
+function openEnvelope(){
+  const env = document.getElementById("envelope");
+  env.classList.add("open");
+  setTimeout(()=>{
+    document.getElementById("parchment").classList.add("show");
+  }, 400);
+}
+function closeEnvelope(){
+  document.getElementById("parchment").classList.remove("show");
+  document.getElementById("envelope").classList.remove("open");
 }
 
 function fireConfetti(){
@@ -972,26 +1492,40 @@ function cartSubtotal(){
 }
 function cartTotal(){
   const delivery = appliedPromo?.type==="free_delivery" ? 0 : DELIVERY_FEE;
-  return cartSubtotal() + (cartSubtotal()>0 ? delivery : 0);
+  let subtotal = cartSubtotal();
+  if(appliedPromo?.type==="percent"){
+    subtotal = subtotal - (subtotal * appliedPromo.percent / 100);
+  }
+  return subtotal + (cartSubtotal()>0 ? delivery : 0);
 }
 
-function applyPromo(){
-  const code = (document.getElementById("promoInput")?.value||"").trim().toUpperCase();
+function applyPromoCode(code, silent){
+  code = (code||"").trim().toUpperCase();
   const msg = document.getElementById("promoMsg");
-  if(!code){ msg.style.color="var(--pink)"; msg.textContent="type a code first! 🏷️"; return; }
+  if(!code){ if(msg && !silent){ msg.style.color="var(--pink)"; msg.textContent="type a code first! 🏷️"; } return false; }
   if(PROMO_CODES[code]){
     appliedPromo = {...PROMO_CODES[code], code};
-    msg.style.color="var(--lime-dark)";
-    msg.textContent = `✅ ${appliedPromo.label} applied!`;
+    try{ localStorage.setItem("sv-active-promo", code); }catch(e){}
+    if(msg){ msg.style.color="var(--lime-dark)"; msg.textContent = `✅ ${appliedPromo.label} applied!`; }
     const del = appliedPromo.type==="free_delivery" ? "FREE 🎉" : DELIVERY_FEE+" AED";
     document.getElementById("deliveryAmt") && (document.getElementById("deliveryAmt").textContent = del);
     document.getElementById("totalAmt") && (document.getElementById("totalAmt").textContent = cartTotal()+" AED");
     document.getElementById("checkoutTotal") && (document.getElementById("checkoutTotal").textContent = cartTotal());
+    return true;
   } else {
     appliedPromo = null;
-    msg.style.color="var(--pink)";
-    msg.textContent = `❌ "${code}" doesn't exist — check your code!`;
+    if(msg && !silent){ msg.style.color="var(--pink)"; msg.textContent = `❌ "${code}" doesn't exist — check your code!`; }
+    return false;
   }
+}
+function applyPromo(){
+  const code = document.getElementById("promoInput")?.value || "";
+  applyPromoCode(code, false);
+}
+function removePromo(){
+  appliedPromo = null;
+  try{ localStorage.removeItem("sv-active-promo"); }catch(e){}
+  renderCart();
 }
 
 function openCart(){ renderCart();
@@ -1049,12 +1583,20 @@ function renderCart(){
   }
 
   // PROMO CODE
-  const promoHtml = `
+  const promoHtml = appliedPromo ? `
+  <div style="margin-bottom:10px">
+    <div style="font-family:'Fredoka One',cursive;font-size:.75rem;margin-bottom:5px">🏷️ promo code</div>
+    <div style="background:var(--lime);border:3px solid var(--ink);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:'Fredoka One',cursive;font-size:.75rem;">✅ ${appliedPromo.code} — ${appliedPromo.label}</span>
+      <button type="button" onclick="removePromo()" style="background:none;border:none;font-size:.9rem;cursor:pointer;">✕</button>
+    </div>
+    <div id="promoMsg" style="font-family:'Fredoka One',cursive;font-size:.68rem;margin-top:5px"></div>
+  </div>` : `
   <div style="margin-bottom:10px">
     <div style="font-family:'Fredoka One',cursive;font-size:.75rem;margin-bottom:5px">🏷️ promo code</div>
     <div style="display:flex;gap:8px">
       <input id="promoInput" placeholder="enter code..." style="flex:1;border:3px solid var(--ink);border-radius:12px;padding:9px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.78rem;background:var(--pink-soft);text-transform:uppercase">
-      <button onclick="applyPromo()" style="font-family:'Fredoka One',cursive;font-size:.72rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:9px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)">Apply</button>
+      <button type="button" onclick="applyPromo()" style="font-family:'Fredoka One',cursive;font-size:.72rem;background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:9px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)">Apply</button>
     </div>
     <div id="promoMsg" style="font-family:'Fredoka One',cursive;font-size:.68rem;margin-top:5px"></div>
   </div>`;
@@ -1123,6 +1665,8 @@ async function submitOrder(e){
     });
     if(!res.ok) throw new Error("send failed");
     cart = {}; updateCount();
+    appliedPromo = null;
+    try{ localStorage.removeItem("sv-active-promo"); }catch(e){}
     document.getElementById("drawerBody").innerHTML = `
       <div class="success">
         <span class="big">🎉🧪🎉</span>
@@ -1171,17 +1715,23 @@ async function subscribeClub(e){
 
 /* ============ CONFETTI ============ */
 function confetti(){
-  const bits = ["💚","💖","✨","🧪","⭐","🫧","💜"];
-  for(let i=0;i<44;i++){
-    const c = document.createElement("span");
-    c.className = "confetti";
-    c.textContent = bits[Math.floor(Math.random()*bits.length)];
-    c.style.left = Math.random()*100+"vw";
-    c.style.animationDuration = (2+Math.random()*2.4)+"s";
-    c.style.animationDelay = (Math.random()*0.7)+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),5200);
-  }
+  const bits = ["💚","💖","✨","🧪","⭐","🫧","💜","🎉","🌟"];
+  const burst = (count, delayBase)=>{
+    for(let i=0;i<count;i++){
+      const c = document.createElement("span");
+      c.className = "confetti";
+      c.textContent = bits[Math.floor(Math.random()*bits.length)];
+      c.style.left = Math.random()*100+"vw";
+      c.style.fontSize = (0.8+Math.random()*0.9)+"rem";
+      c.style.animationDuration = (2+Math.random()*2.4)+"s";
+      c.style.animationDelay = (delayBase + Math.random()*0.7)+"s";
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),6200);
+    }
+  };
+  burst(60, 0);
+  burst(50, 0.5);
+  burst(40, 1.0);
 }
 </script>
 </body>
