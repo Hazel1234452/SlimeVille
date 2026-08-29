@@ -48,6 +48,21 @@
   .page{max-width:820px;margin:0 auto;padding:16px}
   .hidden{display:none}
   .box{background:var(--white);border:3.5px solid var(--ink);border-radius:22px;padding:20px;box-shadow:4px 4px 0 var(--ink);margin-bottom:18px}
+  .chat-layout{display:flex;gap:14px;min-height:420px}
+  .chat-list{width:200px;flex-shrink:0;border-right:2.5px solid var(--ink);overflow-y:auto;max-height:460px}
+  .chat-thread{padding:10px 8px;border-bottom:1.5px solid #eee;cursor:pointer;border-radius:8px}
+  .chat-thread.active{background:var(--pink-soft)}
+  .chat-thread .ct-name{font-weight:bold;font-size:.8rem}
+  .chat-thread .ct-preview{font-size:.68rem;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chat-thread .ct-unread{display:inline-block;background:var(--pink);color:#fff;border-radius:999px;font-size:.62rem;padding:1px 7px;margin-left:4px}
+  .chat-window{flex:1;display:flex;flex-direction:column}
+  .chat-messages{flex:1;overflow-y:auto;max-height:380px;padding:8px;display:flex;flex-direction:column;gap:8px}
+  .chat-bubble{max-width:75%;padding:8px 12px;border-radius:14px;font-size:.8rem;line-height:1.5}
+  .chat-bubble.customer{align-self:flex-start;background:#F0F0F0}
+  .chat-bubble.owner{align-self:flex-end;background:var(--pink);color:#fff}
+  .chat-bubble .ct-time{display:block;font-size:.6rem;opacity:.6;margin-top:3px}
+  .chat-input-row{display:flex;gap:8px;margin-top:10px}
+  .chat-input-row input{flex:1;border:2.5px solid var(--ink);border-radius:12px;padding:9px 12px;font-family:inherit}
   .box h3{font-size:1.05rem;color:var(--pink);margin-bottom:6px}
   .box .hint{font-weight:700;font-size:.7rem;color:var(--purple);margin-bottom:14px;line-height:1.7}
   label{font-family:'Fredoka One',cursive;font-size:.72rem;display:block;margin:10px 0 4px}
@@ -162,6 +177,7 @@
   <button class="tab" onclick="showPage('gallery',this)">🖼️ Gallery</button>
   <button class="tab" onclick="showPage('collab',this)">💜 Collab Drop</button>
   <button class="tab" onclick="showPage('activity',this)">📋 Activity Log</button>
+  <button class="tab" onclick="showPage('chat',this)">💬 Live Chat</button>
   <button class="tab" onclick="showPage('export',this)">📤 Publish</button>
 </nav>
 
@@ -186,6 +202,30 @@
     <div class="box">
       <h3>📋 Recent Activity</h3>
       <div id="dashActivity"></div>
+    </div>
+    <div class="box">
+      <h3>🎮 Squish Game Leaderboard</h3>
+      <p class="hint">Live scores from customers playing the Squish Challenge on the site.</p>
+      <div id="dashLeaderboard" style="margin-bottom:12px"></div>
+      <button class="btn pink" onclick="clearLeaderboard()">🗑️ Clear Leaderboard</button>
+    </div>
+  </section>
+
+  <!-- LIVE CHAT -->
+  <section id="page-chat" class="hidden">
+    <div class="box">
+      <h3>💬 Live Chat</h3>
+      <p class="hint">Customer messages from slimeville.fun land here in real time.</p>
+      <div class="chat-layout">
+        <div class="chat-list" id="chatThreadList"></div>
+        <div class="chat-window">
+          <div class="chat-messages" id="chatMessages"><p class="hint">Select a conversation ←</p></div>
+          <div class="chat-input-row">
+            <input id="chatReplyInput" placeholder="type a reply...">
+            <button class="btn pink" onclick="sendOwnerReply()">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -309,11 +349,12 @@ const FLAVORS = [
   {id:"recess", name:"Recess", emoji:"📚"},
   {id:"back-to-school-bundle", name:"Back to School Bundle", emoji:"🎒"},
   {id:"world-tour-bundle", name:"World Tour Bundle", emoji:"🌍"},
+  {id:"butterbeer-brew", name:"Butterbeer Brew", emoji:"🍺"},
 ];
 
 let canSave = true;
 let DB = {
-  stock: {"strawberry-butter":"instock","bubblegum-cloud":"instock","mango-tango":"instock","cotton-candy-crunch":"instock","choco-brownie-butter":"instock","peach-bliss":"instock","cookies-and-cream":"limited","karak-cloud":"instock","miles-apart":"limited","paradise-found":"instock","first-day":"instock","after-class":"instock","study-sesh":"instock","recess":"instock","back-to-school-bundle":"instock","world-tour-bundle":"instock"},
+  stock: {"strawberry-butter":"instock","bubblegum-cloud":"instock","mango-tango":"instock","cotton-candy-crunch":"instock","choco-brownie-butter":"instock","peach-bliss":"instock","cookies-and-cream":"limited","karak-cloud":"instock","miles-apart":"limited","paradise-found":"instock","first-day":"instock","after-class":"instock","study-sesh":"instock","recess":"instock","back-to-school-bundle":"instock","world-tour-bundle":"instock","butterbeer-brew":"limited"},
   gallery: [],
   collab: {name:"",texture:"",scent:"",desc:"",status:"secret"},
   activity: [],
@@ -384,11 +425,12 @@ function logActivity(text){
 
 /* ---------- tabs ---------- */
 function showPage(p, btn){
-  ["dash","orders","club","stock","gallery","collab","activity","export"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
+  ["dash","orders","club","stock","gallery","collab","activity","export","chat"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   btn.classList.add("active");
   if(p==="activity") renderActivity();
-  if(p==="dash") renderDash();
+  if(p==="dash"){ renderDash(); loadDashLeaderboard(); }
+  if(p==="chat"){ loadChatThreads(); renderChatMessages(); }
 }
 
 /* ---------- stock ---------- */
@@ -431,6 +473,123 @@ async function refreshLiveData(){
     console.error("Couldn't reach the database:", e);
   }
 }
+
+/* ---------- squish leaderboard ---------- */
+async function loadDashLeaderboard(){
+  const el = document.getElementById("dashLeaderboard");
+  if(!el) return;
+  try{
+    const res = await fetch(FIREBASE_URL + "/leaderboard.json");
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p class='hint'>No scores yet.</p>"; return; }
+    const rows = Object.values(data).sort((a,b)=>b.score-a.score).slice(0,10);
+    el.innerHTML = rows.map((r,i)=>`<div style="padding:5px 0;font-size:.85rem">${["🥇","🥈","🥉"][i]||(i+1)+"."} ${r.name} — <b>${r.score}</b></div>`).join("");
+  }catch(e){
+    el.innerHTML = "<p class='hint'>Couldn't reach the database.</p>";
+  }
+}
+async function clearLeaderboard(){
+  if(!confirm("Clear ALL squish leaderboard scores? This can't be undone.")) return;
+  try{
+    await fetch(FIREBASE_URL + "/leaderboard.json", { method:"DELETE" });
+    loadDashLeaderboard();
+    logActivity("Cleared the squish leaderboard 🎮");
+  }catch(e){
+    alert("Couldn't clear it — check your internet!");
+  }
+}
+
+/* ---------- live chat ---------- */
+let chatThreads = [];
+let activeChatId = null;
+async function loadChatThreads(){
+  const el = document.getElementById("chatThreadList");
+  if(!el) return;
+  try{
+    const res = await fetch(FIREBASE_URL + "/chats.json");
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p class='hint' style='padding:10px'>No conversations yet.</p>"; chatThreads = []; return; }
+    chatThreads = Object.entries(data).map(([id,v])=>({id, ...v}));
+    chatThreads.sort((a,b)=>{
+      const aLast = a.messages ? Math.max(...Object.values(a.messages).map(m=>new Date(m.at).getTime())) : 0;
+      const bLast = b.messages ? Math.max(...Object.values(b.messages).map(m=>new Date(m.at).getTime())) : 0;
+      return bLast - aLast;
+    });
+    el.innerHTML = chatThreads.map(t=>{
+      const msgs = t.messages ? Object.values(t.messages) : [];
+      const last = msgs.length ? msgs[msgs.length-1] : null;
+      const unread = msgs.filter(m=>m.from==="customer" && !m.read).length;
+      return `<div class="chat-thread ${t.id===activeChatId?'active':''}" onclick="openChatThread('${t.id}')">
+        <div class="ct-name">${t.name || "Guest"} ${t.prefersOwner && t.prefersOwner!=="either" ? `<span style="font-size:.6rem;color:#7C3AED">→ ${t.prefersOwner}</span>` : ""} ${unread>0?`<span class="ct-unread">${unread}</span>`:""}</div>
+        <div class="ct-preview">${last ? last.text : "no messages"}</div>
+      </div>`;
+    }).join("");
+  }catch(e){
+    el.innerHTML = "<p class='hint' style='padding:10px'>Couldn't reach the database.</p>";
+  }
+}
+function openChatThread(id){
+  activeChatId = id;
+  loadChatThreads();
+  renderChatMessages();
+  markThreadRead(id);
+}
+function renderChatMessages(){
+  const el = document.getElementById("chatMessages");
+  const thread = chatThreads.find(t=>t.id===activeChatId);
+  if(!thread){ el.innerHTML = "<p class='hint'>Select a conversation ←</p>"; return; }
+  const msgs = thread.messages ? Object.values(thread.messages).sort((a,b)=>new Date(a.at)-new Date(b.at)) : [];
+  el.innerHTML = msgs.map(m=>`
+    <div class="chat-bubble ${m.from==='owner'?'owner':'customer'}">
+      ${m.text}
+      <span class="ct-time">${new Date(m.at).toLocaleString()}</span>
+    </div>`).join("") || "<p class='hint'>No messages yet.</p>";
+  el.scrollTop = el.scrollHeight;
+}
+async function markThreadRead(id){
+  const thread = chatThreads.find(t=>t.id===id);
+  if(!thread || !thread.messages) return;
+  const updates = {};
+  Object.entries(thread.messages).forEach(([mid,m])=>{
+    if(m.from==="customer" && !m.read) updates[mid] = {...m, read:true};
+  });
+  if(Object.keys(updates).length===0) return;
+  try{
+    await fetch(FIREBASE_URL + `/chats/${id}/messages.json`, {
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(updates)
+    });
+  }catch(e){}
+}
+async function sendOwnerReply(){
+  const input = document.getElementById("chatReplyInput");
+  const text = input.value.trim();
+  if(!text || !activeChatId) return;
+  input.value = "";
+  try{
+    await fetch(FIREBASE_URL + `/chats/${activeChatId}/messages.json`, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ from:"owner", text, at:new Date().toISOString(), read:true })
+    });
+    await loadChatThreads();
+    renderChatMessages();
+  }catch(e){
+    alert("Couldn't send — check your internet!");
+  }
+}
+let chatPollInterval = null;
+function startChatPolling(){
+  if(chatPollInterval) return;
+  chatPollInterval = setInterval(()=>{
+    if(document.getElementById("page-chat") && !document.getElementById("page-chat").classList.contains("hidden")){
+      loadChatThreads();
+      if(activeChatId) renderChatMessages();
+    }
+  }, 8000);
+}
+startChatPolling();
 
 /* ---------- orders ---------- */
 let pick = {};
@@ -636,6 +795,7 @@ function generateExport(){
 /* ---------- render all ---------- */
 function renderAll(){
   renderStock(); renderGallery(); renderCollab(); renderActivity(); renderPick(); renderOrders(); renderDash();
+  loadDashLeaderboard();
 }
 </script>
 </body>
