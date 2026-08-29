@@ -21,6 +21,13 @@
   html.dark body{background:var(--page-bg)}
   html.dark .card{background:var(--card-bg)}
   html.dark .filter-chip, html.dark .sort-select{background:var(--card-bg);color:var(--text-main)}
+  /* ============ SEASONAL THEMES ============ */
+  html.season-newyear .jar-btn, html.season-newyear .chat-fab{box-shadow:4px 4px 0 #FFD23F, 0 0 14px rgba(255,210,63,.6)}
+  html.season-valentines .hero{background:linear-gradient(180deg,#FFD9E8,var(--pink-soft))}
+  html.season-halloween .hero{background:linear-gradient(180deg,#2b1a3a,var(--pink-soft))}
+  html.season-nationalday .jar-btn{background:linear-gradient(135deg,#CE1126,#009739)}
+  html.season-christmas .jar-btn, html.season-christmas .chat-fab{background:#146B3A}
+  .season-banner{text-align:center;font-family:'Fredoka One',cursive;font-size:.75rem;padding:8px;background:var(--yellow);border-bottom:3px solid var(--ink)}
   .dark-toggle{font-family:'Fredoka One',cursive;font-size:.7rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
   .music-select{font-family:'Fredoka One',cursive;font-size:.7rem;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
   .quiz-box{max-width:560px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
@@ -98,6 +105,8 @@
   .lb-row{font-family:'Comfortaa',cursive;font-size:.8rem;font-weight:700;padding:4px 0}
   .notify-btn{font-family:'Fredoka One',cursive;font-size:.68rem;background:var(--purple);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;margin-top:8px}
   .visitor-badge{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:.7rem;box-shadow:2px 2px 0 var(--ink)}
+  .activity-toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:80;background:var(--white);border:3px solid var(--ink);border-radius:999px;padding:9px 18px;font-family:'Fredoka One',cursive;font-size:.7rem;box-shadow:3px 3px 0 var(--ink);transition:transform .5s ease;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+  .activity-toast.show{transform:translateX(-50%) translateY(0)}
   .visitor-dot{width:8px;height:8px;background:#4CD964;border-radius:50%;animation:pulse-dot 1.4s ease-in-out infinite}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
   /* ============ SPARKLE CURSOR ============ */
@@ -241,6 +250,33 @@
 
   /* ---------- CART BUTTON ---------- */
   .jar-btn{position:fixed;bottom:20px;right:20px;z-index:60;background:var(--pink);border:4px solid var(--ink);border-radius:50%;width:68px;height:68px;font-size:1.8rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center}
+  /* ============ LIVE CHAT WIDGET ============ */
+  .chat-fab{position:fixed;bottom:20px;left:20px;z-index:60;background:var(--purple);border:4px solid var(--ink);border-radius:50%;width:60px;height:60px;font-size:1.5rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center}
+  .chat-fab-dot{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:#FF3B3B;border:2.5px solid var(--ink);border-radius:50%}
+  .chat-widget{position:fixed;bottom:92px;left:20px;z-index:65;width:320px;max-width:calc(100vw - 40px);height:420px;max-height:60vh;background:var(--card-bg);border:4px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--ink);display:none;flex-direction:column;overflow:hidden}
+  .chat-widget.open{display:flex}
+  .chat-widget-header{background:var(--purple);color:#fff;font-family:'Fredoka One',cursive;font-size:.85rem;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+  .chat-widget-header button{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer}
+  .chat-widget-body{flex:1;overflow-y:auto;padding:12px}
+  .chat-name-gate{text-align:center;padding:14px 4px}
+  .chat-faq-screen{padding:6px 4px}
+  .chat-faq-intro{font-size:.78rem;text-align:center;margin-bottom:10px;color:var(--text-main)}
+  .chat-faq-list{display:flex;flex-direction:column;gap:6px}
+  .chat-faq-btn{text-align:left;background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:12px;padding:9px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.75rem;cursor:pointer;color:var(--text-main)}
+  .chat-faq-answer{background:var(--white);border:2.5px solid var(--purple);border-radius:12px;padding:10px 12px;font-size:.75rem;margin-top:10px;line-height:1.6;color:var(--text-main)}
+  .chat-owner-picker{text-align:center;padding:20px 4px}
+  .chat-owner-picker p{font-size:.82rem;margin-bottom:14px;color:var(--text-main)}
+  .owner-pick-btns{display:flex;gap:10px;justify-content:center}
+  .owner-pick-btn{font-family:'Fredoka One',cursive;font-size:.8rem;background:var(--purple);color:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 20px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+  .chat-name-gate p{font-size:.8rem;margin-bottom:10px;color:var(--text-main)}
+  .chat-name-gate input{width:100%;padding:9px 12px;border:2.5px solid var(--ink);border-radius:10px;font-family:'Comfortaa',cursive;margin-bottom:10px}
+  .chat-widget-messages{display:flex;flex-direction:column;gap:8px}
+  .cw-bubble{max-width:78%;padding:8px 12px;border-radius:14px;font-size:.78rem;line-height:1.5}
+  .cw-bubble.me{align-self:flex-end;background:var(--pink);color:#fff}
+  .cw-bubble.them{align-self:flex-start;background:var(--pink-soft);color:var(--text-main)}
+  .chat-widget-input-row{display:flex;border-top:2.5px solid var(--ink);padding:8px}
+  .chat-widget-input-row input{flex:1;border:none;padding:8px 10px;font-family:'Comfortaa',cursive;font-size:.8rem;background:transparent;color:var(--text-main)}
+  .chat-widget-input-row button{background:var(--purple);color:#fff;border:none;border-radius:10px;padding:8px 14px;cursor:pointer;font-size:1rem}
   .jar-btn .count{position:absolute;top:-6px;right:-6px;background:var(--yellow);border:3px solid var(--ink);border-radius:999px;min-width:28px;height:28px;font-family:'Fredoka One',cursive;font-size:.85rem;display:flex;align-items:center;justify-content:center}
   .jar-btn.pop{animation:pop .3s ease}
   @keyframes pop{50%{transform:scale(1.2) rotate(-8deg)}}
@@ -274,6 +310,8 @@
   .form label{font-family:'Fredoka One',cursive;font-size:.78rem}
   .form input,.form textarea,.form select{border:3px solid var(--ink);border-radius:14px;padding:11px 14px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.85rem;background:var(--pink-soft);width:100%}
   .form input:focus,.form textarea:focus{outline:3px solid var(--purple)}
+  .gift-check{display:flex;align-items:center;gap:8px;font-family:'Fredoka One',cursive;font-size:.8rem;background:var(--pink-soft);border:3px solid var(--ink);border-radius:14px;padding:11px 14px;cursor:pointer}
+  .gift-check input{width:auto!important}
   .checkout{font-family:'Fredoka One',cursive;font-size:1rem;background:var(--pink);color:var(--white);border:4px solid var(--ink);border-radius:999px;padding:14px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);margin-top:4px;transition:all .12s}
   .checkout:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
   .checkout:disabled{opacity:.6}
@@ -304,6 +342,27 @@
 
   /* ---------- YOUTUBE ---------- */
   .yt-box{max-width:640px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:28px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .ig-box{max-width:520px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:28px;padding:28px 26px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .ig-icon{font-size:2.4rem;margin-bottom:8px}
+  .ig-box h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:8px}
+  .ig-box p{font-size:.82rem;color:var(--purple);line-height:1.7;margin-bottom:18px}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+  .ig-tile{aspect-ratio:1;border-radius:14px;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.8rem}
+  .ig-follow{display:inline-block;background:var(--purple);color:#fff;font-family:'Fredoka One',cursive;font-size:.8rem;padding:10px 20px;border-radius:999px;text-decoration:none;border:3px solid var(--ink)}
+  .builder-box{max-width:420px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:24px;box-shadow:6px 6px 0 var(--ink)}
+  .builder-preview{width:120px;height:120px;border-radius:50%;margin:0 auto 20px;border:4px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:2.6rem;position:relative;overflow:hidden;transition:background .3s ease}
+  .builder-field{margin-bottom:16px}
+  .builder-label{font-family:'Fredoka One',cursive;font-size:.78rem;margin-bottom:8px}
+  .builder-swatches{display:flex;gap:8px;flex-wrap:wrap}
+  .builder-swatch{width:34px;height:34px;border-radius:50%;border:3px solid var(--ink);cursor:pointer}
+  .builder-swatch.selected{box-shadow:0 0 0 3px var(--purple)}
+  .builder-chips{display:flex;gap:8px;flex-wrap:wrap}
+  .builder-chip{font-family:'Fredoka One',cursive;font-size:.68rem;background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:999px;padding:7px 13px;cursor:pointer}
+  .builder-chip.selected{background:var(--lime)}
+  .builder-select{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.8rem;background:var(--pink-soft)}
+  .referral-box{max-width:420px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:24px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+  .referral-code{font-family:'Fredoka One',cursive;font-size:1.1rem;background:var(--pink-soft);border:3px dashed var(--purple);border-radius:14px;padding:14px;margin-bottom:16px;letter-spacing:1px}
+  .referral-note{font-size:.75rem;color:var(--purple);line-height:1.7;margin-top:14px}
   .yt-icon{font-size:2.6rem}
   .yt-box h2{font-size:clamp(1.1rem,4.4vw,1.5rem);margin-top:8px}
   .yt-box p{font-size:.85rem;line-height:1.8;font-weight:600;margin-top:12px}
@@ -331,6 +390,10 @@
   footer .flogo .slime{color:var(--lime)} footer .flogo .ville{color:var(--pink)}
   footer p{font-size:.75rem;font-weight:700;margin-top:10px;opacity:.85}
   .pin{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:var(--pink);color:var(--white);font-family:'Fredoka One',cursive;font-size:.85rem;padding:10px 20px;border-radius:999px;border:3px solid var(--white);text-decoration:none}
+  .pin-qr-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:16px}
+  .pin-qr{border-radius:12px;border:3px solid var(--white)}
+  #pinQrCode{border-radius:12px;overflow:hidden;border:3px solid var(--white);display:inline-block;line-height:0}
+  .pin-qr-wrap span{font-family:'Fredoka One',cursive;font-size:.68rem;color:#C9D6C9}
 
   .confetti{position:fixed;top:-12px;font-size:1.15rem;z-index:200;animation:fall linear forwards;pointer-events:none}
   @keyframes fall{to{transform:translateY(108vh) rotate(680deg)}}
@@ -367,6 +430,9 @@
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
+<!-- ═══ LIVE ACTIVITY TOAST ═══ -->
+<div class="activity-toast" id="activityToast"></div>
+
 <!-- ═══ LOADING SCREEN ═══ -->
 <div id="loader">
   <img src="logo.png" alt="SlimeVille" class="lload">
@@ -385,7 +451,7 @@
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
   <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
   <nav class="nav">
-    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#wizard">🧙 Butterbeer</a><a href="#quiz">🎨 Slime Quiz</a><a href="#minigame">🎮 Squish Game</a><a href="#tracker">📦 Track Order</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#wizard">🧙 Butterbeer</a><a href="#builder">🎨 Build a Jar</a><a href="#quiz">🎨 Slime Quiz</a><a href="#minigame">🎮 Squish Game</a><a href="#tracker">📦 Track Order</a><a href="#referral">🏆 Refer a Friend</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
     <select class="music-select" id="musicSelect" onchange="changeMusic(this.value)">
       <option value="off">🎵 Music: Off</option>
       <option value="magical">🪄 Magical</option>
@@ -496,6 +562,35 @@
   </div>
 </section>
 
+<!-- ═══ CUSTOM JAR BUILDER ═══ -->
+<section class="section" id="builder">
+  <h2 class="sec-title">Build Your Own Jar 🎨</h2>
+  <p class="sec-sub">mix your own color, texture, scent &amp; add-ins — 25 AED</p>
+  <div class="builder-box">
+    <div class="builder-preview" id="builderPreview">
+      <span class="sprinkles" id="builderSprinkles"></span>
+      <span id="builderEmoji">🫙</span>
+    </div>
+    <div class="builder-field">
+      <div class="builder-label">🎨 color</div>
+      <div class="builder-swatches" id="colorSwatches"></div>
+    </div>
+    <div class="builder-field">
+      <div class="builder-label">🧪 texture</div>
+      <div class="builder-chips" id="textureChips"></div>
+    </div>
+    <div class="builder-field">
+      <div class="builder-label">👃 scent</div>
+      <select class="builder-select" id="scentSelect"></select>
+    </div>
+    <div class="builder-field">
+      <div class="builder-label">✨ add-ins (pick up to 3)</div>
+      <div class="builder-chips" id="addinChips"></div>
+    </div>
+    <button class="wizard-add-btn" style="width:100%;margin-top:6px" onclick="addCustomJarToCart()">Add my custom jar — 25 AED 🫙</button>
+  </div>
+</section>
+
 <!-- ═══ SLIME QUIZ ═══ -->
 <section class="section" id="quiz">
   <h2 class="sec-title">Which SlimeVille Slime Are You? 🎨</h2>
@@ -572,6 +667,24 @@
         <button class="parchment-close" onclick="closeEnvelope()">Close scroll</button>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══ INSTAGRAM TEASER ═══ -->
+<section class="section" id="instagram">
+  <div class="ig-box">
+    <div class="ig-icon">📸</div>
+    <h2>SlimeVille on Instagram — launching soon</h2>
+    <p>We're not on Instagram yet, but the grid is already planned in our heads. Here's a sneak peek of the vibe once we launch 👀</p>
+    <div class="ig-grid">
+      <div class="ig-tile" style="background:linear-gradient(135deg,#FFD9E8,#FF8FB8)">🍓</div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#F0DCB8,#D8B88A)">☕</div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#7FE0D6,#1F6E7A)">🌊</div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#E4D9FA,#C6AEEF)">☁️</div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#FFF3B0,#F7DE6B)">✏️</div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#F3EDE4,#5B1E22)">✈️</div>
+    </div>
+    <a href="https://pinterest.com/slimevilleslimes" target="_blank" rel="noopener" class="ig-follow">📌 follow us on Pinterest till then</a>
   </div>
 </section>
 
@@ -657,6 +770,17 @@
   </div>
 </section>
 
+<!-- ═══ REFERRAL PROGRAM ═══ -->
+<section class="section" id="referral">
+  <h2 class="sec-title">Refer a Friend 🏆</h2>
+  <p class="sec-sub">you both get 10% off — share your code below</p>
+  <div class="referral-box">
+    <div class="referral-code" id="referralCode">loading...</div>
+    <button class="wizard-add-btn" onclick="copyReferralLink()">📋 Copy my referral link</button>
+    <p class="referral-note">whoever uses your link gets 10% off their first order automatically — and once they order, tell us your code so we can hook you up too 💚</p>
+  </div>
+</section>
+
 <!-- ═══ SLIME CLUB ═══ -->
 <section class="club">
   <div class="club-box">
@@ -675,10 +799,49 @@
   <div class="flogo"><span class="slime">Slime</span><span class="ville">Ville</span></div>
   <p>squish • stretch • repeat 💚💖<br>Handmade in Dubai • Dubai delivery 5 AED 🚗</p>
   <a class="pin" href="https://pinterest.com/slimevilleslimes" target="_blank" rel="noopener">📌 Follow us on Pinterest</a>
+  <div class="pin-qr-wrap">
+    <div id="pinQrCode"></div>
+    <span>scan to follow 📌</span>
+  </div>
   <div style="margin-top:22px"><a href="dashboard.html" style="color:#3a3a52;font-size:.62rem;text-decoration:none;font-weight:700;opacity:.6" title="Co-founder access">⚙️ owner login</a></div>
 </footer>
 
 <button class="jar-btn" id="jarBtn" onclick="openCart()" aria-label="Open your jar (cart)">🫙<span class="count" id="count">0</span></button>
+
+<!-- ═══ LIVE CHAT BUBBLE ═══ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChatWidget()" aria-label="Chat with us">💬<span class="chat-fab-dot" id="chatFabDot" style="display:none"></span></button>
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-widget-header">
+    <span>💬 Chat with SlimeVille</span>
+    <button onclick="toggleChatWidget()" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-widget-body" id="chatWidgetBody">
+    <div class="chat-faq-screen" id="chatFaqScreen">
+      <p class="chat-faq-intro">hey! 👋 quick answers below, or skip to a real human</p>
+      <div class="chat-faq-list" id="chatFaqList"></div>
+      <div class="chat-faq-answer" id="chatFaqAnswer" style="display:none"></div>
+      <button class="wizard-add-btn" style="width:100%;margin-top:10px" onclick="showOwnerPicker()">Still need help? Text an owner 💬</button>
+    </div>
+    <div class="chat-owner-picker" id="chatOwnerPicker" style="display:none">
+      <p>who do you wanna reach? 💗</p>
+      <div class="owner-pick-btns">
+        <button class="owner-pick-btn" onclick="pickOwner('Amy')">🇦🇪 Amy</button>
+        <button class="owner-pick-btn" onclick="pickOwner('Imany')">🇩🇪 Imany</button>
+      </div>
+    </div>
+    <div class="chat-name-gate" id="chatNameGate" style="display:none">
+      <p id="chatGateIntro">hey! what's your name so we know who's asking? 💌</p>
+      <input id="chatNameInput" placeholder="your name">
+      <button class="wizard-add-btn" onclick="startChatSession()">Start chatting</button>
+    </div>
+    <div class="chat-widget-messages" id="chatWidgetMessages" style="display:none"></div>
+  </div>
+  <div class="chat-widget-input-row" id="chatWidgetInputRow" style="display:none">
+    <input id="chatWidgetInput" placeholder="type a message..." onkeydown="if(event.key==='Enter')sendCustomerMessage()">
+    <button onclick="sendCustomerMessage()">➤</button>
+  </div>
+</div>
+
 
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 <aside class="drawer" id="drawer" aria-label="Your jar">
@@ -689,7 +852,24 @@
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
+function initPinQr(){
+  const el = document.getElementById("pinQrCode");
+  if(!el) return;
+  try{
+    if(typeof QRCode === "undefined"){ el.textContent = "📌 pinterest.com/slimevilleslimes"; return; }
+    new QRCode(el, {
+      text: "https://pinterest.com/slimevilleslimes",
+      width: 140, height: 140,
+      colorDark: "#1E1E2F", colorLight: "#FFE6F1",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }catch(e){
+    el.textContent = "📌 pinterest.com/slimevilleslimes";
+  }
+}
+initPinQr();
 /* ============ CONFIG ============ */
 const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
 const DELIVERY_FEE = 5; // AED, flat Dubai delivery
@@ -1066,6 +1246,24 @@ async function notifyMe(id, btn){
 }
 
 /* ============ LIVE VISITOR COUNTER (simulated) ============ */
+/* ============ FAKE LIVE ACTIVITY TOAST ============ */
+const ACTIVITY_AREAS = ["JLT","Marina","Mirdif","Deira","Al Barsha","Jumeirah","Business Bay","Al Nahda","Downtown","Al Quoz"];
+function showActivityToast(){
+  const toast = document.getElementById("activityToast");
+  if(!toast || PRODUCTS.length===0) return;
+  const p = PRODUCTS[Math.floor(Math.random()*PRODUCTS.length)];
+  const area = ACTIVITY_AREAS[Math.floor(Math.random()*ACTIVITY_AREAS.length)];
+  const mins = 1 + Math.floor(Math.random()*38);
+  toast.textContent = `🛍️ someone in ${area} ordered ${p.name} ${mins} min${mins===1?'':'s'} ago`;
+  toast.classList.add("show");
+  setTimeout(()=> toast.classList.remove("show"), 4200);
+}
+function startActivityToasts(){
+  setTimeout(showActivityToast, 4000);
+  setInterval(showActivityToast, 14000 + Math.random()*8000);
+}
+startActivityToasts();
+
 function initVisitorCounter(){
   const el = document.getElementById("visitorCount");
   if(!el) return;
@@ -1215,6 +1413,105 @@ function initTicker(){
 }
 
 /* ============ SURPRISE ME ============ */
+/* ============ CUSTOM JAR BUILDER ============ */
+const BUILDER_COLORS = [
+  {name:"Pastel Pink", hex:"#FFB6D3"}, {name:"Sky Blue", hex:"#A8D8FF"},
+  {name:"Mint", hex:"#B6F0C7"}, {name:"Lavender", hex:"#D6C2F0"},
+  {name:"Sunset Orange", hex:"#FFC38A"}, {name:"Classic White", hex:"#F5F5F5"},
+];
+const BUILDER_TEXTURES = ["Butter","Cloud","Jelly","Crunch"];
+const BUILDER_SCENTS = ["Strawberry","Vanilla","Coconut","Bubblegum","Coffee","Lavender","Peach","Cotton Candy"];
+const BUILDER_ADDINS = ["Gold Glitter","Foam Beads","Tiny Charms","Sequins","Pearl Beads","Star Sprinkles"];
+let builderState = { color: BUILDER_COLORS[0], texture: "Butter", scent: "Strawberry", addins: [] };
+
+function renderBuilder(){
+  const colorEl = document.getElementById("colorSwatches");
+  if(!colorEl) return;
+  colorEl.innerHTML = BUILDER_COLORS.map(c=>`<div class="builder-swatch ${builderState.color.hex===c.hex?'selected':''}" style="background:${c.hex}" onclick="setBuilderColor('${c.hex}')" title="${c.name}"></div>`).join("");
+  document.getElementById("textureChips").innerHTML = BUILDER_TEXTURES.map(t=>`<div class="builder-chip ${builderState.texture===t?'selected':''}" onclick="setBuilderTexture('${t}')">${t}</div>`).join("");
+  const scentEl = document.getElementById("scentSelect");
+  scentEl.innerHTML = BUILDER_SCENTS.map(s=>`<option value="${s}" ${builderState.scent===s?'selected':''}>${s}</option>`).join("");
+  document.getElementById("addinChips").innerHTML = BUILDER_ADDINS.map(a=>`<div class="builder-chip ${builderState.addins.includes(a)?'selected':''}" onclick="toggleBuilderAddin('${a}')">${a}</div>`).join("");
+  document.getElementById("builderPreview").style.background = builderState.color.hex;
+}
+function setBuilderColor(hex){
+  builderState.color = BUILDER_COLORS.find(c=>c.hex===hex);
+  renderBuilder();
+}
+function setBuilderTexture(t){ builderState.texture = t; renderBuilder(); }
+function toggleBuilderAddin(a){
+  if(builderState.addins.includes(a)){
+    builderState.addins = builderState.addins.filter(x=>x!==a);
+  } else {
+    if(builderState.addins.length>=3){ return; }
+    builderState.addins.push(a);
+  }
+  renderBuilder();
+}
+document.getElementById("scentSelect")?.addEventListener("change", e=>{ builderState.scent = e.target.value; });
+function addCustomJarToCart(){
+  const id = "custom-" + Date.now();
+  const addinsText = builderState.addins.length ? builderState.addins.join(", ") : "no add-ins";
+  const customProduct = {
+    id, name: `Custom Jar (${builderState.color.name})`, emoji:"🫙", price:25,
+    collection:"custom", reviews:[],
+    bg: `linear-gradient(135deg,${builderState.color.hex},${builderState.color.hex})`,
+    texture: builderState.texture, scent: builderState.scent,
+    tagColor:"#7C3AED",
+    desc: `Your own custom mix: ${builderState.color.name} ${builderState.texture.toLowerCase()} slime, ${builderState.scent.toLowerCase()} scented, with ${addinsText}.`,
+    sprinkles: ["✨","🎨","🫙","💫"],
+  };
+  PRODUCTS.push(customProduct);
+  STOCK[id] = "instock";
+  addToCart(id, null);
+  alert(`Added your custom jar to your cart! 🎉\n${customProduct.desc}`);
+}
+renderBuilder();
+
+/* ============ REFERRAL PROGRAM ============ */
+function getOrCreateReferralCode(){
+  try{
+    let code = localStorage.getItem("sv-referral-code");
+    if(!code){
+      code = "SLIME" + Math.random().toString(36).slice(2,6).toUpperCase();
+      localStorage.setItem("sv-referral-code", code);
+    }
+    return code;
+  }catch(e){ return "SLIMEFRIEND"; }
+}
+function initReferral(){
+  const codeEl = document.getElementById("referralCode");
+  if(!codeEl) return;
+  const myCode = getOrCreateReferralCode();
+  codeEl.textContent = myCode;
+  // check if this visitor arrived via someone else's referral link
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+  if(ref && ref !== myCode){
+    try{
+      const alreadyUsed = localStorage.getItem("sv-ref-used");
+      if(!alreadyUsed){
+        localStorage.setItem("sv-ref-used", ref);
+        appliedPromo = { type:"percent", label:"Referral 10% off 🏆", percent:10, code:"REF-"+ref };
+        localStorage.setItem("sv-active-promo-custom", JSON.stringify(appliedPromo));
+      } else {
+        const saved = localStorage.getItem("sv-active-promo-custom");
+        if(saved) appliedPromo = JSON.parse(saved);
+      }
+    }catch(e){}
+  }
+}
+function copyReferralLink(){
+  const myCode = getOrCreateReferralCode();
+  const link = window.location.origin + window.location.pathname + "?ref=" + myCode;
+  navigator.clipboard?.writeText(link).then(()=>{
+    alert("Referral link copied! 📋 Share it with a friend — you both get 10% off.");
+  }).catch(()=>{
+    prompt("Copy this link:", link);
+  });
+}
+initReferral();
+
 function surpriseMe(){
   goToFilter("all");
   setTimeout(()=>{
@@ -1277,6 +1574,178 @@ function squishBlob(){
     if(el) el.textContent = localStorage.getItem("sv-squish-best")||"0";
   }catch(e){}
 })();
+
+/* ============ SEASONAL THEME AUTO-SWITCHER ============ */
+function initSeasonalTheme(){
+  const now = new Date();
+  const m = now.getMonth()+1, d = now.getDate();
+  let season = null, banner = null;
+  if(m===1 && d<=7){ season="newyear"; banner="🎉 New Year, new slime era! ✨"; }
+  else if(m===2 && d>=7 && d<=14){ season="valentines"; banner="💗 Valentine's slimes for your favorite squish buddy"; }
+  else if(m===10 && d>=20){ season="halloween"; banner="🎃 Spooky season slimes incoming..."; }
+  else if((m===11 && d>=25) || (m===12 && d<=3)){ season="nationalday"; banner="🇦🇪 Happy UAE National Day!"; }
+  else if(m===12 && d>=15){ season="christmas"; banner="🎄 Holiday jars, on the house-ish (delivery still 5 AED lol)"; }
+  if(season){
+    document.documentElement.classList.add("season-"+season);
+    const banner_el = document.createElement("div");
+    banner_el.className = "season-banner";
+    banner_el.textContent = banner;
+    document.body.insertBefore(banner_el, document.body.firstChild);
+  }
+}
+initSeasonalTheme();
+
+/* ============ LIVE CHAT WIDGET (customer side) ============ */
+let chatId = null;
+let chatCustomerName = null;
+let chatPollTimer = null;
+
+function getOrCreateChatId(){
+  try{
+    let id = localStorage.getItem("sv-chat-id");
+    if(!id){
+      id = "c" + Date.now() + Math.random().toString(36).slice(2,8);
+      localStorage.setItem("sv-chat-id", id);
+    }
+    return id;
+  }catch(e){
+    return "c" + Date.now();
+  }
+}
+
+const CHAT_FAQS = [
+  { q:"How long does delivery take?", a:"We deliver across Dubai within 1-3 days depending on your area — 5 AED flat delivery fee 🚗" },
+  { q:"Are your slimes safe / non-toxic?", a:"Yep! All our slimes are made with non-toxic, kid-safe ingredients 🛡️💗" },
+  { q:"How do I track my order?", a:"Head to the 📦 Track Order section and pop in the email or WhatsApp number you ordered with!" },
+  { q:"Can I return or exchange a slime?", a:"Since these are handmade & used items we can't accept returns, but message us if something arrived damaged and we'll sort it out 💚" },
+  { q:"What payment methods do you accept?", a:"Cash on delivery or bank transfer — you'll pick at checkout and we confirm on WhatsApp 💳" },
+];
+function renderChatFaqs(){
+  const list = document.getElementById("chatFaqList");
+  if(!list) return;
+  list.innerHTML = CHAT_FAQS.map((f,i)=>`<button class="chat-faq-btn" onclick="showFaqAnswer(${i})">${f.q}</button>`).join("");
+}
+function showFaqAnswer(i){
+  const el = document.getElementById("chatFaqAnswer");
+  el.style.display = "block";
+  el.textContent = CHAT_FAQS[i].a;
+}
+function showOwnerPicker(){
+  document.getElementById("chatFaqScreen").style.display = "none";
+  document.getElementById("chatOwnerPicker").style.display = "block";
+}
+let chatPreferredOwner = null;
+function pickOwner(owner){
+  chatPreferredOwner = owner;
+  try{ localStorage.setItem("sv-chat-owner", owner); }catch(e){}
+  document.getElementById("chatOwnerPicker").style.display = "none";
+  document.getElementById("chatGateIntro").textContent = `got it, connecting you with ${owner}! what's your name? 💌`;
+  document.getElementById("chatNameGate").style.display = "block";
+}
+
+function toggleChatWidget(){
+  const w = document.getElementById("chatWidget");
+  const isOpen = w.classList.toggle("open");
+  if(isOpen){
+    document.getElementById("chatFabDot").style.display = "none";
+    initChatWidget();
+  }
+}
+
+function initChatWidget(){
+  chatId = getOrCreateChatId();
+  let savedName = null, savedOwner = null;
+  try{
+    savedName = localStorage.getItem("sv-chat-name");
+    savedOwner = localStorage.getItem("sv-chat-owner");
+  }catch(e){}
+  document.getElementById("chatFaqScreen").style.display = "none";
+  document.getElementById("chatOwnerPicker").style.display = "none";
+  document.getElementById("chatNameGate").style.display = "none";
+  if(savedName){
+    chatCustomerName = savedName;
+    chatPreferredOwner = savedOwner;
+    document.getElementById("chatWidgetMessages").style.display = "flex";
+    document.getElementById("chatWidgetInputRow").style.display = "flex";
+    loadChatWidgetMessages();
+    startChatWidgetPolling();
+  } else {
+    renderChatFaqs();
+    document.getElementById("chatFaqScreen").style.display = "block";
+    document.getElementById("chatWidgetMessages").style.display = "none";
+    document.getElementById("chatWidgetInputRow").style.display = "none";
+  }
+}
+
+async function startChatSession(){
+  const name = document.getElementById("chatNameInput").value.trim();
+  if(!name) return;
+  chatCustomerName = name;
+  try{ localStorage.setItem("sv-chat-name", name); }catch(e){}
+  try{
+    await fetch(FIREBASE_URL + `/chats/${chatId}.json`, {
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ name, prefersOwner: chatPreferredOwner || "either" })
+    });
+  }catch(e){}
+  document.getElementById("chatNameGate").style.display = "none";
+  document.getElementById("chatWidgetMessages").style.display = "flex";
+  document.getElementById("chatWidgetInputRow").style.display = "flex";
+  loadChatWidgetMessages();
+  startChatWidgetPolling();
+}
+
+async function loadChatWidgetMessages(){
+  const el = document.getElementById("chatWidgetMessages");
+  try{
+    const res = await fetch(FIREBASE_URL + `/chats/${chatId}/messages.json`);
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p style='font-size:.75rem;color:var(--purple);text-align:center'>say hi! 👋</p>"; return; }
+    const msgs = Object.values(data).sort((a,b)=>new Date(a.at)-new Date(b.at));
+    el.innerHTML = msgs.map(m=>`<div class="cw-bubble ${m.from==='customer'?'me':'them'}">${m.text}</div>`).join("");
+    el.scrollTop = el.scrollHeight;
+    const hasNewOwnerMsg = msgs.some(m=>m.from==="owner" && !m._seen);
+  }catch(e){
+    el.innerHTML = "<p style='font-size:.75rem;color:var(--purple);text-align:center'>couldn't load messages 😕</p>";
+  }
+}
+
+async function sendCustomerMessage(){
+  const input = document.getElementById("chatWidgetInput");
+  const text = input.value.trim();
+  if(!text || !chatId) return;
+  input.value = "";
+  try{
+    await fetch(FIREBASE_URL + `/chats/${chatId}/messages.json`, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ from:"customer", text, at:new Date().toISOString(), read:false })
+    });
+    loadChatWidgetMessages();
+  }catch(e){
+    alert("Couldn't send — check your connection!");
+  }
+}
+
+function startChatWidgetPolling(){
+  if(chatPollTimer) return;
+  let lastCount = 0;
+  chatPollTimer = setInterval(async ()=>{
+    if(!chatId) return;
+    try{
+      const res = await fetch(FIREBASE_URL + `/chats/${chatId}/messages.json`);
+      const data = await res.json();
+      const count = data ? Object.keys(data).length : 0;
+      const widgetOpen = document.getElementById("chatWidget").classList.contains("open");
+      if(count > lastCount && lastCount !== 0 && !widgetOpen){
+        document.getElementById("chatFabDot").style.display = "block";
+      }
+      lastCount = count;
+      if(widgetOpen) loadChatWidgetMessages();
+    }catch(e){}
+  }, 6000);
+}
 
 /* ============ DARK MODE ============ */
 function toggleDark(){
@@ -1625,9 +2094,21 @@ function renderCart(){
     </select>
     <label for="fnotes">Notes (optional) 📝</label>
     <textarea id="fnotes" name="notes" rows="2" placeholder="Gift wrap? Extra sprinkles?"></textarea>
+    <label class="gift-check"><input type="checkbox" id="fIsGift" onchange="toggleGiftFields()"> 🎁 this is a gift — send to someone else</label>
+    <div id="giftFields" style="display:none">
+      <label for="fGiftName">Recipient's name 🎁</label>
+      <input id="fGiftName" name="giftName" placeholder="who's this jar for?">
+      <label for="fGiftNote">Gift note (shows on delivery) 💌</label>
+      <textarea id="fGiftNote" name="giftNote" rows="2" placeholder="write a lil message..."></textarea>
+    </div>
     <button class="checkout" id="checkoutBtn" type="submit">Place order • <span id="checkoutTotal">${cartTotal()}</span> AED 🧪</button>
   </form>`;
   body.innerHTML = html;
+}
+
+function toggleGiftFields(){
+  const show = document.getElementById("fIsGift").checked;
+  document.getElementById("giftFields").style.display = show ? "block" : "none";
 }
 
 async function submitOrder(e){
@@ -1648,6 +2129,10 @@ async function submitOrder(e){
     area: f.area.value, payment: f.payment.value, notes: f.notes.value || "—",
     items: {...cart},
     order: orderLines,
+    isGift: document.getElementById("fIsGift")?.checked || false,
+    giftName: document.getElementById("fGiftName")?.value || "",
+    giftNote: document.getElementById("fGiftNote")?.value || "",
+    referredByCode: (localStorage.getItem("sv-ref-used")) || "none",
     promoCode: appliedPromo ? appliedPromo.code : "none",
     promoDiscount: appliedPromo ? appliedPromo.label : "none",
     delivery: cartTotal()-cartSubtotal(),
