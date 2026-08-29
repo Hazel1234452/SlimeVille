@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlimevSocial 🐍💚</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#8DD400; --lime-dark:#6BA800;
+    --pink:#FF3D9A; --pink-soft:#FFE6F1;
+    --ink:#1E1E2F; --white:#FFFFFF; --purple:#7C3AED;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Comfortaa',cursive;background:var(--pink-soft);color:var(--ink);overflow-x:hidden;padding-bottom:80px}
+  h1,h2,h3,.fredoka{font-family:'Fredoka One',cursive;font-weight:400}
+
+  /* ============ HEADER ============ */
+  header{background:var(--lime);padding:22px 16px 18px;text-align:center;position:sticky;top:0;z-index:50;box-shadow:0 4px 0 var(--ink)}
+  .sv-logo-img{max-width:220px;width:70%;height:auto;display:block;margin:0 auto}
+  .sv-back{position:absolute;top:20px;left:14px;background:var(--white);border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.68rem;text-decoration:none;color:var(--ink)}
+  .sv-newpost{position:absolute;top:20px;right:14px;background:var(--pink);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.68rem;cursor:pointer}
+  .sv-tagline{font-size:.7rem;color:var(--ink);opacity:.75;margin-top:4px}
+
+  .guideline-banner{text-align:center;font-family:'Fredoka One',cursive;font-size:.65rem;padding:8px 14px;background:var(--pink-soft);color:var(--purple);border-bottom:2px solid var(--ink)}
+
+  /* ============ PROFILE GATE ============ */
+  .gate-wrap{max-width:420px;margin:24px auto;padding:0 16px}
+  .gate-box{background:var(--white);border:4px solid var(--ink);border-radius:26px;padding:24px;box-shadow:6px 6px 0 var(--ink)}
+  .gate-box h2{font-size:1.1rem;text-align:center;margin-bottom:6px}
+  .gate-box .sub{text-align:center;font-size:.75rem;color:var(--purple);margin-bottom:18px}
+  .field-label{font-family:'Fredoka One',cursive;font-size:.75rem;margin-bottom:8px;margin-top:14px}
+  .gate-box input, .gate-box textarea{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.82rem;background:var(--pink-soft)}
+  .picker-row{display:flex;gap:8px;flex-wrap:wrap}
+  .avatar-opt{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;background:var(--white)}
+  .avatar-opt.selected{box-shadow:0 0 0 3px var(--pink)}
+  .bg-opt{width:44px;height:44px;border-radius:12px;border:3px solid var(--ink);cursor:pointer}
+  .bg-opt.selected{box-shadow:0 0 0 3px var(--purple)}
+  .gate-submit{width:100%;margin-top:18px;background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:13px;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+
+  /* ============ FEED ============ */
+  .feed{max-width:480px;margin:0 auto;padding:16px}
+  .post-card{background:var(--white);border:3.5px solid var(--ink);border-radius:22px;margin-bottom:18px;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+  .post-header{display:flex;align-items:center;gap:10px;padding:12px 14px}
+  .post-avatar{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .post-names{flex:1;line-height:1.3}
+  .post-name{font-family:'Fredoka One',cursive;font-size:.78rem;display:flex;align-items:center;gap:5px}
+  .post-username{font-size:.66rem;color:#888}
+  .founder-badge{background:var(--purple);color:#fff;font-size:.55rem;font-family:'Fredoka One',cursive;padding:2px 7px;border-radius:999px}
+  .post-graphic{aspect-ratio:1.1;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative}
+  .post-body{padding:12px 14px}
+  .post-caption{font-size:.82rem;line-height:1.6;margin-bottom:10px}
+  .post-actions{display:flex;align-items:center;gap:16px}
+  .like-btn{background:none;border:none;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .like-count{font-family:'Fredoka One',cursive;font-size:.75rem}
+  .comment-toggle{background:none;border:none;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .comment-count{font-family:'Fredoka One',cursive;font-size:.75rem}
+  .comments-section{display:none;border-top:2px solid #eee;margin-top:10px;padding-top:10px}
+  .comments-section.open{display:block}
+  .comment-item{font-size:.74rem;margin-bottom:6px;line-height:1.5}
+  .comment-item b{font-family:'Fredoka One',cursive;font-size:.72rem}
+  .comment-input-row{display:flex;gap:6px;margin-top:8px}
+  .comment-input-row input{flex:1;border:2px solid var(--ink);border-radius:10px;padding:7px 10px;font-family:'Comfortaa',cursive;font-size:.72rem}
+  .comment-input-row button{background:var(--purple);color:#fff;border:none;border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.9rem}
+  .post-meta{font-size:.6rem;color:#aaa;margin-top:8px}
+  .empty-feed{text-align:center;padding:40px 20px;color:var(--purple);font-size:.85rem}
+
+  /* ============ COMPOSER MODAL ============ */
+  .composer-overlay{position:fixed;inset:0;background:rgba(30,30,47,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+  .composer-overlay.open{display:flex}
+  .composer-box{background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:22px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:6px 6px 0 var(--ink)}
+  .composer-box h3{font-size:1rem;margin-bottom:14px;text-align:center}
+  .graphic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .graphic-opt{aspect-ratio:1;border-radius:14px;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer}
+  .graphic-opt.selected{box-shadow:0 0 0 3px var(--pink)}
+  .composer-box textarea{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;font-family:'Comfortaa',cursive;font-weight:700;font-size:.8rem;background:var(--pink-soft);margin-bottom:12px}
+  .composer-submit{width:100%;background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:12px;font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer}
+  .composer-cancel{width:100%;background:none;border:none;color:var(--purple);font-family:'Fredoka One',cursive;font-size:.75rem;padding:10px;cursor:pointer}
+
+  .fab-post{position:fixed;bottom:20px;right:20px;z-index:60;background:var(--pink);border:4px solid var(--ink);border-radius:50%;width:60px;height:60px;font-size:1.6rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center;color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="sv-back" href="index.html">← Shop</a>
+  <button class="sv-newpost" onclick="openComposer()">+ Post</button>
+  <img class="sv-logo-img" src="slimevsocial-logo.png" alt="SlimevSocial">
+  <div class="sv-tagline">🐍💚 all things SlimeVille, made by us &amp; you</div>
+</header>
+<div class="guideline-banner">🧪 keep it slime-related — no faces please 💚</div>
+
+<div class="gate-wrap" id="gateWrap">
+  <div class="gate-box">
+    <h2>Create your profile ✨</h2>
+    <p class="sub">join the SlimevSocial fam</p>
+
+    <div class="field-label">pick an avatar</div>
+    <div class="picker-row" id="avatarPicker"></div>
+
+    <div class="field-label">pick a background vibe</div>
+    <div class="picker-row" id="bgPicker"></div>
+
+    <div class="field-label">your name</div>
+    <input id="profName" placeholder="e.g. Sara">
+
+    <div class="field-label">username</div>
+    <input id="profUsername" placeholder="e.g. sara_slimes">
+
+    <div class="field-label">bio</div>
+    <textarea id="profBio" rows="2" placeholder="slime enthusiast 🧪💚"></textarea>
+
+    <button class="gate-submit" onclick="createProfile()">Join SlimevSocial 🐍💚</button>
+  </div>
+</div>
+
+<div class="feed" id="feed" style="display:none"></div>
+
+<button class="fab-post" id="fabPost" style="display:none" onclick="openComposer()">+</button>
+
+<div class="composer-overlay" id="composerOverlay">
+  <div class="composer-box">
+    <h3>New Post 🧪</h3>
+    <div class="field-label">pick a slime graphic</div>
+    <div class="graphic-grid" id="graphicGrid"></div>
+    <div class="field-label">caption</div>
+    <textarea id="postCaption" rows="3" placeholder="what's cooking? 👀"></textarea>
+    <button class="composer-submit" onclick="submitPost()">Post it 🚀</button>
+    <button class="composer-cancel" onclick="closeComposer()">Cancel</button>
+  </div>
+</div>
+
+<script>
+const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+const AVATARS = ["🟢","🫧","✨","🌈","🧪","🍓","🌊","🎨","☕","🍬","🍑","🍫","🌙","⭐","🦄","🧁"];
+const BACKGROUNDS = [
+  "linear-gradient(135deg,#FFD9E8,#FF8FB8)",
+  "linear-gradient(135deg,#B6F03A,#6BA800)",
+  "linear-gradient(135deg,#A8D8FF,#4FA8FF)",
+  "linear-gradient(135deg,#E4D9FA,#C6AEEF)",
+  "linear-gradient(135deg,#F0DCB8,#D8B88A)",
+  "linear-gradient(135deg,#7FE0D6,#1F6E7A)",
+  "linear-gradient(135deg,#FFF3B0,#F7DE6B)",
+  "linear-gradient(135deg,#1E1E2F,#3a3a52)",
+];
+const POST_GRAPHICS = [
+  {id:"g1", emoji:"🍓", bg:"linear-gradient(135deg,#FFD9E8,#FF8FB8)"},
+  {id:"g2", emoji:"☁️", bg:"linear-gradient(135deg,#E4D9FA,#C6AEEF)"},
+  {id:"g3", emoji:"🥭", bg:"linear-gradient(135deg,#FFE082,#FFB74D)"},
+  {id:"g4", emoji:"🍬", bg:"linear-gradient(135deg,#FFD9E8,#B6F03A)"},
+  {id:"g5", emoji:"🍫", bg:"linear-gradient(135deg,#C89B6D,#6B4423)"},
+  {id:"g6", emoji:"🍑", bg:"linear-gradient(135deg,#FFDAB9,#FFB6A3)"},
+  {id:"g7", emoji:"🍪", bg:"linear-gradient(135deg,#F5F5F5,#D4D4D4)"},
+  {id:"g8", emoji:"☕", bg:"linear-gradient(135deg,#F0DCB8,#8B5A2B)"},
+  {id:"g9", emoji:"✈️", bg:"linear-gradient(90deg,#F3EDE4,#5B1E22)"},
+  {id:"g10", emoji:"🌊", bg:"linear-gradient(180deg,#7FE0D6,#1F6E7A)"},
+  {id:"g11", emoji:"✏️", bg:"linear-gradient(135deg,#FFF3B0,#F7DE6B)"},
+  {id:"g12", emoji:"🍺", bg:"linear-gradient(180deg,#F0DDA8,#8B5A2B)"},
+  {id:"g13", emoji:"🫧", bg:"linear-gradient(135deg,#A8D8FF,#4FA8FF)"},
+  {id:"g14", emoji:"✨", bg:"linear-gradient(135deg,#FFF3B0,#FF8FB8)"},
+  {id:"g15", emoji:"🎨", bg:"linear-gradient(135deg,#FFD9E8,#7C3AED)"},
+  {id:"g16", emoji:"🧪", bg:"linear-gradient(135deg,#B6F03A,#27D6D6)"},
+];
+
+const FOUNDER_ACCOUNTS = {
+  "amy-founder": { name:"Amy", username:"@amy.slimeville", founder:true },
+  "imany-founder": { name:"Imany", username:"@imany.slimeville", founder:true },
+};
+
+let myProfile = null;
+let selectedAvatar = AVATARS[0];
+let selectedBg = BACKGROUNDS[0];
+let selectedGraphic = POST_GRAPHICS[0];
+
+function renderPickers(){
+  document.getElementById("avatarPicker").innerHTML = AVATARS.map(a=>
+    `<div class="avatar-opt ${selectedAvatar===a?'selected':''}" onclick="pickAvatar('${a}')">${a}</div>`
+  ).join("");
+  document.getElementById("bgPicker").innerHTML = BACKGROUNDS.map((b,i)=>
+    `<div class="bg-opt ${selectedBg===b?'selected':''}" style="background:${b}" onclick="pickBg(${i})"></div>`
+  ).join("");
+}
+function pickAvatar(a){ selectedAvatar = a; renderPickers(); }
+function pickBg(i){ selectedBg = BACKGROUNDS[i]; renderPickers(); }
+renderPickers();
+
+function getMyProfileId(){
+  try{
+    let id = localStorage.getItem("sv-social-id");
+    if(!id){ id = "u" + Date.now() + Math.random().toString(36).slice(2,8); localStorage.setItem("sv-social-id", id); }
+    return id;
+  }catch(e){ return "u"+Date.now(); }
+}
+
+async function createProfile(){
+  const name = document.getElementById("profName").value.trim();
+  const username = document.getElementById("profUsername").value.trim();
+  const bio = document.getElementById("profBio").value.trim();
+  if(!name || !username){ alert("name + username are required! 💗"); return; }
+  const id = getMyProfileId();
+  const profile = { name, username: username.startsWith("@")?username:"@"+username, bio, avatar:selectedAvatar, bg:selectedBg, createdAt:new Date().toISOString() };
+  try{
+    await fetch(FIREBASE_URL + `/slimevsocial/profiles/${id}.json`, {
+      method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(profile)
+    });
+  }catch(e){}
+  try{ localStorage.setItem("sv-social-profile", JSON.stringify(profile)); }catch(e){}
+  myProfile = profile;
+  showFeed();
+}
+
+function showFeed(){
+  document.getElementById("gateWrap").style.display = "none";
+  document.getElementById("feed").style.display = "block";
+  document.getElementById("fabPost").style.display = "flex";
+  loadFeed();
+}
+
+function initProfile(){
+  try{
+    const saved = localStorage.getItem("sv-social-profile");
+    if(saved){ myProfile = JSON.parse(saved); showFeed(); return; }
+  }catch(e){}
+}
+
+/* ============ COMPOSER ============ */
+function renderGraphicGrid(){
+  document.getElementById("graphicGrid").innerHTML = POST_GRAPHICS.map(g=>
+    `<div class="graphic-opt ${selectedGraphic.id===g.id?'selected':''}" style="background:${g.bg}" onclick="pickGraphic('${g.id}')">${g.emoji}</div>`
+  ).join("");
+}
+function pickGraphic(id){ selectedGraphic = POST_GRAPHICS.find(g=>g.id===id); renderGraphicGrid(); }
+function openComposer(){
+  if(!myProfile){ alert("create your profile first! ↑"); return; }
+  renderGraphicGrid();
+  document.getElementById("composerOverlay").classList.add("open");
+}
+function closeComposer(){
+  document.getElementById("composerOverlay").classList.remove("open");
+  document.getElementById("postCaption").value = "";
+}
+async function submitPost(){
+  const caption = document.getElementById("postCaption").value.trim();
+  if(!caption){ alert("write a caption! 💬"); return; }
+  const id = getMyProfileId();
+  const postId = "p" + Date.now();
+  const post = {
+    profileId: id, name: myProfile.name, username: myProfile.username, avatar: myProfile.avatar,
+    graphic: selectedGraphic.id, caption, likes: 0, likedBy: {}, comments: {}, at: new Date().toISOString()
+  };
+  try{
+    await fetch(FIREBASE_URL + `/slimevsocial/posts/${postId}.json`, {
+      method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(post)
+    });
+  }catch(e){ alert("couldn't post — check your connection!"); return; }
+  closeComposer();
+  loadFeed();
+}
+
+/* ============ FEED ============ */
+let openComments = new Set();
+async function loadFeed(){
+  const feedEl = document.getElementById("feed");
+  try{
+    const res = await fetch(FIREBASE_URL + "/slimevsocial/posts.json");
+    const data = await res.json();
+    if(!data){
+      feedEl.innerHTML = `<div class="empty-feed">no posts yet — be the first! 🧪✨</div>`;
+      return;
+    }
+    const posts = Object.entries(data).map(([id,v])=>({id,...v})).sort((a,b)=>new Date(b.at)-new Date(a.at));
+    feedEl.innerHTML = posts.map(p=>renderPostCard(p)).join("");
+    openComments.forEach(id=>{
+      document.getElementById(`comments-${id}`)?.classList.add("open");
+    });
+  }catch(e){
+    feedEl.innerHTML = `<div class="empty-feed">couldn't load the feed 😕 check your connection</div>`;
+  }
+}
+
+function renderPostCard(p){
+  const g = POST_GRAPHICS.find(x=>x.id===p.graphic) || POST_GRAPHICS[0];
+  const founder = FOUNDER_ACCOUNTS[p.profileId];
+  const myId = getMyProfileId();
+  const liked = p.likedBy && p.likedBy[myId];
+  const commentList = p.comments ? Object.values(p.comments).sort((a,b)=>new Date(a.at)-new Date(b.at)) : [];
+  const timeAgo = timeSince(p.at);
+  return `
+  <div class="post-card">
+    <div class="post-header">
+      <div class="post-avatar">${p.avatar||"🟢"}</div>
+      <div class="post-names">
+        <div class="post-name">${p.name} ${founder?`<span class="founder-badge">✅ Founder</span>`:""}</div>
+        <div class="post-username">${p.username}</div>
+      </div>
+    </div>
+    <div class="post-graphic" style="background:${g.bg}">${g.emoji}</div>
+    <div class="post-body">
+      <p class="post-caption">${escapeHtml(p.caption)}</p>
+      <div class="post-actions">
+        <button class="like-btn" onclick="toggleLike('${p.id}')">${liked?'❤️':'🤍'} <span class="like-count">${p.likes||0}</span></button>
+        <button class="comment-toggle" onclick="toggleComments('${p.id}')">💬 <span class="comment-count">${commentList.length}</span></button>
+      </div>
+      <div class="comments-section" id="comments-${p.id}">
+        ${commentList.map(c=>`<div class="comment-item"><b>${c.name}:</b> ${escapeHtml(c.text)}</div>`).join("") || "<p style='font-size:.7rem;color:#aaa'>no comments yet</p>"}
+        <div class="comment-input-row">
+          <input id="commentInput-${p.id}" placeholder="add a comment...">
+          <button onclick="submitComment('${p.id}')">➤</button>
+        </div>
+      </div>
+      <div class="post-meta">${timeAgo}</div>
+    </div>
+  </div>`;
+}
+
+function escapeHtml(s){
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
+}
+function timeSince(iso){
+  const diff = Math.floor((Date.now() - new Date(iso).getTime())/1000);
+  if(diff<60) return "just now";
+  if(diff<3600) return Math.floor(diff/60)+"m ago";
+  if(diff<86400) return Math.floor(diff/3600)+"h ago";
+  return Math.floor(diff/86400)+"d ago";
+}
+
+async function toggleLike(postId){
+  const myId = getMyProfileId();
+  try{
+    const res = await fetch(FIREBASE_URL + `/slimevsocial/posts/${postId}.json`);
+    const post = await res.json();
+    if(!post) return;
+    const likedBy = post.likedBy || {};
+    let likes = post.likes || 0;
+    if(likedBy[myId]){ delete likedBy[myId]; likes = Math.max(0, likes-1); }
+    else { likedBy[myId] = true; likes += 1; }
+    await fetch(FIREBASE_URL + `/slimevsocial/posts/${postId}.json`, {
+      method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ likes, likedBy })
+    });
+    loadFeed();
+  }catch(e){}
+}
+
+function toggleComments(postId){
+  const el = document.getElementById(`comments-${postId}`);
+  el.classList.toggle("open");
+  if(el.classList.contains("open")) openComments.add(postId);
+  else openComments.delete(postId);
+}
+
+async function submitComment(postId){
+  if(!myProfile){ alert("create your profile first!"); return; }
+  const input = document.getElementById(`commentInput-${postId}`);
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = "";
+  try{
+    await fetch(FIREBASE_URL + `/slimevsocial/posts/${postId}/comments.json`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ name: myProfile.name, text, at:new Date().toISOString() })
+    });
+    openComments.add(postId);
+    loadFeed();
+  }catch(e){
+    alert("couldn't post comment — check connection!");
+  }
+}
+
+initProfile();
+</script>
+</body>
+</html>
