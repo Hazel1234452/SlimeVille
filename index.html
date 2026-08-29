@@ -670,12 +670,12 @@
   </div>
 </section>
 
-<!-- ═══ INSTAGRAM TEASER ═══ -->
+<!-- ═══ SLIMEVSOCIAL TEASER ═══ -->
 <section class="section" id="instagram">
   <div class="ig-box">
-    <div class="ig-icon">📸</div>
-    <h2>SlimeVille on Instagram — launching soon</h2>
-    <p>We're not on Instagram yet, but the grid is already planned in our heads. Here's a sneak peek of the vibe once we launch 👀</p>
+    <div class="ig-icon">🐍</div>
+    <h2>We don't have Instagram — we made our own</h2>
+    <p>Meet SlimevSocial: our own lil community where you can post, like, and comment on all things SlimeVille — no faces, just slime 💚</p>
     <div class="ig-grid">
       <div class="ig-tile" style="background:linear-gradient(135deg,#FFD9E8,#FF8FB8)">🍓</div>
       <div class="ig-tile" style="background:linear-gradient(135deg,#F0DCB8,#D8B88A)">☕</div>
@@ -684,7 +684,7 @@
       <div class="ig-tile" style="background:linear-gradient(135deg,#FFF3B0,#F7DE6B)">✏️</div>
       <div class="ig-tile" style="background:linear-gradient(135deg,#F3EDE4,#5B1E22)">✈️</div>
     </div>
-    <a href="https://pinterest.com/slimevilleslimes" target="_blank" rel="noopener" class="ig-follow">📌 follow us on Pinterest till then</a>
+    <a href="slimevsocial.html" class="ig-follow" style="background:linear-gradient(135deg,#8DD400,#FF3D9A)">🐍💚 Join SlimevSocial</a>
   </div>
 </section>
 
@@ -803,6 +803,11 @@
     <div id="pinQrCode"></div>
     <span>scan to follow 📌</span>
   </div>
+  <a class="pin" href="slimevsocial.html" style="background:linear-gradient(135deg,#8DD400,#FF3D9A);margin-top:18px">🐍💚 Join SlimevSocial</a>
+  <div class="pin-qr-wrap">
+    <div id="socialQrCode"></div>
+    <span>scan to join SlimevSocial 🐍</span>
+  </div>
   <div style="margin-top:22px"><a href="dashboard.html" style="color:#3a3a52;font-size:.62rem;text-decoration:none;font-weight:700;opacity:.6" title="Co-founder access">⚙️ owner login</a></div>
 </footer>
 
@@ -870,6 +875,24 @@ function initPinQr(){
   }
 }
 initPinQr();
+
+function initSocialQr(){
+  const el = document.getElementById("socialQrCode");
+  if(!el) return;
+  const socialUrl = window.location.origin + window.location.pathname.replace(/index\.html$/,"") + "slimevsocial.html";
+  try{
+    if(typeof QRCode === "undefined"){ el.textContent = "🐍 " + socialUrl; return; }
+    new QRCode(el, {
+      text: socialUrl,
+      width: 140, height: 140,
+      colorDark: "#1E1E2F", colorLight: "#FFE6F1",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }catch(e){
+    el.textContent = "🐍 " + socialUrl;
+  }
+}
+initSocialQr();
 /* ============ CONFIG ============ */
 const FIREBASE_URL = "https://slimeville-6f42e-default-rtdb.asia-southeast1.firebasedatabase.app";
 const DELIVERY_FEE = 5; // AED, flat Dubai delivery
