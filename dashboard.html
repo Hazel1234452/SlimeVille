@@ -109,8 +109,9 @@
   .stock-row .fn{flex:1;font-family:'Fredoka One',cursive;font-size:.8rem}
   .stock-opts{display:flex;gap:6px}
   .sopt{font-family:'Fredoka One',cursive;font-size:.62rem;padding:6px 10px;border:2.5px solid var(--ink);border-radius:999px;cursor:pointer;background:var(--pink-soft)}
-  .sopt.instock.on{background:var(--lime)}
-  .sopt.low.on{background:var(--yellow)}
+  .sopt.on{background:var(--purple);color:#fff}
+  .sopt.instock.on{background:var(--lime);color:var(--ink)}
+  .sopt.low.on{background:var(--yellow);color:var(--ink)}
   .sopt.out.on{background:var(--ink);color:var(--white)}
 
   /* gallery manager */
@@ -178,6 +179,7 @@
   <button class="tab" onclick="showPage('collab',this)">💜 Collab Drop</button>
   <button class="tab" onclick="showPage('activity',this)">📋 Activity Log</button>
   <button class="tab" onclick="showPage('chat',this)">💬 Live Chat</button>
+  <button class="tab" onclick="showPage('social',this)">🐍 SlimevSocial</button>
   <button class="tab" onclick="showPage('export',this)">📤 Publish</button>
 </nav>
 
@@ -226,6 +228,32 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SLIMEVSOCIAL -->
+  <section id="page-social" class="hidden">
+    <div class="box">
+      <h3>🐍 Your Founder Profile</h3>
+      <p class="hint">Edit how your SlimevSocial profile looks — pick which founder account below.</p>
+      <div class="collab-status" style="margin-bottom:14px">
+        <span class="sopt" id="sf-Amy" onclick="selectFounderProfile('Amy')">🇦🇪 Amy</span>
+        <span class="sopt" id="sf-Imany" onclick="selectFounderProfile('Imany')">🇩🇪 Imany</span>
+      </div>
+      <div id="founderEditFields" style="display:none">
+        <label>Avatar emoji</label>
+        <input id="sfAvatar" placeholder="e.g. 🟢">
+        <label>Bio</label>
+        <textarea id="sfBio" rows="2" placeholder="slime co-founder 🧪💚"></textarea>
+        <label>Username</label>
+        <input id="sfUsername" placeholder="e.g. @amy.slimeville">
+        <button class="btn pink" onclick="saveFounderProfile()">Save profile 🐍</button>
+      </div>
+    </div>
+    <div class="box">
+      <h3>📋 All Posts</h3>
+      <p class="hint">View and remove any post from SlimevSocial.</p>
+      <div id="socialPostsList"></div>
     </div>
   </section>
 
@@ -425,12 +453,13 @@ function logActivity(text){
 
 /* ---------- tabs ---------- */
 function showPage(p, btn){
-  ["dash","orders","club","stock","gallery","collab","activity","export","chat"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
+  ["dash","orders","club","stock","gallery","collab","activity","export","chat","social"].forEach(x=>document.getElementById("page-"+x).classList.toggle("hidden", x!==p));
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   btn.classList.add("active");
   if(p==="activity") renderActivity();
   if(p==="dash"){ renderDash(); loadDashLeaderboard(); }
   if(p==="chat"){ loadChatThreads(); renderChatMessages(); }
+  if(p==="social"){ loadSocialPosts(); }
 }
 
 /* ---------- stock ---------- */
@@ -496,6 +525,74 @@ async function clearLeaderboard(){
     logActivity("Cleared the squish leaderboard 🎮");
   }catch(e){
     alert("Couldn't clear it — check your internet!");
+  }
+}
+
+/* ---------- slimevsocial ---------- */
+const FOUNDER_IDS = { Amy:"amy-founder", Imany:"imany-founder" };
+let selectedFounder = null;
+async function selectFounderProfile(who){
+  selectedFounder = who;
+  document.querySelectorAll(".collab-status .sopt").forEach(s=>s.classList.remove("on"));
+  document.getElementById("sf-"+who).classList.add("on");
+  document.getElementById("founderEditFields").style.display = "block";
+  try{
+    const res = await fetch(FIREBASE_URL + `/slimevsocial/profiles/${FOUNDER_IDS[who]}.json`);
+    const data = await res.json();
+    document.getElementById("sfAvatar").value = data?.avatar || "🟢";
+    document.getElementById("sfBio").value = data?.bio || "";
+    document.getElementById("sfUsername").value = data?.username || `@${who.toLowerCase()}.slimeville`;
+  }catch(e){
+    document.getElementById("sfAvatar").value = "🟢";
+    document.getElementById("sfBio").value = "";
+    document.getElementById("sfUsername").value = `@${who.toLowerCase()}.slimeville`;
+  }
+}
+async function saveFounderProfile(){
+  if(!selectedFounder) return;
+  const profile = {
+    name: selectedFounder,
+    username: document.getElementById("sfUsername").value.trim() || `@${selectedFounder.toLowerCase()}.slimeville`,
+    bio: document.getElementById("sfBio").value.trim(),
+    avatar: document.getElementById("sfAvatar").value.trim() || "🟢",
+    bg: "linear-gradient(135deg,#8DD400,#FF3D9A)",
+    founder: true,
+  };
+  try{
+    await fetch(FIREBASE_URL + `/slimevsocial/profiles/${FOUNDER_IDS[selectedFounder]}.json`, {
+      method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(profile)
+    });
+    logActivity(`Updated ${selectedFounder}'s SlimevSocial profile 🐍`);
+    alert("Saved! 🐍💚");
+  }catch(e){
+    alert("Couldn't save — check your internet!");
+  }
+}
+async function loadSocialPosts(){
+  const el = document.getElementById("socialPostsList");
+  if(!el) return;
+  try{
+    const res = await fetch(FIREBASE_URL + "/slimevsocial/posts.json");
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p class='hint'>No posts yet.</p>"; return; }
+    const posts = Object.entries(data).map(([id,v])=>({id,...v})).sort((a,b)=>new Date(b.at)-new Date(a.at));
+    el.innerHTML = posts.map(p=>`
+      <div style="border:2px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <div style="font-size:.78rem"><b>${p.name}</b> (${p.username}) — ${p.caption}<br><span style="font-size:.65rem;color:#888">❤️ ${p.likes||0} · 💬 ${p.comments?Object.keys(p.comments).length:0}</span></div>
+        <button class="rm" onclick="deleteSocialPost('${p.id}')">🗑️</button>
+      </div>`).join("");
+  }catch(e){
+    el.innerHTML = "<p class='hint'>Couldn't reach the database.</p>";
+  }
+}
+async function deleteSocialPost(id){
+  if(!confirm("Delete this post?")) return;
+  try{
+    await fetch(FIREBASE_URL + `/slimevsocial/posts/${id}.json`, { method:"DELETE" });
+    loadSocialPosts();
+    logActivity("Removed a SlimevSocial post 🐍");
+  }catch(e){
+    alert("Couldn't delete — check your internet!");
   }
 }
 
