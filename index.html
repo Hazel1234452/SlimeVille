@@ -109,6 +109,27 @@
   .activity-toast.show{transform:translateX(-50%) translateY(0)}
   .visitor-dot{width:8px;height:8px;background:#4CD964;border-radius:50%;animation:pulse-dot 1.4s ease-in-out infinite}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+  /* ============ FLASH SALE BANNER ============ */
+  .flash-banner{position:sticky;top:0;z-index:90;background:linear-gradient(90deg,#FF3D3D,#FF8A00);color:#fff;text-align:center;padding:9px 14px;font-family:'Fredoka One',cursive;font-size:.75rem;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--ink)}
+  .flash-timer{background:rgba(0,0,0,.25);padding:3px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+  /* ============ MIX & MATCH BUNDLE ============ */
+  .mixmatch-box{max-width:480px;margin:0 auto;background:var(--white);border:4px solid var(--ink);border-radius:24px;padding:22px;box-shadow:6px 6px 0 var(--ink)}
+  .mixmatch-list{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .mixmatch-item{display:flex;align-items:center;gap:10px;background:var(--pink-soft);border:2.5px solid var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;font-family:'Comfortaa',cursive;font-weight:700;font-size:.78rem}
+  .mixmatch-item.selected{background:var(--lime)}
+  .mixmatch-item .mm-emoji{font-size:1.2rem}
+  .mixmatch-item .mm-price{margin-left:auto;font-family:'Fredoka One',cursive;font-size:.72rem}
+  .mixmatch-summary{font-family:'Fredoka One',cursive;font-size:.85rem;text-align:center;margin-bottom:12px}
+  /* ============ MEMORY MATCH GAME ============ */
+  .memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:0 auto 16px}
+  .memory-card{aspect-ratio:1;border-radius:14px;border:3px solid var(--ink);background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:transform .2s ease;user-select:none}
+  .memory-card.flipped{background:var(--white)}
+  .memory-card.matched{background:var(--lime);cursor:default}
+  /* ============ ARABIC MODE ============ */
+  html[dir="rtl"] body{direction:rtl}
+  html[dir="rtl"] .nav{direction:rtl}
+  /* ============ RECEIPT ============ */
+  .receipt-btn{width:100%;margin-top:10px;background:var(--purple);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:12px;font-family:'Fredoka One',cursive;font-size:.8rem;cursor:pointer}
   /* ============ SPARKLE CURSOR ============ */
   .cursor-sparkle{position:fixed;pointer-events:none;font-size:12px;z-index:9998;animation:sparkle-fade .6s ease forwards}
   @keyframes sparkle-fade{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(.4)}}
@@ -403,6 +424,12 @@
 </head>
 <body>
 
+<!-- ═══ FLASH SALE BANNER ═══ -->
+<div class="flash-banner" id="flashBanner" style="display:none">
+  <span id="flashBannerText">🔥 Flash Sale!</span>
+  <span class="flash-timer" id="flashTimer"></span>
+</div>
+
 <!-- ═══ SPIN WHEEL POPUP (first visit) ═══ -->
 <div class="wheel-overlay" id="wheelOverlay">
   <div class="wheel-modal">
@@ -451,7 +478,8 @@
   <span class="splat" style="right:9%;top:22px;animation-delay:1s">💖</span>
   <img src="logo.png" alt="SlimeVille — squish stretch repeat" class="logo-img">
   <nav class="nav">
-    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#wizard">🧙 Butterbeer</a><a href="#builder">🎨 Build a Jar</a><a href="#quiz">🎨 Slime Quiz</a><a href="#minigame">🎮 Squish Game</a><a href="#tracker">📦 Track Order</a><a href="#referral">🏆 Refer a Friend</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <a href="#shop">🧪 Shop</a><a href="#story">📖 Our Story</a><a href="#collab">💜 Collab Drop</a><a href="#worldtour">🌍 World Tour</a><a href="#backtoschool">🎒 Back to School</a><a href="#wizard">🧙 Butterbeer</a><a href="#builder">🎨 Build a Jar</a><a href="#mixmatch">🛍️ Mix &amp; Match</a><a href="#quiz">🎨 Slime Quiz</a><a href="#minigame">🎮 Squish Game</a><a href="#memorygame">🧠 Memory Match</a><a href="#tracker">📦 Track Order</a><a href="#referral">🏆 Refer a Friend</a><a href="#gallery">🖼️ Gallery</a><a href="#reviews">⭐ Reviews</a><a href="#faq">❓ FAQ</a>
+    <button class="dark-toggle" id="langToggle" onclick="toggleLang()" aria-label="Toggle Arabic">🌐 العربية</button>
     <select class="music-select" id="musicSelect" onchange="changeMusic(this.value)">
       <option value="off">🎵 Music: Off</option>
       <option value="magical">🪄 Magical</option>
@@ -591,6 +619,17 @@
   </div>
 </section>
 
+<!-- ═══ MIX & MATCH BUNDLE ═══ -->
+<section class="section" id="mixmatch">
+  <h2 class="sec-title">Mix &amp; Match Bundle 🛍️</h2>
+  <p class="sec-sub">pick any 3 slimes from the shop, save 10 AED — no theme required</p>
+  <div class="mixmatch-box">
+    <div class="mixmatch-list" id="mixmatchList"></div>
+    <div class="mixmatch-summary" id="mixmatchSummary">pick 3 slimes (0/3 selected)</div>
+    <button class="wizard-add-btn" style="width:100%" id="mixmatchBtn" onclick="addMixMatchToCart()" disabled>Add my bundle to jar 🫙</button>
+  </div>
+</section>
+
 <!-- ═══ SLIME QUIZ ═══ -->
 <section class="section" id="quiz">
   <h2 class="sec-title">Which SlimeVille Slime Are You? 🎨</h2>
@@ -614,6 +653,25 @@
   <div class="leaderboard-box">
     <h4>🏅 Top Squishers</h4>
     <div id="leaderboardList"><p style="font-size:.75rem;color:var(--purple)">loading...</p></div>
+  </div>
+</section>
+
+<!-- ═══ MEMORY MATCH GAME ═══ -->
+<section class="section" id="memorygame">
+  <h2 class="sec-title">Slime Memory Match 🧠</h2>
+  <p class="sec-sub">flip cards, find the pairs, beat your best time</p>
+  <div class="game-box" style="max-width:380px">
+    <div class="memory-grid" id="memoryGrid"></div>
+    <div class="game-stats">
+      <div>🔁 moves: <span id="memoryMoves">0</span></div>
+      <div>⏱️ <span id="memoryTime">0</span>s</div>
+      <div>best moves: <span id="memoryBest">–</span></div>
+    </div>
+    <button class="quiz-restart" id="memoryStartBtn" onclick="startMemoryGame()">New Game 🔄</button>
+  </div>
+  <div class="leaderboard-box">
+    <h4>🏅 Fastest Matchers</h4>
+    <div id="memoryLeaderboardList"><p style="font-size:.75rem;color:var(--purple)">loading...</p></div>
   </div>
 </section>
 
@@ -1092,6 +1150,8 @@ function squish(){
 
 /* ============ CART (in-memory) ============ */
 let cart = {};
+let lastOrderPayload = null;
+let lastOrderId = null;
 let appliedPromo = null;
 (function restoreSavedPromo(){
   try{
@@ -2175,11 +2235,14 @@ async function submitOrder(e){
     cart = {}; updateCount();
     appliedPromo = null;
     try{ localStorage.removeItem("sv-active-promo"); }catch(e){}
+    lastOrderPayload = payload;
+    lastOrderId = "SV" + Date.now().toString().slice(-8);
     document.getElementById("drawerBody").innerHTML = `
       <div class="success">
         <span class="big">🎉🧪🎉</span>
         <h3>Order received!</h3>
         <p>Thanks ${payload.name.split(" ")[0]}! 💚<br>We'll WhatsApp you within 24 hours to confirm your delivery.<br><br>squish • stretch • repeat ✨</p>
+        <button class="receipt-btn" onclick="downloadReceipt()">📥 Download Receipt</button>
       </div>`;
     confetti();
   }catch(x){
@@ -2240,6 +2303,318 @@ function confetti(){
   burst(60, 0);
   burst(50, 0.5);
   burst(40, 1.0);
+}
+
+/* ============ FLASH SALE BANNER ============ */
+let flashSaleData = null;
+async function initFlashSale(){
+  const banner = document.getElementById("flashBanner");
+  try{
+    const res = await fetch(FIREBASE_URL + "/flashSale.json");
+    const data = await res.json();
+    if(!data || !data.active || !data.endsAt) { banner.style.display = "none"; return; }
+    const endsAt = new Date(data.endsAt).getTime();
+    if(isNaN(endsAt) || endsAt <= Date.now()){ banner.style.display = "none"; return; }
+    flashSaleData = data;
+    if(data.percent){
+      PROMO_CODES["FLASHSALE"] = { type:"percent", label:(data.label||"Flash Sale")+" 🔥", percent:data.percent };
+    }
+    document.getElementById("flashBannerText").textContent = `🔥 ${data.label || "Flash Sale!"} — use code FLASHSALE`;
+    banner.style.display = "flex";
+    tickFlashTimer(endsAt);
+    setInterval(()=>tickFlashTimer(endsAt), 1000);
+  }catch(e){ banner.style.display = "none"; }
+}
+function tickFlashTimer(endsAt){
+  const el = document.getElementById("flashTimer");
+  const diff = endsAt - Date.now();
+  if(diff <= 0){ document.getElementById("flashBanner").style.display = "none"; return; }
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  el.textContent = `ends in ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+initFlashSale();
+
+/* ============ MIX & MATCH BUNDLE ============ */
+const MIXMATCH_DISCOUNT = 10;
+const MIXMATCH_MAX = 3;
+let mixmatchSelected = [];
+function renderMixMatchList(){
+  const el = document.getElementById("mixmatchList");
+  if(!el) return;
+  const eligible = PRODUCTS.filter(p => !p.bundle && p.collection !== "custom" && (STOCK[p.id]||"instock") !== "out");
+  el.innerHTML = eligible.map(p=>`
+    <div class="mixmatch-item ${mixmatchSelected.includes(p.id)?'selected':''}" onclick="toggleMixMatch('${p.id}')">
+      <span class="mm-emoji">${p.emoji}</span> ${p.name}
+      <span class="mm-price">${p.price} AED</span>
+    </div>`).join("");
+}
+function toggleMixMatch(id){
+  if(mixmatchSelected.includes(id)){
+    mixmatchSelected = mixmatchSelected.filter(x=>x!==id);
+  } else {
+    if(mixmatchSelected.length >= MIXMATCH_MAX) return;
+    mixmatchSelected.push(id);
+  }
+  renderMixMatchList();
+  updateMixMatchSummary();
+}
+function updateMixMatchSummary(){
+  const summary = document.getElementById("mixmatchSummary");
+  const btn = document.getElementById("mixmatchBtn");
+  const n = mixmatchSelected.length;
+  if(n < MIXMATCH_MAX){
+    summary.textContent = `pick 3 slimes (${n}/${MIXMATCH_MAX} selected)`;
+    btn.disabled = true;
+  } else {
+    const total = mixmatchSelected.reduce((sum,id)=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      return sum + (p?p.price:0);
+    }, 0);
+    const finalPrice = Math.max(0, total - MIXMATCH_DISCOUNT);
+    summary.textContent = `3 slimes: ${total} AED → ${finalPrice} AED (save ${MIXMATCH_DISCOUNT})`;
+    btn.disabled = false;
+  }
+}
+function addMixMatchToCart(){
+  if(mixmatchSelected.length < MIXMATCH_MAX) return;
+  const names = mixmatchSelected.map(id => PRODUCTS.find(p=>p.id===id)?.name).join(", ");
+  const total = mixmatchSelected.reduce((sum,id)=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return sum + (p?p.price:0);
+  }, 0);
+  const finalPrice = Math.max(0, total - MIXMATCH_DISCOUNT);
+  const id = "mixmatch-" + Date.now();
+  const bundleProduct = {
+    id, name: `Mix & Match Bundle (${names})`, emoji:"🛍️", price: finalPrice,
+    collection:"custom", reviews:[], bundle:true,
+    bg: "linear-gradient(135deg,#FF3D9A,#8DD400)",
+    texture:"Mixed", scent:"Mixed",
+    tagColor:"#7C3AED",
+    desc: `Your own mix & match bundle: ${names}. Bundled for ${finalPrice} AED (saved ${MIXMATCH_DISCOUNT} AED).`,
+    sprinkles: ["🛍️","✨","🧪","💫"],
+  };
+  PRODUCTS.push(bundleProduct);
+  STOCK[id] = "instock";
+  addToCart(id, null);
+  alert(`Added your Mix & Match bundle to your cart! 🎉\n${names} for ${finalPrice} AED`);
+  mixmatchSelected = [];
+  renderMixMatchList();
+  updateMixMatchSummary();
+}
+renderMixMatchList();
+updateMixMatchSummary();
+
+/* ============ MEMORY MATCH GAME ============ */
+const MEMORY_ICONS = ["🍓","☕","🌊","✏️","🍬","🍫","✈️","🍺"];
+let memoryCards = [];
+let memoryFlipped = [];
+let memoryMatchedCount = 0;
+let memoryMoves = 0;
+let memoryTimer = null;
+let memoryStartTime = null;
+let memoryLocked = false;
+
+function buildMemoryDeck(){
+  const pairs = [...MEMORY_ICONS, ...MEMORY_ICONS];
+  for(let i=pairs.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [pairs[i],pairs[j]] = [pairs[j],pairs[i]];
+  }
+  return pairs.map((icon,i)=>({id:i, icon, flipped:false, matched:false}));
+}
+function renderMemoryGrid(){
+  const grid = document.getElementById("memoryGrid");
+  if(!grid) return;
+  grid.innerHTML = memoryCards.map(c=>`
+    <div class="memory-card ${c.flipped?'flipped':''} ${c.matched?'matched':''}" onclick="flipMemoryCard(${c.id})">
+      ${c.flipped || c.matched ? c.icon : "🧪"}
+    </div>`).join("");
+}
+function startMemoryGame(){
+  memoryCards = buildMemoryDeck();
+  memoryFlipped = [];
+  memoryMatchedCount = 0;
+  memoryMoves = 0;
+  memoryLocked = false;
+  document.getElementById("memoryMoves").textContent = "0";
+  document.getElementById("memoryTime").textContent = "0";
+  if(memoryTimer) clearInterval(memoryTimer);
+  memoryStartTime = Date.now();
+  memoryTimer = setInterval(()=>{
+    document.getElementById("memoryTime").textContent = Math.floor((Date.now()-memoryStartTime)/1000);
+  }, 1000);
+  renderMemoryGrid();
+  try{
+    const best = localStorage.getItem("sv-memory-best");
+    document.getElementById("memoryBest").textContent = best || "–";
+  }catch(e){}
+}
+function flipMemoryCard(id){
+  if(memoryLocked) return;
+  const card = memoryCards.find(c=>c.id===id);
+  if(!card || card.flipped || card.matched) return;
+  card.flipped = true;
+  memoryFlipped.push(card);
+  renderMemoryGrid();
+  if(memoryFlipped.length === 2){
+    memoryMoves++;
+    document.getElementById("memoryMoves").textContent = memoryMoves;
+    memoryLocked = true;
+    const [a,b] = memoryFlipped;
+    if(a.icon === b.icon){
+      a.matched = true; b.matched = true;
+      memoryMatchedCount += 2;
+      memoryFlipped = [];
+      memoryLocked = false;
+      renderMemoryGrid();
+      if(memoryMatchedCount === memoryCards.length){
+        clearInterval(memoryTimer);
+        const finalTime = Math.floor((Date.now()-memoryStartTime)/1000);
+        try{
+          const best = parseInt(localStorage.getItem("sv-memory-best")||"999");
+          if(memoryMoves < best){
+            localStorage.setItem("sv-memory-best", String(memoryMoves));
+            document.getElementById("memoryBest").textContent = memoryMoves;
+          }
+        }catch(e){}
+        setTimeout(()=>submitMemoryScore(memoryMoves, finalTime), 300);
+      }
+    } else {
+      setTimeout(()=>{
+        a.flipped = false; b.flipped = false;
+        memoryFlipped = [];
+        memoryLocked = false;
+        renderMemoryGrid();
+      }, 800);
+    }
+  }
+}
+async function submitMemoryScore(moves, seconds){
+  const name = prompt(`🎉 Solved in ${moves} moves (${seconds}s)! Add your name to the leaderboard:`);
+  if(!name) return;
+  try{
+    await fetch(FIREBASE_URL + "/memoryLeaderboard.json", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ name: name.slice(0,20), moves, seconds, at:new Date().toISOString() })
+    });
+    loadMemoryLeaderboard();
+  }catch(e){}
+}
+async function loadMemoryLeaderboard(){
+  const el = document.getElementById("memoryLeaderboardList");
+  if(!el) return;
+  try{
+    const res = await fetch(FIREBASE_URL + "/memoryLeaderboard.json");
+    const data = await res.json();
+    if(!data){ el.innerHTML = "<p style='font-size:.75rem;color:var(--purple)'>no scores yet — be the first! 🏅</p>"; return; }
+    const top = Object.values(data).sort((a,b)=>a.moves-b.moves || a.seconds-b.seconds).slice(0,5);
+    el.innerHTML = top.map((e,i)=>`<div class="lb-row">${["🥇","🥈","🥉","4.","5."][i]} ${e.name} — ${e.moves} moves (${e.seconds}s)</div>`).join("");
+  }catch(e){}
+}
+startMemoryGame();
+loadMemoryLeaderboard();
+
+/* ============ ARABIC LANGUAGE TOGGLE ============ */
+const AR_TRANSLATIONS = {
+  "🧪 Shop": "🧪 المتجر",
+  "📖 Our Story": "📖 قصتنا",
+  "💜 Collab Drop": "💜 تعاون خاص",
+  "🌍 World Tour": "🌍 جولة عالمية",
+  "🎒 Back to School": "🎒 العودة للمدارس",
+  "🧙 Butterbeer": "🧙 بتربير",
+  "🎨 Build a Jar": "🎨 اصنع برطمانك",
+  "🛍️ Mix & Match": "🛍️ اخلط واختر",
+  "🎨 Slime Quiz": "🎨 اختبار السلايم",
+  "🎮 Squish Game": "🎮 لعبة الضغط",
+  "🧠 Memory Match": "🧠 لعبة الذاكرة",
+  "📦 Track Order": "📦 تتبع الطلب",
+  "🏆 Refer a Friend": "🏆 أحضر صديق",
+  "🖼️ Gallery": "🖼️ المعرض",
+  "⭐ Reviews": "⭐ التقييمات",
+  "❓ FAQ": "❓ الأسئلة الشائعة",
+};
+let isArabic = false;
+function toggleLang(){
+  isArabic = !isArabic;
+  document.documentElement.setAttribute("dir", isArabic ? "rtl" : "ltr");
+  document.documentElement.setAttribute("lang", isArabic ? "ar" : "en");
+  document.querySelectorAll(".nav > a").forEach(a=>{
+    const en = a.getAttribute("data-en") || a.textContent;
+    if(!a.getAttribute("data-en")) a.setAttribute("data-en", en);
+    a.textContent = isArabic ? (AR_TRANSLATIONS[en] || en) : en;
+  });
+  document.getElementById("langToggle").textContent = isArabic ? "🌐 English" : "🌐 العربية";
+  try{ localStorage.setItem("sv-lang", isArabic ? "ar" : "en"); }catch(e){}
+}
+(function initLang(){
+  try{
+    if(localStorage.getItem("sv-lang")==="ar") toggleLang();
+  }catch(e){}
+})();
+
+/* ============ DOWNLOADABLE RECEIPT ============ */
+function downloadReceipt(){
+  if(!lastOrderPayload) return;
+  const p = lastOrderPayload;
+  const lines = p.order.split("\n");
+  const canvas = document.createElement("canvas");
+  const lineHeight = 26;
+  const headerHeight = 200;
+  const footerHeight = 140;
+  canvas.width = 500;
+  canvas.height = headerHeight + lines.length*lineHeight + footerHeight + 100;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#FFE6F1";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#7ED321";
+  ctx.fillRect(0,0,canvas.width,90);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#1E1E2F";
+  ctx.font = "bold 32px Comic Sans MS, sans-serif";
+  ctx.fillText("SlimeVille 🧪", canvas.width/2, 56);
+  ctx.font = "14px Comic Sans MS, sans-serif";
+  ctx.fillStyle = "#1E1E2F";
+  let y = 130;
+  ctx.textAlign = "left";
+  ctx.font = "bold 16px Comic Sans MS, sans-serif";
+  ctx.fillText(`Order #${lastOrderId}`, 30, y);
+  ctx.font = "13px Comic Sans MS, sans-serif";
+  ctx.fillText(`Date: ${p.dateLabel}`, 30, y+22);
+  ctx.fillText(`Name: ${p.name}`, 30, y+42);
+  ctx.fillText(`Area: ${p.area}`, 30, y+62);
+  y += 95;
+  ctx.strokeStyle = "#1E1E2F";
+  ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(canvas.width-30,y); ctx.stroke();
+  y += 26;
+  ctx.font = "13px Comic Sans MS, sans-serif";
+  lines.forEach(line=>{
+    ctx.fillText(line, 30, y);
+    y += lineHeight;
+  });
+  y += 10;
+  ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(canvas.width-30,y); ctx.stroke();
+  y += 30;
+  if(p.promoCode && p.promoCode !== "none"){
+    ctx.fillText(`Promo: ${p.promoCode} (${p.promoDiscount})`, 30, y);
+    y += lineHeight;
+  }
+  ctx.fillText(`Delivery: ${p.delivery} AED`, 30, y);
+  y += lineHeight;
+  ctx.font = "bold 18px Comic Sans MS, sans-serif";
+  ctx.fillStyle = "#FF3D9A";
+  ctx.fillText(`Total: ${p.total} AED`, 30, y);
+  y += 40;
+  ctx.font = "13px Comic Sans MS, sans-serif";
+  ctx.fillStyle = "#7C3AED";
+  ctx.textAlign = "center";
+  ctx.fillText("squish • stretch • repeat 💚 slimeville.fun", canvas.width/2, y);
+  const link = document.createElement("a");
+  link.download = `slimeville-receipt-${lastOrderId}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
 </script>
 </body>
